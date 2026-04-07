@@ -51,7 +51,7 @@ function enqueue_bootstrap() {
 add_action('wp_enqueue_scripts', 'enqueue_bootstrap');
 
 function enqueue_owl_carousel() {
-    $owl_templates = ['page-front.php', 'page-singleproduct.php', 'page-complexproduct.php', 'page-category.php', 'page-partners.php', 'page-about.php'];
+    $owl_templates = ['page-front.php', 'page-catalog.php', 'page-singleproduct.php', 'page-complexproduct.php', 'page-category.php', 'page-partners.php', 'page-about.php'];
     if (is_page_template($owl_templates) || is_front_page()) {
         wp_enqueue_style('owl-carousel', 'https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.carousel.min.css');
         wp_enqueue_style('owl-theme', 'https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.theme.default.min.css');
@@ -75,7 +75,7 @@ function enqueue_theme_scripts() {
         wp_enqueue_script('product-gallery', get_template_directory_uri() . '/js/product-gallery.js', ['jquery', 'owl-carousel'], '1.0.0', true);
     }
     // Theme front JS (hero slider, product/partners carousels, video modal)
-    $front_templates = ['page-front.php', 'page-category.php', 'page-partners.php', 'page-about.php'];
+    $front_templates = ['page-front.php', 'page-catalog.php', 'page-category.php', 'page-partners.php', 'page-about.php'];
     if (is_page_template($front_templates) || is_front_page()) {
         wp_enqueue_script('theme-front', get_template_directory_uri() . '/js/theme-front.js', ['jquery', 'owl-carousel'], '1.0.0', true);
     }
