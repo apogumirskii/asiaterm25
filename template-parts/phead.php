@@ -1,5 +1,8 @@
-<div class="breadcrumb-wrap">
+<section class="page-header">
     <div class="container">
-        <?php the_breadcrumb(); ?>
+        <h1 class="page-header-title"><?php the_title(); ?></h1>
+        <div class="breadcrumb">
+            <?php the_breadcrumb(); ?>
+        </div>
     </div>
-</div>
+</section>

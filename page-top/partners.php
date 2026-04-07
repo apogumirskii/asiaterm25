@@ -1,5 +1,12 @@
 <?php
-$partners_page = get_pages(['meta_key' => '_wp_page_template', 'meta_value' => 'page-partners.php', 'number' => 1]);
+// Находим страницу с шаблоном "Партнёрам" и берём логотипы оттуда
+$partners_page = get_posts([
+    'post_type'      => 'page',
+    'post_status'    => 'publish',
+    'posts_per_page' => 1,
+    'meta_key'       => '_wp_page_template',
+    'meta_value'     => 'page-partners.php',
+]);
 $partner_logos = $partners_page ? rwmb_meta('partners_logos', ['size' => 'medium'], $partners_page[0]->ID) : [];
 ?>
 

@@ -254,6 +254,11 @@ function my_telegram() {
     register_setting( 'general', 'my_telegram', 'esc_url_raw' );
 }
 
+function my_2gis() {
+    add_settings_field( '2gis', '2GIS ссылка', 'callback_2gis', 'general', 'custom_contact_section' );
+    register_setting( 'general', 'my_2gis', 'esc_url_raw' );
+}
+
 add_action('admin_init', 'my_mymail');
 add_action('admin_init', 'my_instagramm');
 add_action('admin_init', 'my_facebook');
@@ -263,6 +268,7 @@ add_action('admin_init', 'my_phone');
 add_action('admin_init', 'my_phone2');
 add_action('admin_init', 'my_whatsapp');
 add_action('admin_init', 'my_telegram');
+add_action('admin_init', 'my_2gis');
 
 function callback_mymail() {
     echo "<input class='regular-text' type='text' name='my_mymail' value='" . esc_attr(get_option('my_mymail')) . "'>";
@@ -290,6 +296,9 @@ function callback_whatsapp() {
 }
 function callback_telegram() {
     echo "<input class='regular-text' type='text' name='my_telegram' value='" . esc_attr(get_option('my_telegram')) . "' placeholder='https://t.me/username'>";
+}
+function callback_2gis() {
+    echo "<input class='regular-text' type='text' name='my_2gis' value='" . esc_attr(get_option('my_2gis')) . "' placeholder='https://2gis.kg/bishkek/...'>";
 }
 
 
