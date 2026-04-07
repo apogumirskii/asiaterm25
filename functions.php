@@ -61,7 +61,7 @@ function enqueue_owl_carousel() {
 add_action('wp_enqueue_scripts', 'enqueue_owl_carousel');
 
 function enqueue_lightbox() {
-    $lb_templates = ['page-singleproduct.php', 'page-complexproduct.php', 'page-portfolio.php', 'page-certificates.php'];
+    $lb_templates = ['page-singleproduct.php', 'page-complexproduct.php', 'page-portfolio.php', 'page-certificates.php', 'page-about.php'];
     if (is_page_template($lb_templates)) {
         wp_enqueue_style('lightbox-css', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css');
         wp_enqueue_script('lightbox-js', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js', ['jquery'], null, true);
@@ -802,10 +802,13 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
                 'name'    => esc_html__( 'Текст о компании', 'asiaterm25' ),
                 'id'      => 'about_text',
                 'type'    => 'wysiwyg',
-                'options' => [
-                    'textarea_rows' => 10,
-                    'media_buttons' => true,
-                ],
+                'options' => ['textarea_rows' => 10, 'media_buttons' => true],
+            ],
+            [
+                'type'             => 'image_advanced',
+                'name'             => esc_html__( 'Галерея', 'asiaterm25' ),
+                'id'               => 'about_gallery',
+                'max_file_uploads' => 20,
             ],
             [
                 'name'       => esc_html__( 'Преимущества', 'asiaterm25' ),
@@ -833,6 +836,38 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
                         'rows' => 3,
                     ],
                 ],
+            ],
+            [
+                'name'       => esc_html__( 'Команда', 'asiaterm25' ),
+                'id'         => 'about_team',
+                'type'       => 'group',
+                'clone'      => true,
+                'add_button' => esc_html__( '+ Добавить сотрудника', 'asiaterm25' ),
+                'fields'     => [
+                    [
+                        'type'             => 'image_advanced',
+                        'name'             => esc_html__( 'Фото', 'asiaterm25' ),
+                        'id'               => 'team_photo',
+                        'max_file_uploads' => 1,
+                    ],
+                    [
+                        'name' => esc_html__( 'Имя', 'asiaterm25' ),
+                        'id'   => 'team_name',
+                        'type' => 'text',
+                    ],
+                    [
+                        'name' => esc_html__( 'Должность', 'asiaterm25' ),
+                        'id'   => 'team_position',
+                        'type' => 'text',
+                    ],
+                ],
+            ],
+            [
+                'name' => esc_html__( 'HTML-код карты', 'asiaterm25' ),
+                'id'   => 'about_map_embed',
+                'type' => 'textarea',
+                'rows' => 4,
+                'desc' => esc_html__( 'Вставьте iframe карты (Google/Yandex/2GIS)', 'asiaterm25' ),
             ],
         ],
     ];
@@ -956,34 +991,56 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
                 'options' => ['textarea_rows' => 8, 'media_buttons' => true],
             ],
             [
-                'name'       => esc_html__( 'Преимущества для партнёров', 'asiaterm25' ),
-                'id'         => 'partners_benefits',
+                'name'       => esc_html__( 'Организации-партнёры (дилеры)', 'asiaterm25' ),
+                'id'         => 'partners_brands',
                 'type'       => 'group',
                 'clone'      => true,
-                'add_button' => esc_html__( '+ Добавить преимущество', 'asiaterm25' ),
+                'add_button' => esc_html__( '+ Добавить организацию', 'asiaterm25' ),
                 'fields'     => [
                     [
-                        'name'        => esc_html__( 'Иконка (CSS-класс)', 'asiaterm25' ),
-                        'id'          => 'partner_benefit_icon',
-                        'type'        => 'text',
-                        'placeholder' => 'fas fa-handshake',
+                        'type'             => 'image_advanced',
+                        'name'             => esc_html__( 'Логотип', 'asiaterm25' ),
+                        'id'               => 'brand_logo',
+                        'max_file_uploads' => 1,
                     ],
                     [
-                        'name' => esc_html__( 'Заголовок', 'asiaterm25' ),
-                        'id'   => 'partner_benefit_title',
+                        'name' => esc_html__( 'Название компании', 'asiaterm25' ),
+                        'id'   => 'brand_name',
                         'type' => 'text',
                     ],
                     [
-                        'name' => esc_html__( 'Описание', 'asiaterm25' ),
-                        'id'   => 'partner_benefit_desc',
+                        'name' => esc_html__( 'Краткое описание', 'asiaterm25' ),
+                        'id'   => 'brand_desc',
                         'type' => 'textarea',
                         'rows' => 3,
+                    ],
+                    [
+                        'name'        => esc_html__( 'Тип продукции', 'asiaterm25' ),
+                        'id'          => 'brand_product_type',
+                        'type'        => 'text',
+                        'placeholder' => 'Конвекторы, радиаторы, котлы',
+                    ],
+                    [
+                        'name' => esc_html__( 'Адрес / Страна', 'asiaterm25' ),
+                        'id'   => 'brand_address',
+                        'type' => 'text',
+                    ],
+                    [
+                        'name' => esc_html__( 'Сайт', 'asiaterm25' ),
+                        'id'   => 'brand_website',
+                        'type' => 'url',
+                    ],
+                    [
+                        'type'             => 'image_advanced',
+                        'name'             => esc_html__( 'Фото продукции', 'asiaterm25' ),
+                        'id'               => 'brand_photo',
+                        'max_file_uploads' => 1,
                     ],
                 ],
             ],
             [
                 'type'             => 'image_advanced',
-                'name'             => esc_html__( 'Логотипы партнёров', 'asiaterm25' ),
+                'name'             => esc_html__( 'Логотипы партнёров (карусель)', 'asiaterm25' ),
                 'id'               => 'partners_logos',
                 'max_file_uploads' => 20,
             ],
