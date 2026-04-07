@@ -1000,22 +1000,8 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
         'show'       => [
             'template' => ['page-contact.php'],
         ],
+        'desc'       => esc_html__( 'Адрес, телефон, email — из Настройки → Общие → Контактная информация', 'asiaterm25' ),
         'fields'     => [
-            [
-                'name' => esc_html__( 'Адрес', 'asiaterm25' ),
-                'id'   => 'contact_address',
-                'type' => 'text',
-            ],
-            [
-                'name' => esc_html__( 'Телефон', 'asiaterm25' ),
-                'id'   => 'contact_phone',
-                'type' => 'text',
-            ],
-            [
-                'name' => esc_html__( 'Email', 'asiaterm25' ),
-                'id'   => 'contact_email',
-                'type' => 'text',
-            ],
             [
                 'name' => esc_html__( 'Режим работы', 'asiaterm25' ),
                 'id'   => 'contact_work_hours',

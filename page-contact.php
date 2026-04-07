@@ -2,13 +2,16 @@
 include(locate_template('template-parts/menu.php'));
 include(locate_template('template-parts/phead.php'));
 
-$address    = rwmb_meta('contact_address') ?: get_option('my_adress');
-$phone      = rwmb_meta('contact_phone') ?: get_option('my_phone');
-$email      = rwmb_meta('contact_email') ?: get_option('my_mymail');
-$work_hours = rwmb_meta('contact_work_hours');
+$address    = get_option('my_adress') ?: 'г. Бишкек, Кыргызстан';
+$phone      = get_option('my_phone');
+$phone2     = get_option('my_phone2');
+$email      = get_option('my_mymail');
+$wa_number  = get_option('my_whatsapp') ?: $phone;
+$telegram   = get_option('my_telegram');
+$instagram  = get_option('my_instagramm');
+$work_hours = rwmb_meta('contact_work_hours') ?: 'Пн-Пт: 9:00-18:00, Сб: 10:00-15:00';
 $map_embed  = rwmb_meta('contact_map_embed');
 $extra_info = rwmb_meta('contact_extra_info');
-$wa_number  = get_option('my_whatsapp') ?: get_option('my_phone');
 ?>
 
 <section id="contacts" class="py-5">
@@ -36,9 +39,9 @@ $wa_number  = get_option('my_whatsapp') ?: get_option('my_phone');
                             <a href="tel:<?php echo esc_attr($phone); ?>" class="text-decoration-none">
                                 <?php echo esc_html($phone); ?>
                             </a>
-                            <?php if (get_option('my_phone2')) : ?>
-                                <br><a href="tel:<?php echo esc_attr(get_option('my_phone2')); ?>" class="text-decoration-none">
-                                    <?php echo esc_html(get_option('my_phone2')); ?>
+                            <?php if ($phone2) : ?>
+                                <br><a href="tel:<?php echo esc_attr($phone2); ?>" class="text-decoration-none">
+                                    <?php echo esc_html($phone2); ?>
                                 </a>
                             <?php endif; ?>
                         </div>
@@ -74,10 +77,16 @@ $wa_number  = get_option('my_whatsapp') ?: get_option('my_phone');
                             <i class="fab fa-whatsapp me-1"></i> WhatsApp
                         </a>
                         <?php endif; ?>
-                        <?php if (get_option('my_telegram')) : ?>
-                        <a href="<?php echo esc_url(get_option('my_telegram')); ?>"
+                        <?php if ($telegram) : ?>
+                        <a href="<?php echo esc_url($telegram); ?>"
                            target="_blank" class="btn btn-primary">
                             <i class="fab fa-telegram me-1"></i> Telegram
+                        </a>
+                        <?php endif; ?>
+                        <?php if ($instagram) : ?>
+                        <a href="<?php echo esc_url($instagram); ?>"
+                           target="_blank" class="btn btn-outline-danger">
+                            <i class="fab fa-instagram me-1"></i> Instagram
                         </a>
                         <?php endif; ?>
                     </div>

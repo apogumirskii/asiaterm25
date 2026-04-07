@@ -40,13 +40,20 @@ $about_features = rwmb_meta('about_features');
     </div>
 </section>
 
-<?php if ($about_features) : ?>
+<?php
+$features = $about_features ?: [
+    ['about_feature_num' => '01.', 'about_feature_title' => 'Широкий ассортимент', 'about_feature_desc' => 'Отопительное оборудование ведущих европейских производителей для проектов любого масштаба'],
+    ['about_feature_num' => '02.', 'about_feature_title' => 'Гарантия качества', 'about_feature_desc' => 'Официальные поставки с полной сертификацией и гарантией от производителя'],
+    ['about_feature_num' => '03.', 'about_feature_title' => 'Индивидуальный расчёт', 'about_feature_desc' => 'Подбор оборудования и расчёт системы отопления под параметры вашего объекта'],
+    ['about_feature_num' => '04.', 'about_feature_title' => 'Комплексные решения', 'about_feature_desc' => 'Полный цикл: проектирование, поставка, монтаж и сервисное обслуживание'],
+];
+?>
 <section class="about-section py-5">
     <div class="container">
         <div class="row g-5 align-items-start">
             <div class="col-lg-12">
                 <ul class="about-list list-unstyled mb-4">
-                    <?php foreach ($about_features as $feature) : ?>
+                    <?php foreach ($features as $feature) : ?>
                     <li>
                         <span class="about-num"><?php echo esc_html($feature['about_feature_num'] ?? ''); ?></span>
                         <div>
@@ -60,7 +67,6 @@ $about_features = rwmb_meta('about_features');
         </div>
     </div>
 </section>
-<?php endif; ?>
 
 <?php
 include(locate_template('page-top/ctasec.php'));

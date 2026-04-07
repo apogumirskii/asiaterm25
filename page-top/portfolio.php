@@ -77,7 +77,7 @@ jQuery(document).ready(function($) {
             <?php foreach ($portfolio_pages as $port) :
                 $port_id = $port->ID;
                 $gallery = rwmb_meta('prod_service_gallery', ['object_type' => 'post'], $port_id);
-                $thumb   = get_the_post_thumbnail_url($port_id, 'large') ?: ($gallery ? reset($gallery)['full_url'] : get_template_directory_uri() . '/img/placeholder.jpg');
+                $thumb   = get_the_post_thumbnail_url($port_id, 'costom-gallery') ?: ($gallery ? reset($gallery)['full_url'] : get_template_directory_uri() . '/img/placeholder.jpg');
             ?>
                 <div class="portfolio-slide"
                      data-page-id="<?php echo $port_id; ?>"

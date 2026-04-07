@@ -1,25 +1,16 @@
+<?php
+$partners_page = get_pages(['meta_key' => '_wp_page_template', 'meta_value' => 'page-partners.php', 'number' => 1]);
+$partner_logos = $partners_page ? rwmb_meta('partners_logos', ['size' => 'medium'], $partners_page[0]->ID) : [];
+?>
+
+<?php if (!empty($partner_logos)) : ?>
 <section class="py-5">
     <div class="container">
-        <h2 class="section-title"> </h2>
-        <div class="owl-carousel owl-partners">
-            <?php
-            $gallery_images = rwmb_meta('service_gallery');
-
-            if ($gallery_images) {
-                foreach ($gallery_images as $image) {
-                    $image_url = $image['full_url'];
-                    $image_alt = $image['alt'] ?: 'Partner logo';
-            ?>
-                <div class="partner-item">
-                    <img src="<?php echo esc_url($image_url); ?>"
-                         alt="<?php echo esc_attr($image_alt); ?>"
-                         loading="lazy"
-                         class="partner-logo">
-                </div>
-            <?php
-                }
-            }
-            ?>
+        <div class="text-center mb-4">
+            <h6 class="section-subheading"><?php esc_html_e('Партнёры', 'asiaterm25'); ?></h6>
+            <h2 class="section-heading"><?php esc_html_e('Наши партнёры', 'asiaterm25'); ?></h2>
         </div>
+        <?php include locate_template('template-parts/partners-carousel.php'); ?>
     </div>
 </section>
+<?php endif; ?>

@@ -66,6 +66,11 @@ body {
     color: var(--color-primary) !important;
 }
 
+/* Bootstrap color override */
+.text-primary {
+    color: var(--color-primary) !important;
+}
+
 /*=============================================
 =            Buttons Override                 =
 =============================================*/

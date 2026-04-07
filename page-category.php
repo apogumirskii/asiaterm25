@@ -8,7 +8,7 @@ include(locate_template('template-parts/phead.php'));
 
         <?php if (have_posts()) : the_post();
             $current_id = get_the_ID();
-            $thumb      = get_the_post_thumbnail_url($current_id, 'medium');
+            $thumb      = get_the_post_thumbnail_url($current_id, 'catalog-thumb');
             $icon       = rwmb_meta('prod_icon', [], $current_id);
             $var_titles = rwmb_meta('prod_var_titles', [], $current_id);
         ?>
@@ -46,7 +46,7 @@ include(locate_template('template-parts/phead.php'));
                     <div class="owl-carousel owl-category-products">
                         <?php while ($products->have_posts()) : $products->the_post();
                             $id         = get_the_ID();
-                            $thumb      = get_the_post_thumbnail_url($id, 'medium_large');
+                            $thumb      = get_the_post_thumbnail_url($id, 'catalog-thumb');
                             $excerpt    = wp_trim_words(get_the_excerpt() ?: get_the_content(), 20);
                             $price      = rwmb_meta('prod_price', [], $id);
                             $var_titles = rwmb_meta('prod_var_titles', [], $id);

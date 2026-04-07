@@ -22,7 +22,7 @@
             <?php
             $index = 0;
             while ($news_query->have_posts()) : $news_query->the_post();
-            $thumb = get_the_post_thumbnail_url(get_the_ID(), 'large');
+            $thumb = get_the_post_thumbnail_url(get_the_ID(), 'catalog-thumb');
             $cats  = get_the_category();
             $cat   = $cats ? $cats[0] : null;
             ?>

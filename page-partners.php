@@ -4,7 +4,7 @@ include(locate_template('template-parts/phead.php'));
 
 $intro    = rwmb_meta('partners_intro');
 $benefits = rwmb_meta('partners_benefits');
-$logos    = rwmb_meta('partners_logos', ['size' => 'medium']);
+$partner_logos = rwmb_meta('partners_logos', ['size' => 'medium']);
 $wa_number = get_option('my_whatsapp') ?: get_option('my_phone');
 ?>
 
@@ -12,23 +12,30 @@ $wa_number = get_option('my_whatsapp') ?: get_option('my_phone');
     <div class="container">
         <h2 class="section-title"><?php the_title(); ?></h2>
 
-        <?php if ($intro) : ?>
+        <?php
+        $intro_text = $intro ?: '<p>Asiaterm приглашает к сотрудничеству строительные, монтажные и проектные организации. Мы предлагаем выгодные условия для партнёров и комплексную поддержку на всех этапах работы.</p>';
+        $benefits_list = $benefits ?: [
+            ['partner_benefit_icon' => 'fas fa-percent', 'partner_benefit_title' => 'Специальные цены', 'partner_benefit_desc' => 'Индивидуальные скидки и специальные условия для партнёров'],
+            ['partner_benefit_icon' => 'fas fa-truck', 'partner_benefit_title' => 'Быстрая доставка', 'partner_benefit_desc' => 'Оперативная поставка оборудования на объект'],
+            ['partner_benefit_icon' => 'fas fa-headset', 'partner_benefit_title' => 'Техническая поддержка', 'partner_benefit_desc' => 'Консультации и помощь в подборе оборудования'],
+            ['partner_benefit_icon' => 'fas fa-file-contract', 'partner_benefit_title' => 'Проектная документация', 'partner_benefit_desc' => 'Предоставление технической документации и сертификатов'],
+        ];
+        ?>
+
         <div class="row justify-content-center mb-5">
             <div class="col-lg-8">
                 <div class="partners-intro">
-                    <?php echo do_shortcode(wp_kses_post($intro)); ?>
+                    <?php echo $intro ? do_shortcode(wp_kses_post($intro)) : wp_kses_post($intro_text); ?>
                 </div>
             </div>
         </div>
-        <?php endif; ?>
 
-        <?php if ($benefits) : ?>
         <div class="row g-4 mb-5">
-            <?php foreach ($benefits as $benefit) : ?>
-            <div class="col-lg-4 col-md-6">
+            <?php foreach ($benefits_list as $benefit) : ?>
+            <div class="col-lg-3 col-md-6">
                 <div class="card h-100 text-center p-4">
                     <div class="feature-icon mb-3">
-                        <i class="<?php echo esc_attr($benefit['partner_benefit_icon'] ?? 'fas fa-check-circle'); ?> fa-2x text-primary"></i>
+                        <i class="<?php echo esc_attr($benefit['partner_benefit_icon'] ?? 'fas fa-check-circle'); ?> fa-2x" style="color: var(--color-primary)"></i>
                     </div>
                     <h5><?php echo esc_html($benefit['partner_benefit_title'] ?? ''); ?></h5>
                     <p class="text-muted"><?php echo esc_html($benefit['partner_benefit_desc'] ?? ''); ?></p>
@@ -36,24 +43,14 @@ $wa_number = get_option('my_whatsapp') ?: get_option('my_phone');
             </div>
             <?php endforeach; ?>
         </div>
-        <?php endif; ?>
     </div>
 </section>
 
-<?php if ($logos) : ?>
+<?php if (!empty($partner_logos)) : ?>
 <section class="py-5 bg-light">
     <div class="container">
         <h3 class="section-title"><?php esc_html_e('Наши партнёры', 'asiaterm25'); ?></h3>
-        <div class="owl-carousel owl-partners">
-            <?php foreach ($logos as $logo) : ?>
-                <div class="partner-item">
-                    <img src="<?php echo esc_url($logo['url']); ?>"
-                         alt="<?php echo esc_attr($logo['alt'] ?: 'Partner'); ?>"
-                         loading="lazy"
-                         class="partner-logo">
-                </div>
-            <?php endforeach; ?>
-        </div>
+        <?php include locate_template('template-parts/partners-carousel.php'); ?>
     </div>
 </section>
 <?php endif; ?>
