@@ -25,6 +25,7 @@ include(locate_template('page-top/sertificat.php'));
 
 include(locate_template('page-top/news.php'));
 
+include(locate_template('page-top/partners.php'));
 
 echo '</div></div></article></div></div></div></div>';
 
