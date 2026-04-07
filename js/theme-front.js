@@ -94,4 +94,42 @@ jQuery(document).ready(function($) {
             $('#youtubeFrame').attr('src', '');
         });
     }
+
+    // Documents Table Filter (partners page)
+    var $docsTable = $('#docsTable');
+    if ($docsTable.length) {
+        var $search = $('#docsSearch');
+        var $catFilter = $('#docsCategoryFilter');
+        var $typeFilter = $('#docsTypeFilter');
+        var $rows = $docsTable.find('tbody tr');
+        var $count = $('#docsCount');
+        var total = $rows.length;
+
+        function filterDocs() {
+            var query = $search.val().toLowerCase().trim();
+            var cat = $catFilter.val();
+            var type = $typeFilter.val();
+            var visible = 0;
+
+            $rows.each(function() {
+                var $row = $(this);
+                var matchName = !query || $row.data('name').indexOf(query) !== -1 || $row.data('page').indexOf(query) !== -1;
+                var matchCat = !cat || $row.data('category') === cat;
+                var matchType = !type || $row.data('type') === type;
+
+                if (matchName && matchCat && matchType) {
+                    $row.show();
+                    visible++;
+                } else {
+                    $row.hide();
+                }
+            });
+
+            $count.text('Найдено документов: ' + visible);
+        }
+
+        $search.on('input', filterDocs);
+        $catFilter.on('change', filterDocs);
+        $typeFilter.on('change', filterDocs);
+    }
 });

@@ -153,6 +153,134 @@ $brands_list = $brands ?: [
 </section>
 <?php endif; ?>
 
+<!-- Документы для скачивания -->
+<?php
+// Собираем все файлы из prod_downloads со всех товарных страниц
+$docs_query = new WP_Query([
+    'post_type'      => 'page',
+    'post_status'    => 'publish',
+    'posts_per_page' => -1,
+    'meta_query'     => [
+        [
+            'key'     => 'prod_downloads',
+            'compare' => 'EXISTS',
+        ],
+    ],
+]);
+
+$all_docs = [];
+if ($docs_query->have_posts()) {
+    while ($docs_query->have_posts()) {
+        $docs_query->the_post();
+        $page_id    = get_the_ID();
+        $page_title = get_the_title();
+        $parent_id  = wp_get_post_parent_id($page_id);
+        $category   = $parent_id ? get_the_title($parent_id) : '';
+        $files      = rwmb_meta('prod_downloads', ['object_type' => 'post'], $page_id);
+
+        if ($files) {
+            foreach ($files as $file) {
+                $all_docs[] = [
+                    'name'     => $file['title'] ?: $file['name'] ?: basename($file['url']),
+                    'url'      => $file['url'],
+                    'page'     => $page_title,
+                    'category' => $category,
+                    'type'     => strtoupper(pathinfo($file['url'], PATHINFO_EXTENSION)),
+                    'size'     => size_format($file['filesize'] ?? 0),
+                ];
+            }
+        }
+    }
+    wp_reset_postdata();
+}
+?>
+
+<section class="py-5" id="documents-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h6 class="section-subheading"><?php esc_html_e('Документация', 'asiaterm25'); ?></h6>
+            <h2 class="section-heading"><?php esc_html_e('Документы для скачивания', 'asiaterm25'); ?></h2>
+        </div>
+
+        <?php if (!empty($all_docs)) : ?>
+        <!-- Фильтры -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="text" id="docsSearch" class="form-control form-control-lg" placeholder="<?php esc_attr_e('Поиск по названию...', 'asiaterm25'); ?>">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <select id="docsCategoryFilter" class="form-select form-select-lg">
+                    <option value=""><?php esc_html_e('Все категории', 'asiaterm25'); ?></option>
+                    <?php
+                    $categories = array_unique(array_filter(array_column($all_docs, 'category')));
+                    sort($categories);
+                    foreach ($categories as $cat) : ?>
+                        <option value="<?php echo esc_attr($cat); ?>"><?php echo esc_html($cat); ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select id="docsTypeFilter" class="form-select form-select-lg">
+                    <option value=""><?php esc_html_e('Все типы', 'asiaterm25'); ?></option>
+                    <?php
+                    $types = array_unique(array_column($all_docs, 'type'));
+                    sort($types);
+                    foreach ($types as $type) : ?>
+                        <option value="<?php echo esc_attr($type); ?>"><?php echo esc_html($type); ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+
+        <!-- Таблица -->
+        <div class="table-responsive">
+            <table class="table table-hover" id="docsTable">
+                <thead style="background: var(--color-dark); color: var(--color-white);">
+                    <tr>
+                        <th style="width: 40%;"><?php esc_html_e('Документ', 'asiaterm25'); ?></th>
+                        <th><?php esc_html_e('Продукт', 'asiaterm25'); ?></th>
+                        <th><?php esc_html_e('Категория', 'asiaterm25'); ?></th>
+                        <th style="width: 80px;"><?php esc_html_e('Тип', 'asiaterm25'); ?></th>
+                        <th style="width: 100px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($all_docs as $doc) : ?>
+                    <tr data-name="<?php echo esc_attr(mb_strtolower($doc['name'])); ?>"
+                        data-page="<?php echo esc_attr(mb_strtolower($doc['page'])); ?>"
+                        data-category="<?php echo esc_attr($doc['category']); ?>"
+                        data-type="<?php echo esc_attr($doc['type']); ?>">
+                        <td>
+                            <i class="fas fa-file-<?php echo $doc['type'] === 'PDF' ? 'pdf' : 'alt'; ?> me-2" style="color: var(--color-primary);"></i>
+                            <strong><?php echo esc_html($doc['name']); ?></strong>
+                        </td>
+                        <td><?php echo esc_html($doc['page']); ?></td>
+                        <td><span class="typesvar"><?php echo esc_html($doc['category']); ?></span></td>
+                        <td><span class="badge bg-secondary"><?php echo esc_html($doc['type']); ?></span></td>
+                        <td class="text-end">
+                            <a href="<?php echo esc_url($doc['url']); ?>" download class="btn btn-sm" style="background: var(--color-primary); color: #fff; border-radius: var(--radius-pill);">
+                                <i class="fas fa-download"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <p class="text-muted mt-2 small" id="docsCount"><?php printf(esc_html__('Найдено документов: %d', 'asiaterm25'), count($all_docs)); ?></p>
+
+        <?php else : ?>
+        <div class="text-center py-4">
+            <i class="fas fa-folder-open fa-3x mb-3" style="color: var(--color-primary); opacity: 0.3;"></i>
+            <p class="text-muted"><?php esc_html_e('Документы появятся здесь после добавления файлов в раздел "Скачать" у товаров.', 'asiaterm25'); ?></p>
+        </div>
+        <?php endif; ?>
+    </div>
+</section>
+
 <!-- Форма запроса -->
 <section class="py-5" style="background: var(--color-gray-light);" id="partner-form-section">
     <div class="container">
