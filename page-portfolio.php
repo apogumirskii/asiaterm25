@@ -1,4 +1,4 @@
-<?php get_header(); /* Template Name: Portfolio */
+<?php get_header(); /* Template Name: Проекты */
 include(locate_template('template-parts/menu.php'));
 include(locate_template('template-parts/phead.php'));
 
