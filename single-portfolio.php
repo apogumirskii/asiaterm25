@@ -2,14 +2,15 @@
 include(locate_template('template-parts/menu.php'));
 include(locate_template('template-parts/phead.php'));
 
-$current_id = get_the_ID();
-$gallery = rwmb_meta('portfolio_gallery', ['object_type' => 'post'], $current_id);
-$all_images = $gallery ? array_values($gallery) : [];
-if (empty($all_images) && has_post_thumbnail($current_id)) {
-    $thumb_id  = get_post_thumbnail_id($current_id);
-    $thumb_url = wp_get_attachment_url($thumb_id);
-    $all_images = [['ID' => $thumb_id, 'full_url' => $thumb_url, 'url' => $thumb_url, 'sizes' => []]];
-}
+while (have_posts()) : the_post();
+    $current_id = get_the_ID();
+    $gallery = rwmb_meta('portfolio_gallery', ['object_type' => 'post'], $current_id);
+    $all_images = $gallery ? array_values($gallery) : [];
+    if (empty($all_images) && has_post_thumbnail($current_id)) {
+        $thumb_id  = get_post_thumbnail_id($current_id);
+        $thumb_url = wp_get_attachment_url($thumb_id);
+        $all_images = [['ID' => $thumb_id, 'full_url' => $thumb_url, 'url' => $thumb_url, 'sizes' => []]];
+    }
 ?>
 
 <section id="project-page" class="py-5">
@@ -57,6 +58,7 @@ if (empty($all_images) && has_post_thumbnail($current_id)) {
     </div>
 </section>
 
-<?php
+<?php endwhile;
+
 include(locate_template('page-top/ctasec.php'));
 get_footer();

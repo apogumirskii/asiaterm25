@@ -54,9 +54,9 @@ add_action('after_switch_theme', 'asiaterm_flush_rewrite_rules');
 
 // One-time flush after CPT changes
 function asiaterm_maybe_flush_rewrite() {
-    if (get_option('asiaterm_flush_rewrite') !== '2') {
+    if (get_option('asiaterm_flush_rewrite') !== '3') {
         flush_rewrite_rules();
-        update_option('asiaterm_flush_rewrite', '2');
+        update_option('asiaterm_flush_rewrite', '3');
     }
 }
 add_action('init', 'asiaterm_maybe_flush_rewrite', 99);
@@ -195,6 +195,23 @@ function the_breadcrumb() {
         }
         echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
         echo '<a href="' . esc_url(get_permalink()) . '" itemprop="item"><span itemprop="name">' . esc_html(get_the_title()) . '</span></a>';
+        echo '<meta itemprop="position" content="' . $pos . '">';
+        echo '</li>';
+
+    } elseif (is_singular('portfolio')) {
+        // Найдём страницу портфолио по шаблону page-portfolio.php
+        $portfolio_pages = get_pages(['meta_key' => '_wp_page_template', 'meta_value' => 'page-portfolio.php']);
+        $portfolio_page = $portfolio_pages ? $portfolio_pages[0] : null;
+        echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+        if ($portfolio_page) {
+            echo '<a href="' . esc_url(get_permalink($portfolio_page->ID)) . '" itemprop="item"><span itemprop="name">' . esc_html($portfolio_page->post_title) . '</span></a>';
+        } else {
+            echo '<span itemprop="name">' . __('Проекты', 'asiaterm25') . '</span>';
+        }
+        echo '<meta itemprop="position" content="' . $pos++ . '">';
+        echo '</li>';
+        echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+        echo '<span itemprop="name">' . esc_html(get_the_title()) . '</span>';
         echo '<meta itemprop="position" content="' . $pos . '">';
         echo '</li>';
 
@@ -498,12 +515,12 @@ function my_sliderims_fields_update( $post_id ){
 add_action( 'save_post', 'my_sliderims_fields_update', 0 );
 
 
-// CPT: Портфолио
+// CPT: Проекты
 function my_post_type_portfolio() {
     register_post_type('portfolio', [
-        'label'               => __('Портфолио', 'asiaterm25'),
+        'label'               => __('Проекты', 'asiaterm25'),
         'labels'              => [
-            'name'               => __('Портфолио', 'asiaterm25'),
+            'name'               => __('Проекты', 'asiaterm25'),
             'singular_name'      => __('Проект', 'asiaterm25'),
             'add_new'            => __('Добавить проект', 'asiaterm25'),
             'add_new_item'       => __('Новый проект', 'asiaterm25'),
@@ -513,11 +530,11 @@ function my_post_type_portfolio() {
             'not_found'          => __('Проекты не найдены', 'asiaterm25'),
         ],
         'public'              => true,
-        'has_archive'         => true,
+        'has_archive'         => false,
         'show_ui'             => true,
         'menu_position'       => 6,
         'menu_icon'           => 'dashicons-images-alt2',
-        'rewrite'             => ['slug' => 'project', 'with_front' => false],
+        'rewrite'             => ['slug' => 'projects', 'with_front' => false],
         'supports'            => ['title', 'editor', 'thumbnail', 'excerpt', 'page-attributes'],
     ]);
 }
