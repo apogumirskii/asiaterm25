@@ -94,7 +94,7 @@ function enqueue_theme_scripts() {
     // Theme front JS (hero slider, product/partners carousels, video modal, portfolio filter)
     $front_templates = ['page-front.php', 'page-catalog.php', 'page-category.php', 'page-partners.php', 'page-about.php', 'page-portfolio.php'];
     if (is_page_template($front_templates) || is_front_page()) {
-        wp_enqueue_script('theme-front', get_template_directory_uri() . '/js/theme-front.js', ['jquery'], '1.0.0', true);
+        wp_enqueue_script('theme-front', get_template_directory_uri() . '/js/theme-front.js', ['jquery'], '1.0.1', true);
     }
 }
 add_action('wp_enqueue_scripts', 'enqueue_theme_scripts');

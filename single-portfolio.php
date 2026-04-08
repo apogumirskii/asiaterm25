@@ -4,15 +4,16 @@ include(locate_template('template-parts/phead.php'));
 
 while (have_posts()) : the_post();
     $current_id = get_the_ID();
-    $gallery = rwmb_meta('portfolio_gallery', ['object_type' => 'post'], $current_id);
+    $gallery = rwmb_meta('portfolio_gallery', ['size' => 'costom-gallery'], $current_id);
     $all_images = $gallery ? array_values($gallery) : [];
     if (empty($all_images) && has_post_thumbnail($current_id)) {
         $thumb_id  = get_post_thumbnail_id($current_id);
         $thumb_url = wp_get_attachment_url($thumb_id);
-        $all_images = [['ID' => $thumb_id, 'full_url' => $thumb_url, 'url' => $thumb_url, 'sizes' => []]];
+        $all_images = [['ID' => $thumb_id, 'full_url' => $thumb_url, 'url' => $thumb_url]];
     }
 ?>
 
+<main>
 <section id="project-page" class="py-5">
     <div class="container">
         <?php if ($all_images) : ?>
@@ -27,22 +28,15 @@ while (have_posts()) : the_post();
             <?php if (count($all_images) > 1) : ?>
             <div class="project-gallery-thumbs">
                 <?php foreach ($all_images as $i => $img) :
-                    $thumb_src = '';
-                    if (!empty($img['sizes']['thumbnail'])) {
-                        $thumb_src = $img['sizes']['thumbnail'];
-                    } elseif (!empty($img['ID'])) {
-                        $thumb_arr = wp_get_attachment_image_src($img['ID'], 'thumbnail');
-                        $thumb_src = $thumb_arr ? $thumb_arr[0] : '';
-                    }
-                    if (!$thumb_src) {
-                        $thumb_src = $img['full_url'] ?? $img['url'] ?? '';
-                    }
+                    $full = $img['full_url'] ?? $img['url'] ?? '';
+                    $thumb = !empty($img['ID']) ? wp_get_attachment_image_url($img['ID'], 'thumbnail') : '';
+                    if (!$thumb) $thumb = $full;
                 ?>
-                    <a href="<?php echo esc_url($img['full_url'] ?? $img['url']); ?>"
+                    <a href="<?php echo esc_url($full); ?>"
                        data-lightbox="project-gallery"
                        class="project-thumb <?php echo $i === 0 ? 'active' : ''; ?>"
-                       data-src="<?php echo esc_url($img['full_url'] ?? $img['url']); ?>">
-                        <img src="<?php echo esc_url($thumb_src); ?>" loading="lazy" alt="">
+                       data-src="<?php echo esc_url($full); ?>">
+                        <img src="<?php echo esc_url($thumb); ?>" loading="lazy" alt="">
                     </a>
                 <?php endforeach; ?>
             </div>
@@ -57,6 +51,7 @@ while (have_posts()) : the_post();
         <?php endif; ?>
     </div>
 </section>
+</main>
 
 <?php endwhile;
 
