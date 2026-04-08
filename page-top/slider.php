@@ -83,9 +83,13 @@ $slides = new WP_Query([
     <div class="hero-bullets" id="heroBullets"></div>
 
     <!-- Блок поверх слайдера -->
+    <?php
+    $promo_pages = get_pages(['meta_key' => '_wp_page_template', 'meta_value' => 'page-portfolio.php']);
+    $promo_url = $promo_pages ? get_permalink($promo_pages[0]->ID) : home_url('/');
+    ?>
     <div class="hero-promo-box">
-        <h4>Наши проекты и реализация <span>внутрипольных конвекторов</span> в законченных проектах</h4>
-        <a href="<?php echo esc_url(get_permalink(29)); ?>" class="hero-promo-link">
+        <h4>Наши <span>реализованные проекты</span> отопления</h4>
+        <a href="<?php echo esc_url($promo_url); ?>" class="hero-promo-link">
             <?php esc_html_e('Подробнее', 'asiaterm25'); ?> <i class="fas fa-arrow-right ms-1"></i>
         </a>
     </div>
