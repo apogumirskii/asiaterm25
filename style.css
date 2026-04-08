@@ -720,7 +720,11 @@ body {
         padding: 6.5rem 0 1.25rem;
     }
     .page-header-title {
-        font-size: var(--font-size-3xl);
+        font-size: var(--font-size-2xl);
+    }
+    .header-nav-bar .container {
+        padding-left: 0;
+        padding-right: 0;
     }
 }
 
