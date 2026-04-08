@@ -646,15 +646,15 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
         ],
     ];
 
-    // Для page-category.php — иконки с описанием
+    // Для page-category.php и page-complexproduct.php — иконки с описанием
     $meta_boxes[] = [
-        'title'      => esc_html__( 'Параметры категории', 'asiaterm25' ),
+        'title'      => esc_html__( 'Параметры категории / Иконки', 'asiaterm25' ),
         'id'         => 'category_params',
         'post_types' => ['page'],
         'context'    => 'normal',
         'priority'   => 'high',
         'show'       => [
-            'template' => ['page-category.php'],
+            'template' => ['page-category.php', 'page-complexproduct.php'],
         ],
         'fields'     => [
             [
