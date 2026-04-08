@@ -2333,3 +2333,201 @@ body {
     .partner-item { width: 100px; height: 80px; padding: 10px; }
     .partner-logo { max-width: 70px; max-height: 50px; }
 }
+
+/*=============================================
+=            Portfolio Page                   =
+=============================================*/
+
+.portfolio-card {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s, box-shadow 0.3s;
+    background: var(--color-white);
+    color: inherit;
+}
+
+.portfolio-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+}
+
+.portfolio-card-img {
+    position: relative;
+    overflow: hidden;
+    height: 16rem;
+}
+
+.portfolio-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+    display: block;
+}
+
+.portfolio-card:hover .portfolio-card-img img {
+    transform: scale(1.06);
+}
+
+.portfolio-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(232, 98, 26, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+
+.portfolio-card-overlay i {
+    color: var(--color-white);
+    font-size: 2rem;
+    opacity: 0;
+    transform: scale(0.7);
+    transition: all 0.3s;
+}
+
+.portfolio-card:hover .portfolio-card-overlay {
+    background: rgba(232, 98, 26, 0.5);
+}
+
+.portfolio-card:hover .portfolio-card-overlay i {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.portfolio-card-body {
+    padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.portfolio-card-title {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--color-black);
+    margin-bottom: 0.5rem;
+}
+
+.portfolio-card-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+}
+
+.portfolio-card-link {
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color var(--transition);
+}
+
+.portfolio-card:hover .portfolio-card-link {
+    color: var(--color-primary-dark);
+}
+
+/* Single project */
+.project-gallery-main {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    height: 36rem;
+}
+
+.project-gallery-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.3s;
+}
+
+.project-gallery-thumbs {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.project-thumb {
+    width: 7rem;
+    height: 5rem;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color var(--transition);
+    flex-shrink: 0;
+}
+
+.project-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.project-thumb.active,
+.project-thumb:hover {
+    border-color: var(--color-primary);
+}
+
+.project-description {
+    font-size: var(--font-size-md);
+    color: var(--color-text);
+    line-height: 1.8;
+    max-width: 50rem;
+}
+
+.project-description h2,
+.project-description h3 {
+    font-weight: 700;
+    color: var(--color-black);
+    margin: 2rem 0 1rem;
+}
+
+/*=============================================
+=            Category Icons                   =
+=============================================*/
+
+.cat-features {
+    background: var(--color-dark);
+    border-radius: var(--radius-lg);
+    padding: 3rem 2rem;
+}
+
+.cat-feature-item {
+    text-align: center;
+    padding: 1.5rem 1rem;
+}
+
+.cat-feature-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cat-feature-icon img,
+.cat-feature-icon svg {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    filter: brightness(0) invert(1);
+}
+
+.cat-feature-title {
+    color: var(--color-white);
+    font-weight: 700;
+    font-size: var(--font-size-base);
+    margin-bottom: 0.5rem;
+}
+
+.cat-feature-desc {
+    color: rgba(255,255,255,0.7);
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    margin-bottom: 0;
+}

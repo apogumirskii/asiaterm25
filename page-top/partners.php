@@ -10,7 +10,6 @@ $partners_page = get_posts([
 $partner_logos = $partners_page ? rwmb_meta('partners_logos', ['size' => 'medium'], $partners_page[0]->ID) : [];
 ?>
 
-<?php if (!empty($partner_logos)) : ?>
 <section class="py-5">
     <div class="container">
         <div class="text-center mb-4">
@@ -20,4 +19,3 @@ $partner_logos = $partners_page ? rwmb_meta('partners_logos', ['size' => 'medium
         <?php include locate_template('template-parts/partners-carousel.php'); ?>
     </div>
 </section>
-<?php endif; ?>

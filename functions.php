@@ -61,7 +61,7 @@ function enqueue_owl_carousel() {
 add_action('wp_enqueue_scripts', 'enqueue_owl_carousel');
 
 function enqueue_lightbox() {
-    $lb_templates = ['page-singleproduct.php', 'page-complexproduct.php', 'page-portfolio.php', 'page-certificates.php', 'page-about.php'];
+    $lb_templates = ['page-singleproduct.php', 'page-complexproduct.php', 'page-portfolio.php', 'page-certificates.php', 'page-about.php', 'page-category.php'];
     if (is_page_template($lb_templates)) {
         wp_enqueue_style('lightbox-css', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css');
         wp_enqueue_script('lightbox-js', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js', ['jquery'], null, true);
@@ -75,7 +75,7 @@ function enqueue_theme_scripts() {
         wp_enqueue_script('product-gallery', get_template_directory_uri() . '/js/product-gallery.js', ['jquery', 'owl-carousel'], '1.0.0', true);
     }
     // Theme front JS (hero slider, product/partners carousels, video modal)
-    $front_templates = ['page-front.php', 'page-catalog.php', 'page-category.php', 'page-partners.php', 'page-about.php'];
+    $front_templates = ['page-front.php', 'page-catalog.php', 'page-category.php', 'page-partners.php', 'page-about.php', 'page-portfolio.php'];
     if (is_page_template($front_templates) || is_front_page()) {
         wp_enqueue_script('theme-front', get_template_directory_uri() . '/js/theme-front.js', ['jquery', 'owl-carousel'], '1.0.0', true);
     }
@@ -643,6 +643,57 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
                 'max_file_uploads' => 20,
             ],
 
+        ],
+    ];
+
+    // Для page-category.php — иконки с описанием
+    $meta_boxes[] = [
+        'title'      => esc_html__( 'Параметры категории', 'asiaterm25' ),
+        'id'         => 'category_params',
+        'post_types' => ['page'],
+        'context'    => 'normal',
+        'priority'   => 'high',
+        'show'       => [
+            'template' => ['page-category.php'],
+        ],
+        'fields'     => [
+            [
+                'name'    => esc_html__( 'Краткое описание', 'asiaterm25' ),
+                'id'      => $prefix . 'cat_shortdesc',
+                'type'    => 'wysiwyg',
+                'options' => [
+                    'textarea_rows' => 6,
+                    'media_buttons' => false,
+                    'teeny'         => true,
+                ],
+            ],
+            [
+                'name'       => esc_html__( 'Иконки-преимущества', 'asiaterm25' ),
+                'id'         => $prefix . 'cat_features',
+                'type'       => 'group',
+                'clone'      => true,
+                'add_button' => esc_html__( '+ Добавить иконку', 'asiaterm25' ),
+                'fields'     => [
+                    [
+                        'name'             => esc_html__( 'Иконка (SVG/PNG)', 'asiaterm25' ),
+                        'id'               => 'feature_icon',
+                        'type'             => 'image_advanced',
+                        'max_file_uploads' => 1,
+                        'desc'             => esc_html__( 'SVG или PNG иконка', 'asiaterm25' ),
+                    ],
+                    [
+                        'name' => esc_html__( 'Заголовок', 'asiaterm25' ),
+                        'id'   => 'feature_title',
+                        'type' => 'text',
+                    ],
+                    [
+                        'name' => esc_html__( 'Описание', 'asiaterm25' ),
+                        'id'   => 'feature_desc',
+                        'type' => 'textarea',
+                        'rows' => 2,
+                    ],
+                ],
+            ],
         ],
     ];
 

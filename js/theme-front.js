@@ -132,4 +132,12 @@ jQuery(document).ready(function($) {
         $catFilter.on('change', filterDocs);
         $typeFilter.on('change', filterDocs);
     }
+
+    // Portfolio project gallery thumbs
+    $(document).on('click', '.project-thumb', function() {
+        var src = $(this).data('src');
+        $('#projectMainImg').attr('src', src);
+        $('.project-thumb').removeClass('active');
+        $(this).addClass('active');
+    });
 });

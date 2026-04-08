@@ -141,7 +141,6 @@ $brands_list = $brands ?: [
 </section>
 
 <!-- Карусель логотипов -->
-<?php if (!empty($partner_logos)) : ?>
 <section class="py-5">
     <div class="container">
         <div class="text-center mb-4">
@@ -151,7 +150,6 @@ $brands_list = $brands ?: [
         <?php include locate_template('template-parts/partners-carousel.php'); ?>
     </div>
 </section>
-<?php endif; ?>
 
 <!-- Документы для скачивания -->
 <?php
