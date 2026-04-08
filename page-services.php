@@ -50,28 +50,6 @@ $services_list = $services ?: [
 ];
 ?>
 
-<!-- Заголовок -->
-<section class="company-section py-5">
-    <div class="container">
-        <div class="row g-5 align-items-center">
-            <div class="col-lg-6">
-                <img src="<?php echo get_template_directory_uri(); ?>/files/topimg2.png"
-                     class="img-fluid company-img"
-                     loading="lazy"
-                     alt="Asiaterm Services">
-            </div>
-            <div class="col-lg-6">
-                <h6 class="company-subheading"><?php bloginfo('name'); ?></h6>
-                <h2 class="company-heading mb-4"><?php the_title(); ?></h2>
-                <p class="company-text mb-5">Компания Asiaterm предоставляет полный комплекс услуг в сфере отопления и охлаждения — от проектирования и подбора оборудования до монтажа и сервисного обслуживания.</p>
-                <a href="/contacts/" class="btn company-btn-primary">
-                    <?php esc_html_e('Связаться с нами', 'asiaterm25'); ?> <i class="fas fa-arrow-right ms-2"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!-- Услуги -->
 <section class="features-section py-5">
     <div class="container">
