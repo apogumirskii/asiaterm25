@@ -133,6 +133,12 @@ jQuery(document).ready(function($) {
         $typeFilter.on('change', filterDocs);
     }
 
+    // Clickable document rows
+    $('#docsTable').on('click', 'tr[data-href]', function(e) {
+        if ($(e.target).closest('a').length) return;
+        window.open($(this).data('href'), '_blank');
+    });
+
     // Portfolio project gallery thumbs
     $(document).on('click', '.project-thumb', function() {
         var src = $(this).data('src');

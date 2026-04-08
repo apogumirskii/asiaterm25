@@ -256,28 +256,36 @@ if ($docs_query->have_posts()) {
             <table class="table table-hover" id="docsTable">
                 <thead style="background: var(--color-dark); color: var(--color-white);">
                     <tr>
-                        <th style="width: 40%;"><?php esc_html_e('Документ', 'asiaterm25'); ?></th>
+                        <th style="width: 35%;"><?php esc_html_e('Документ', 'asiaterm25'); ?></th>
                         <th><?php esc_html_e('Продукт', 'asiaterm25'); ?></th>
                         <th><?php esc_html_e('Категория', 'asiaterm25'); ?></th>
-                        <th style="width: 80px;"><?php esc_html_e('Тип', 'asiaterm25'); ?></th>
-                        <th style="width: 100px;"></th>
+                        <th style="width: 70px;"><?php esc_html_e('Тип', 'asiaterm25'); ?></th>
+                        <th style="width: 80px;"><?php esc_html_e('Размер', 'asiaterm25'); ?></th>
+                        <th style="width: 60px;"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($all_docs as $doc) : ?>
+                    <?php
+                    $icon_map = ['PDF' => 'fa-file-pdf text-danger', 'DOC' => 'fa-file-word text-primary', 'DOCX' => 'fa-file-word text-primary', 'XLS' => 'fa-file-excel text-success', 'XLSX' => 'fa-file-excel text-success', 'ZIP' => 'fa-file-archive text-warning', 'RAR' => 'fa-file-archive text-warning', 'JPG' => 'fa-file-image text-info', 'JPEG' => 'fa-file-image text-info', 'PNG' => 'fa-file-image text-info'];
+                    foreach ($all_docs as $doc) :
+                        $icon_cls = $icon_map[$doc['type']] ?? 'fa-file-alt text-secondary';
+                    ?>
                     <tr data-name="<?php echo esc_attr(mb_strtolower($doc['name'])); ?>"
                         data-page="<?php echo esc_attr(mb_strtolower($doc['page'])); ?>"
                         data-category="<?php echo esc_attr($doc['category']); ?>"
-                        data-type="<?php echo esc_attr($doc['type']); ?>">
+                        data-type="<?php echo esc_attr($doc['type']); ?>"
+                        data-href="<?php echo esc_url($doc['url']); ?>"
+                        style="cursor: pointer;">
                         <td>
-                            <i class="fas fa-file-<?php echo $doc['type'] === 'PDF' ? 'pdf' : 'alt'; ?> me-2" style="color: var(--color-primary);"></i>
+                            <i class="fas <?php echo esc_attr($icon_cls); ?> me-2"></i>
                             <strong><?php echo esc_html($doc['name']); ?></strong>
                         </td>
                         <td><?php echo esc_html($doc['page']); ?></td>
                         <td><span class="typesvar"><?php echo esc_html($doc['category']); ?></span></td>
                         <td><span class="badge bg-secondary"><?php echo esc_html($doc['type']); ?></span></td>
+                        <td class="text-muted small text-nowrap"><?php echo esc_html($doc['size']); ?></td>
                         <td class="text-end">
-                            <a href="<?php echo esc_url($doc['url']); ?>" download class="btn btn-sm" style="background: var(--color-primary); color: #fff; border-radius: var(--radius-pill);">
+                            <a href="<?php echo esc_url($doc['url']); ?>" target="_blank" rel="noopener" class="btn btn-sm" style="background: var(--color-primary); color: #fff; border-radius: var(--radius-pill);">
                                 <i class="fas fa-download"></i>
                             </a>
                         </td>

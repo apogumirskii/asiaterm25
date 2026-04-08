@@ -35,4 +35,11 @@ jQuery(document).ready(function($) {
             $('html, body').scrollTop(tabsTop);
         }
     });
+
+    // Clickable download rows
+    $('.download-list li').css('cursor', 'pointer').on('click', function(e) {
+        if ($(e.target).closest('a').length) return;
+        var href = $(this).find('a').first().attr('href');
+        if (href) window.open(href, '_blank');
+    });
 });

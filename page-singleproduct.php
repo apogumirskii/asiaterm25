@@ -83,14 +83,22 @@ include(locate_template('template-parts/phead.php'));
                 <?php if (isset($tabs['download'])) : ?>
                 <div class="tab-pane fade" id="tab-download">
                     <ul class="list-unstyled download-list">
-                        <?php foreach ($downloads as $file) : ?>
+                        <?php foreach ($downloads as $file) :
+                            $ext = strtolower($file['extension'] ?? pathinfo($file['url'], PATHINFO_EXTENSION));
+                            $icon_map = ['pdf' => 'fa-file-pdf text-danger', 'doc' => 'fa-file-word text-primary', 'docx' => 'fa-file-word text-primary', 'xls' => 'fa-file-excel text-success', 'xlsx' => 'fa-file-excel text-success', 'zip' => 'fa-file-archive text-warning', 'rar' => 'fa-file-archive text-warning', 'jpg' => 'fa-file-image text-info', 'jpeg' => 'fa-file-image text-info', 'png' => 'fa-file-image text-info'];
+                            $icon_cls = $icon_map[$ext] ?? 'fa-file-alt text-secondary';
+                            $fsize = !empty($file['filesize']) ? size_format($file['filesize']) : '';
+                        ?>
                             <li class="d-flex align-items-center gap-3 py-2 border-bottom">
-                                <i class="fas fa-file-pdf fa-lg text-danger"></i>
-                                <a href="<?php echo esc_url($file['url']); ?>" target="_blank" class="flex-grow-1">
+                                <i class="fas <?php echo esc_attr($icon_cls); ?> fa-lg"></i>
+                                <a href="<?php echo esc_url($file['url']); ?>" target="_blank" rel="noopener" class="flex-grow-1">
                                     <?php echo esc_html($file['title'] ?: $file['name']); ?>
                                 </a>
-                                <span class="text-muted small"><?php echo esc_html(strtoupper($file['extension'] ?? '')); ?></span>
-                                <a href="<?php echo esc_url($file['url']); ?>" download class="btn btn-sm btn-outline-primary">
+                                <span class="badge bg-light text-dark"><?php echo esc_html(strtoupper($ext)); ?></span>
+                                <?php if ($fsize) : ?>
+                                    <span class="text-muted small"><?php echo esc_html($fsize); ?></span>
+                                <?php endif; ?>
+                                <a href="<?php echo esc_url($file['url']); ?>" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary">
                                     <i class="fas fa-download"></i>
                                 </a>
                             </li>
