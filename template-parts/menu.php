@@ -21,8 +21,8 @@ $wa_number = get_option('my_whatsapp') ?: get_option('my_phone');
                     <img src="<?php echo get_template_directory_uri(); ?>/files/logotest.svg" alt="<?php bloginfo('name'); ?>" height="60">
                 </a>
 
-                <!-- Поиск -->
-                <form role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>" class="header-search flex-grow-1">
+                <!-- Поиск (десктоп) -->
+                <form role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>" class="header-search flex-grow-1 d-none d-lg-block">
                     <div class="input-group">
                         <span class="input-group-text bg-white border-end-0">
                             <i class="fas fa-search text-muted"></i>
@@ -34,14 +34,14 @@ $wa_number = get_option('my_whatsapp') ?: get_option('my_phone');
                 </form>
 
                 <!-- Правые кнопки -->
-                <div class="d-flex align-items-center gap-3 ms-3">
-					 <a href="https://wa.me/<?php echo preg_replace('/\D/', '', $wa_number); ?>"
-					   target="_blank" class="header-top-btn header-top-btn--whatsapp">
-						<i class="fab fa-whatsapp"></i> WhatsApp
-					</a>
+                <div class="d-flex align-items-center gap-2 gap-lg-3 ms-auto">
+                    <a href="https://wa.me/<?php echo preg_replace('/\D/', '', $wa_number); ?>"
+                       target="_blank" class="header-top-btn header-top-btn--whatsapp">
+                        <i class="fab fa-whatsapp"></i> <span class="d-none d-md-inline">WhatsApp</span>
+                    </a>
                     <a href="tel:<?php echo esc_attr(get_option('my_phone')); ?>" class="header-top-btn header-top-btn--phone">
                         <i class="fas fa-phone-alt"></i>
-                        <?php echo esc_html(get_option('my_phone')); ?>
+                        <span class="d-none d-md-inline"><?php echo esc_html(get_option('my_phone')); ?></span>
                     </a>
                 </div>
 
@@ -106,6 +106,13 @@ $wa_number = get_option('my_whatsapp') ?: get_option('my_phone');
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
     </div>
 			<div class="offcanvas-body">
+				<!-- Поиск (мобильный) -->
+				<form role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>" class="mb-3">
+					<div class="input-group">
+						<input type="text" name="s" class="form-control" placeholder="<?php esc_attr_e('Поиск...', 'asiaterm25'); ?>" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.15); color: #fff;">
+						<button class="btn" type="submit" style="background: var(--color-primary); color: #fff;"><i class="fas fa-search"></i></button>
+					</div>
+				</form>
 				<?php
 				wp_nav_menu([
 					'theme_location' => 'topmenu',
