@@ -1304,6 +1304,46 @@ body {
     transform: translateX(3px);
 }
 
+@media (max-width: 767px) {
+    .product-tabs .col-md-3 {
+        position: sticky;
+        top: 5.5rem;
+        z-index: 50;
+    }
+    .nav-tabs-vertical {
+        top: auto;
+        max-height: none;
+        display: flex;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .nav-tabs-vertical .nav-link {
+        padding: 0.5rem 0.75rem;
+        font-size: var(--font-size-sm);
+        white-space: nowrap;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+    }
+    .nav-tabs-vertical .nav-link.active {
+        border-left: none;
+        border-bottom: 3px solid var(--color-primary);
+    }
+    .nav-tabs-vertical .nav-link:hover {
+        border-left-color: transparent;
+    }
+    .nav-tabs-vertical .nav-link .fa-chevron-right {
+        display: none;
+    }
+    .tab-content.border {
+        border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+        border-top: none;
+    }
+    .product-tabs > .row > .col-md-3 {
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+    }
+}
+
 /* Tab content */
 .tab-content.border {
     border-color: var(--color-border) !important;
