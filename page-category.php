@@ -8,20 +8,21 @@ include(locate_template('template-parts/phead.php'));
 
         <?php if (have_posts()) : the_post();
             $current_id  = get_the_ID();
-            $thumb       = get_the_post_thumbnail_url($current_id, 'catalog-thumb');
             $icon        = rwmb_meta('prod_icon', [], $current_id);
             $var_titles  = rwmb_meta('prod_var_titles', [], $current_id);
             $shortdesc   = rwmb_meta('prod_cat_shortdesc', [], $current_id);
             $cat_features = rwmb_meta('prod_cat_features', [], $current_id);
             $gallery     = rwmb_meta('prod_service_gallery', ['size' => 'costom-gallery'], $current_id);
+            // Основное фото: первое из галереи, или миниатюра записи
+            $hero_img    = !empty($gallery) ? reset($gallery)['url'] : get_the_post_thumbnail_url($current_id, 'large');
         ?>
 
         <!-- Описание категории -->
         <div class="row g-5 align-items-center mb-5">
             <div class="col-lg-5">
-                <?php if ($thumb) : ?>
+                <?php if ($hero_img) : ?>
                     <div class="cat-hero-img mb-4">
-                        <img src="<?php echo esc_url($thumb); ?>" alt="<?php the_title_attribute(); ?>">
+                        <img src="<?php echo esc_url($hero_img); ?>" alt="<?php the_title_attribute(); ?>">
                     </div>
                 <?php endif; ?>
             </div>
@@ -91,11 +92,12 @@ include(locate_template('template-parts/phead.php'));
             </div>
         </div>
 
-        <!-- Галерея -->
-        <?php if (!empty($gallery)) : ?>
+        <!-- Галерея (пропускаем первое фото — оно в описании) -->
+        <?php $gallery_rest = !empty($gallery) ? array_slice($gallery, 1) : []; ?>
+        <?php if (!empty($gallery_rest)) : ?>
         <div class="mb-5">
             <div class="row g-3">
-                <?php foreach ($gallery as $img) : ?>
+                <?php foreach ($gallery_rest as $img) : ?>
                 <div class="col-lg-4 col-md-6">
                     <a href="<?php echo esc_url($img['full_url']); ?>" data-lightbox="cat-gallery" data-title="<?php echo esc_attr($img['alt'] ?: ''); ?>">
                         <div class="cat-hero-img" style="height: 250px;">
