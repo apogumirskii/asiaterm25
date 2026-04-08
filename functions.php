@@ -1346,41 +1346,93 @@ function asiaterm_meta_description() {
 
 function asiaterm_schema_output() {
     $schema = [];
+    $site_name = get_bloginfo('name');
+    $site_url  = home_url('/');
+    $phone     = get_option('my_phone');
+    $email     = get_option('my_mymail');
+    $address   = get_option('my_adress');
+    $logo_url  = get_template_directory_uri() . '/files/logotest.svg';
 
-    // Organization — на всех страницах
+    // ── Organization / LocalBusiness — на всех страницах ──
     $org = [
-        '@context' => 'https://schema.org',
-        '@type'    => 'Organization',
-        'name'     => get_bloginfo('name'),
-        'url'      => home_url('/'),
-        'contactPoint' => [
-            '@type'     => 'ContactPoint',
-            'telephone' => get_option('my_phone'),
-            'contactType' => 'customer service',
-        ],
+        '@context'    => 'https://schema.org',
+        '@type'       => 'LocalBusiness',
+        'name'        => $site_name,
+        'url'         => $site_url,
+        'logo'        => $logo_url,
+        'image'       => $logo_url,
+        'description' => get_bloginfo('description'),
+        'priceRange'  => '$$',
     ];
-    if (has_custom_logo()) {
-        $logo_id = get_theme_mod('custom_logo');
-        $org['logo'] = wp_get_attachment_image_url($logo_id, 'full');
+    if ($phone) {
+        $org['telephone'] = $phone;
+        $org['contactPoint'] = [
+            '@type'       => 'ContactPoint',
+            'telephone'   => $phone,
+            'contactType' => 'customer service',
+            'availableLanguage' => ['Russian', 'Kyrgyz'],
+        ];
+    }
+    if ($email) $org['email'] = $email;
+    if ($address) {
+        $org['address'] = [
+            '@type'           => 'PostalAddress',
+            'streetAddress'   => $address,
+            'addressLocality' => 'Бишкек',
+            'addressCountry'  => 'KG',
+        ];
     }
     $socials = [];
     if (get_option('my_instagramm')) $socials[] = get_option('my_instagramm');
     if (get_option('my_facebook'))   $socials[] = get_option('my_facebook');
     if (get_option('my_youtube'))    $socials[] = get_option('my_youtube');
+    if (get_option('my_telegram'))   $socials[] = get_option('my_telegram');
+    if (get_option('my_2gis'))       $socials[] = get_option('my_2gis');
     if ($socials) $org['sameAs'] = $socials;
     $schema[] = $org;
 
-    // WebPage
-    if (is_singular()) {
+    // ── WebSite — на главной ──
+    if (is_front_page()) {
         $schema[] = [
-            '@context' => 'https://schema.org',
-            '@type'    => 'WebPage',
-            'name'     => get_the_title(),
-            'url'      => get_permalink(),
+            '@context'      => 'https://schema.org',
+            '@type'         => 'WebSite',
+            'name'          => $site_name,
+            'url'           => $site_url,
+            'potentialAction' => [
+                '@type'       => 'SearchAction',
+                'target'      => $site_url . '?s={search_term_string}',
+                'query-input' => 'required name=search_term_string',
+            ],
         ];
     }
 
-    // Product — на продуктовых страницах
+    // ── WebPage — на обычных страницах ──
+    if (is_singular() && !is_front_page()) {
+        $page_schema = [
+            '@context'      => 'https://schema.org',
+            '@type'         => 'WebPage',
+            'name'          => get_the_title(),
+            'url'           => get_permalink(),
+            'datePublished' => get_the_date('c'),
+            'dateModified'  => get_the_modified_date('c'),
+        ];
+        if (has_post_thumbnail()) {
+            $page_schema['image'] = get_the_post_thumbnail_url(null, 'large');
+        }
+
+        // Контакты → ContactPage
+        if (is_page_template('page-contact.php')) {
+            $page_schema['@type'] = 'ContactPage';
+        }
+        // О нас → AboutPage
+        if (is_page_template('page-about.php')) {
+            $page_schema['@type'] = 'AboutPage';
+        }
+
+        $schema[] = $page_schema;
+    }
+
+    // ── Product — товары ──
     if (is_page_template(['page-singleproduct.php', 'page-complexproduct.php'])) {
         $product = [
             '@context'    => 'https://schema.org',
@@ -1388,23 +1440,118 @@ function asiaterm_schema_output() {
             'name'        => get_the_title(),
             'description' => wp_strip_all_tags(rwmb_meta('prod_shortdesc') ?: get_the_excerpt()),
             'url'         => get_permalink(),
+            'brand'       => [
+                '@type' => 'Brand',
+                'name'  => $site_name,
+            ],
         ];
         if (has_post_thumbnail()) {
             $product['image'] = get_the_post_thumbnail_url(null, 'large');
         }
+        // Категория (родительская страница)
+        $parent_id = wp_get_post_parent_id(get_the_ID());
+        if ($parent_id) {
+            $product['category'] = get_the_title($parent_id);
+        }
+        // Цена
         $price = rwmb_meta('prod_price');
         if ($price) {
             $product['offers'] = [
                 '@type'         => 'Offer',
                 'price'         => preg_replace('/[^\d.]/', '', $price),
-                'priceCurrency' => 'USD',
+                'priceCurrency' => 'KGS',
                 'availability'  => 'https://schema.org/InStock',
+                'seller'        => ['@type' => 'Organization', 'name' => $site_name],
             ];
+        } else {
+            $product['offers'] = [
+                '@type'         => 'Offer',
+                'availability'  => 'https://schema.org/InStock',
+                'price'         => '0',
+                'priceCurrency' => 'KGS',
+            ];
+        }
+        // Вариации
+        $var_titles = rwmb_meta('prod_var_titles');
+        if ($var_titles) {
+            $product['model'] = implode(', ', $var_titles);
+        }
+        // Галерея
+        $gallery = rwmb_meta('prod_service_gallery', ['size' => 'large']);
+        if ($gallery) {
+            $images = [];
+            foreach ($gallery as $img) {
+                $images[] = $img['url'];
+            }
+            if ($images) $product['image'] = $images;
         }
         $schema[] = $product;
     }
 
-    // BreadcrumbList — на всех кроме главной
+    // ── CollectionPage + ItemList — категории и каталог ──
+    if (is_page_template(['page-category.php', 'page-catalog.php'])) {
+        $collection = [
+            '@context'    => 'https://schema.org',
+            '@type'       => 'CollectionPage',
+            'name'        => get_the_title(),
+            'url'         => get_permalink(),
+            'description' => wp_strip_all_tags(get_the_excerpt() ?: ''),
+        ];
+        if (has_post_thumbnail()) {
+            $collection['image'] = get_the_post_thumbnail_url(null, 'large');
+        }
+        // Дочерние товары как ItemList
+        $children = get_pages([
+            'parent'      => get_the_ID(),
+            'post_status' => 'publish',
+            'sort_column' => 'menu_order',
+        ]);
+        if ($children) {
+            $items = [];
+            $pos = 1;
+            foreach ($children as $child) {
+                $items[] = [
+                    '@type'    => 'ListItem',
+                    'position' => $pos++,
+                    'name'     => $child->post_title,
+                    'url'      => get_permalink($child->ID),
+                ];
+            }
+            $collection['mainEntity'] = [
+                '@type'           => 'ItemList',
+                'itemListElement' => $items,
+            ];
+        }
+        $schema[] = $collection;
+    }
+
+    // ── BlogPosting — записи блога ──
+    if (is_singular('post')) {
+        $article = [
+            '@context'      => 'https://schema.org',
+            '@type'         => 'BlogPosting',
+            'headline'      => get_the_title(),
+            'url'           => get_permalink(),
+            'datePublished' => get_the_date('c'),
+            'dateModified'  => get_the_modified_date('c'),
+            'author'        => [
+                '@type' => 'Organization',
+                'name'  => $site_name,
+            ],
+            'publisher'     => [
+                '@type' => 'Organization',
+                'name'  => $site_name,
+                'logo'  => ['@type' => 'ImageObject', 'url' => $logo_url],
+            ],
+        ];
+        if (has_post_thumbnail()) {
+            $article['image'] = get_the_post_thumbnail_url(null, 'large');
+        }
+        $article['description'] = wp_strip_all_tags(get_the_excerpt());
+        $schema[] = $article;
+    }
+
+    // ── BreadcrumbList — на всех кроме главной ──
     if (!is_front_page()) {
         $breadcrumbs = [
             '@context'        => 'https://schema.org',
@@ -1416,7 +1563,7 @@ function asiaterm_schema_output() {
             '@type'    => 'ListItem',
             'position' => $pos++,
             'name'     => 'Главная',
-            'item'     => home_url('/'),
+            'item'     => $site_url,
         ];
         if (is_page()) {
             $ancestors = array_reverse(get_post_ancestors(get_the_ID()));
@@ -1426,6 +1573,23 @@ function asiaterm_schema_output() {
                     'position' => $pos++,
                     'name'     => get_the_title($anc_id),
                     'item'     => get_permalink($anc_id),
+                ];
+            }
+            $breadcrumbs['itemListElement'][] = [
+                '@type'    => 'ListItem',
+                'position' => $pos,
+                'name'     => get_the_title(),
+                'item'     => get_permalink(),
+            ];
+        }
+        if (is_singular('post')) {
+            $cats = get_the_category();
+            if ($cats) {
+                $breadcrumbs['itemListElement'][] = [
+                    '@type'    => 'ListItem',
+                    'position' => $pos++,
+                    'name'     => $cats[0]->name,
+                    'item'     => get_category_link($cats[0]->term_id),
                 ];
             }
             $breadcrumbs['itemListElement'][] = [
