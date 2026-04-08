@@ -209,8 +209,8 @@ body {
         padding: 0.5rem 0.75rem;
         font-size: var(--font-size-sm);
     }
-    /* Скрыть дропдаун каталога на мобильных */
-    .catalog-dropdown-menu {
+    /* Скрыть весь блок каталога на мобильных — есть в offcanvas */
+    .catalog-dropdown {
         display: none !important;
     }
 }
@@ -1571,6 +1571,21 @@ body {
     box-shadow: var(--shadow-sm);
 }
 
+@media (max-width: 575px) {
+    .company-section .d-flex.flex-wrap {
+        flex-direction: column;
+    }
+    .company-btn-phone {
+        font-size: var(--font-size-base);
+        padding: 0.5rem 1rem;
+        gap: 0.5rem;
+    }
+    .company-phone-icon {
+        width: 1.75rem;
+        height: 1.75rem;
+        font-size: 0.75rem;
+    }
+}
 
 /*=============================================
 =            About Section                    =

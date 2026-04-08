@@ -34,7 +34,7 @@ function arphabet_widgets_init() {
 add_action( 'widgets_init', 'arphabet_widgets_init' );
 
 function enqueue_theme_styles() {
-    wp_enqueue_style('theme-style', get_template_directory_uri() . '/style.css', [], '1.0.0');
+    wp_enqueue_style('theme-style', get_template_directory_uri() . '/style.css', ['bootstrap'], '1.0.0');
     wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css', [], '6.5.2');
 }
 add_action('wp_enqueue_scripts', 'enqueue_theme_styles');

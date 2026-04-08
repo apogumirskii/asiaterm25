@@ -32,7 +32,7 @@
             </div>
 
             <!-- О компании -->
-            <div class="col-lg-4 col-md-6 d-none d-md-block">
+            <div class="col-lg-4 col-md-6">
                 <h6 class="footer-heading mb-4">О компании</h6>
                 <div class="row">
                     <div class="col-6">
@@ -55,7 +55,7 @@
             </div>
 
             <!-- Обратный звонок -->
-            <div class="col-lg-4 col-md-12 d-none d-md-block ms-auto">
+            <div class="col-lg-4 col-md-12 ms-auto">
                 <h6 class="footer-heading mb-4">Обратный звонок</h6>
                 <form class="footer-callback-form">
                     <div class="input-group mb-3">
