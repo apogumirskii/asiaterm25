@@ -131,18 +131,31 @@ include(locate_template('template-parts/phead.php'));
 
                 <?php if (isset($tabs['portfolio'])) : ?>
                 <div class="tab-pane fade" id="tab-portfolio">
-                    <div class="row g-3">
+                    <div class="row g-4">
                         <?php foreach ($portfolio as $port_page) :
                             $port_id = is_object($port_page) ? $port_page->ID : $port_page;
+                            $port_gallery = rwmb_meta('prod_service_gallery', ['object_type' => 'post'], $port_id);
+                            $port_thumb   = get_the_post_thumbnail_url($port_id, 'costom-gallery')
+                                            ?: ($port_gallery ? reset($port_gallery)['full_url'] : '');
                         ?>
-                            <div class="col-6 col-md-3">
-                                <a href="<?php echo esc_url(get_permalink($port_id)); ?>" class="card h-100 text-decoration-none">
-                                    <?php if (has_post_thumbnail($port_id)) : ?>
-                                        <img src="<?php echo esc_url(get_the_post_thumbnail_url($port_id, 'catalog-thumb')); ?>"
-                                             class="card-img-top" loading="lazy" alt="">
-                                    <?php endif; ?>
-                                    <div class="card-body">
-                                        <p class="card-text small fw-bold"><?php echo esc_html(get_the_title($port_id)); ?></p>
+                            <div class="col-md-6">
+                                <a href="<?php echo esc_url(get_permalink($port_id)); ?>" class="portfolio-card text-decoration-none d-block">
+                                    <div class="portfolio-card-img">
+                                        <?php if ($port_thumb) : ?>
+                                            <img src="<?php echo esc_url($port_thumb); ?>" loading="lazy" alt="<?php echo esc_attr(get_the_title($port_id)); ?>">
+                                        <?php endif; ?>
+                                        <div class="portfolio-card-overlay">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </div>
+                                    </div>
+                                    <div class="portfolio-card-body">
+                                        <h5 class="portfolio-card-title"><?php echo esc_html(get_the_title($port_id)); ?></h5>
+                                        <?php $port_excerpt = get_the_excerpt($port_id); if ($port_excerpt) : ?>
+                                            <p class="portfolio-card-desc"><?php echo esc_html($port_excerpt); ?></p>
+                                        <?php endif; ?>
+                                        <span class="portfolio-card-link">
+                                            <?php esc_html_e('Подробнее', 'asiaterm25'); ?> <i class="fas fa-arrow-right ms-1"></i>
+                                        </span>
                                     </div>
                                 </a>
                             </div>
