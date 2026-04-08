@@ -8,35 +8,6 @@ $partner_logos = rwmb_meta('partners_logos', ['size' => 'medium']);
 $wa_number     = get_option('my_whatsapp') ?: get_option('my_phone');
 ?>
 
-<!-- Вступление -->
-<section class="company-section py-5">
-    <div class="container">
-        <div class="row g-5 align-items-center">
-            <div class="col-lg-6">
-                <img src="<?php echo get_template_directory_uri(); ?>/files/topimg2.png"
-                     class="img-fluid company-img"
-                     loading="lazy"
-                     alt="Asiaterm Partners">
-            </div>
-            <div class="col-lg-6">
-                <h6 class="company-subheading"><?php bloginfo('name'); ?></h6>
-                <h2 class="company-heading mb-4"><?php the_title(); ?></h2>
-                <div class="company-text mb-4">
-                    <?php if ($intro) :
-                        echo do_shortcode(wp_kses_post($intro));
-                    else : ?>
-                        <p>Компания <strong>Asiaterm</strong> является официальным дилером ведущих европейских производителей отопительного и охлаждающего оборудования. Мы предлагаем полный спектр продукции от проверенных брендов с официальной гарантией и сертификацией.</p>
-                        <p>Приглашаем к сотрудничеству строительные, монтажные и проектные организации.</p>
-                    <?php endif; ?>
-                </div>
-                <a href="#partner-form-section" class="btn company-btn-primary">
-                    <?php esc_html_e('Стать партнёром', 'asiaterm25'); ?> <i class="fas fa-arrow-right ms-2"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!-- Карточки брендов -->
 <?php
 $brands_list = $brands ?: [

@@ -44,14 +44,6 @@ while (have_posts()) : the_post();
                 </div>
                 <?php endif; ?>
 
-                <?php $wa_number = get_option('my_whatsapp') ?: get_option('my_phone'); ?>
-                <a href="https://wa.me/<?php echo preg_replace('/\D/', '', $wa_number); ?>?text=<?php echo urlencode('Здравствуйте! Интересует проект: ' . get_the_title()); ?>"
-                   target="_blank"
-                   class="btn btn-primary btn-lg w-100 mb-3">
-                    <i class="fab fa-whatsapp me-2"></i>
-                    <?php esc_html_e('Связаться в WhatsApp', 'asiaterm25'); ?>
-                </a>
-
                 <a href="<?php echo esc_url($portfolio_url); ?>" class="btn btn-outline-secondary w-100">
                     <i class="fas fa-arrow-left me-2"></i>
                     <?php esc_html_e('Все проекты', 'asiaterm25'); ?>
@@ -86,8 +78,7 @@ if ($related_products->have_posts()) : ?>
 <section class="products-section py-5">
     <div class="container">
         <div class="text-center mb-5">
-            <h6 class="section-subheading"><?php esc_html_e('Использованное оборудование', 'asiaterm25'); ?></h6>
-            <h2 class="section-heading"><?php esc_html_e('Товары в этом проекте', 'asiaterm25'); ?></h2>
+            <h2 class="section-heading"><?php esc_html_e('Примеры оборудования — для похожих проектов', 'asiaterm25'); ?></h2>
         </div>
 
         <div class="position-relative">
