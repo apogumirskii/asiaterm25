@@ -44,6 +44,23 @@ function load_theme_textdomain_asiaterm25() {
 }
 add_action('after_setup_theme', 'load_theme_textdomain_asiaterm25');
 
+function asiaterm_flush_rewrite_rules() {
+    my_post_type_slider();
+    my_post_type_portfolio();
+    create_portfolio_category_taxonomy();
+    flush_rewrite_rules();
+}
+add_action('after_switch_theme', 'asiaterm_flush_rewrite_rules');
+
+// One-time flush after CPT changes
+function asiaterm_maybe_flush_rewrite() {
+    if (get_option('asiaterm_flush_rewrite') !== '2') {
+        flush_rewrite_rules();
+        update_option('asiaterm_flush_rewrite', '2');
+    }
+}
+add_action('init', 'asiaterm_maybe_flush_rewrite', 99);
+
 function enqueue_bootstrap() {
     wp_enqueue_style('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css', [], '5.3.3');
     wp_enqueue_script('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js', ['jquery'], '5.3.3', true);
@@ -74,10 +91,10 @@ function enqueue_theme_scripts() {
     if (is_page_template(['page-singleproduct.php', 'page-complexproduct.php'])) {
         wp_enqueue_script('product-gallery', get_template_directory_uri() . '/js/product-gallery.js', ['jquery', 'owl-carousel'], '1.0.0', true);
     }
-    // Theme front JS (hero slider, product/partners carousels, video modal)
+    // Theme front JS (hero slider, product/partners carousels, video modal, portfolio filter)
     $front_templates = ['page-front.php', 'page-catalog.php', 'page-category.php', 'page-partners.php', 'page-about.php', 'page-portfolio.php'];
     if (is_page_template($front_templates) || is_front_page()) {
-        wp_enqueue_script('theme-front', get_template_directory_uri() . '/js/theme-front.js', ['jquery', 'owl-carousel'], '1.0.0', true);
+        wp_enqueue_script('theme-front', get_template_directory_uri() . '/js/theme-front.js', ['jquery'], '1.0.0', true);
     }
 }
 add_action('wp_enqueue_scripts', 'enqueue_theme_scripts');
@@ -500,7 +517,7 @@ function my_post_type_portfolio() {
         'show_ui'             => true,
         'menu_position'       => 6,
         'menu_icon'           => 'dashicons-images-alt2',
-        'rewrite'             => ['slug' => 'portfolio', 'with_front' => false],
+        'rewrite'             => ['slug' => 'project', 'with_front' => false],
         'supports'            => ['title', 'editor', 'thumbnail', 'excerpt', 'page-attributes'],
     ]);
 }

@@ -100,19 +100,19 @@ if ($portfolio_query->have_posts()) :
 
 <!-- Модальное окно портфолио -->
 <div class="modal fade" id="portfolioModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-dialog modal-fullscreen">
         <div class="modal-content bg-dark border-0">
-            <div class="modal-header border-0">
-                <h5 class="modal-title text-white" id="portfolioModalTitle"></h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            <div class="modal-header border-0 py-2 px-3">
+                <h6 class="modal-title text-white mb-0" id="portfolioModalTitle"></h6>
+                <div class="d-flex align-items-center gap-3 ms-auto">
+                    <a href="#" id="portfolioModalLink" class="btn btn-sm portfolio-detail-btn">
+                        Подробнее <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
             </div>
-            <div class="modal-body p-0">
-                <div class="owl-carousel owl-portfolio-modal" id="portfolioModalGallery"></div>
-            </div>
-            <div class="modal-footer border-0 justify-content-center">
-                <a href="#" id="portfolioModalLink" class="btn portfolio-detail-btn">
-                    Подробнее <i class="fas fa-arrow-right ms-2"></i>
-                </a>
+            <div class="modal-body p-0 d-flex align-items-center">
+                <div class="owl-carousel owl-portfolio-modal w-100" id="portfolioModalGallery"></div>
             </div>
         </div>
     </div>
