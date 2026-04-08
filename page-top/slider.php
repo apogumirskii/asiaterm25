@@ -17,8 +17,9 @@ $slides = new WP_Query([
             $btntext  = get_post_meta(get_the_ID(), 'sliderbtntext', true) ?: 'В каталог';
             $link_id  = get_post_meta(get_the_ID(), 'sliderlink', true);
             $link_url = $link_id ? get_permalink($link_id) : '#';
-            $file_id  = get_post_meta(get_the_ID(), 'sliderfile', true);
-            $file_url = $file_id ? wp_get_attachment_url($file_id) : get_the_post_thumbnail_url(get_the_ID(), 'full');
+            $file_id   = get_post_meta(get_the_ID(), 'sliderfile', true);
+            $file_url  = $file_id ? wp_get_attachment_url($file_id) : get_the_post_thumbnail_url(get_the_ID(), 'slider-desc');
+            $file_mob  = $file_id ? wp_get_attachment_image_url($file_id, 'slider-mob') : get_the_post_thumbnail_url(get_the_ID(), 'slider-mob');
             $file_type = $file_id ? get_post_mime_type($file_id) : '';
         ?>
         <div class="hero-slide">
@@ -28,7 +29,12 @@ $slides = new WP_Query([
                         <source src="<?php echo esc_url($file_url); ?>" type="<?php echo esc_attr($file_type); ?>">
                     </video>
                 <?php else : ?>
-                    <img src="<?php echo esc_url($file_url ?: get_template_directory_uri() . '/files/slide1.jpg'); ?>" alt="<?php the_title(); ?>">
+                    <picture>
+                        <?php if ($file_mob) : ?>
+                            <source media="(max-width: 768px)" srcset="<?php echo esc_url($file_mob); ?>">
+                        <?php endif; ?>
+                        <img src="<?php echo esc_url($file_url ?: get_template_directory_uri() . '/files/slide1.jpg'); ?>" alt="<?php the_title(); ?>">
+                    </picture>
                 <?php endif; ?>
             </div>
             <div class="hero-slide-overlay"></div>

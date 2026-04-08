@@ -703,6 +703,21 @@ body {
 }
 
 @media (max-width: 768px) {
+    .hero-slide {
+        height: 50vh;
+        min-height: 15rem;
+        max-height: 25rem;
+    }
+    .hero-heading {
+        font-size: 1.5rem;
+    }
+    .hero-subheading {
+        font-size: var(--font-size-sm);
+    }
+    .btn.hero-slider-btn {
+        padding: 0.625rem 1.5rem;
+        font-size: var(--font-size-sm);
+    }
     .hero-bullets { display: none; }
     .hero-promo-box {
         position: relative;
