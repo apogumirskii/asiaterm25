@@ -193,18 +193,18 @@ body {
 
 @media (max-width: 991px) {
     .site-header {
-        width: calc(100% - 1.25rem);
-        top: 1rem;
-        border-radius: 0.5rem;
+        width: 100%;
+        top: 0;
+        border-radius: 0;
         box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
     .header-top {
         padding: 0.75rem 0;
-        border-radius: 0.5rem 0.5rem 0 0;
+        border-radius: 0;
     }
     .header-nav-bar {
         background: var(--color-dark-deep);
-        border-radius: 0 0 0.5rem 0.5rem;
+        border-radius: 0;
     }
     .header-logo img {
         height: 40px !important;
@@ -717,7 +717,7 @@ body {
 
 @media (max-width: 991px) {
     .page-header {
-        padding: 6.5rem 0 1.25rem;
+        padding: 8rem 0 1.5rem;
     }
     .page-header-title {
         font-size: var(--font-size-2xl);
@@ -1317,7 +1317,8 @@ body {
     .nav-tabs-vertical {
         top: auto;
         max-height: none;
-        display: flex;
+        display: flex !important;
+        flex-direction: row !important;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }

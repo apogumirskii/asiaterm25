@@ -24,4 +24,15 @@ jQuery(document).ready(function($) {
         var idx = $(this).closest('.owl-item').index();
         $main.trigger('to.owl.carousel', [idx, 300]);
     });
+
+    // Product tabs: prevent scroll jump on tab click (mobile)
+    $('#productTabs').on('click', '.nav-link', function(e) {
+        e.preventDefault();
+        var $this = $(this);
+        $this.tab('show');
+        var tabsTop = $('.product-tabs').offset().top - 100;
+        if ($(window).scrollTop() > tabsTop) {
+            $('html, body').scrollTop(tabsTop);
+        }
+    });
 });
