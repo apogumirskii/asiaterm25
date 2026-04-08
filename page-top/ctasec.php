@@ -5,7 +5,7 @@
             <!-- Лого и контакты -->
             <div class="col-lg-3 col-md-6">
                 <a href="<?php echo esc_url(home_url('/')); ?>" class="d-inline-block mb-3">
-                    <img src="<?php echo get_template_directory_uri(); ?>/files/logotest.svg" alt="<?php bloginfo('name'); ?>" height="50">
+                    <img src="<?php echo get_template_directory_uri(); ?>/files/asiatermkg-logo.svg" alt="<?php bloginfo('name'); ?>" height="50">
                 </a>
                 <p class="footer-desc mb-4">Крупнейший официальный диллер Европейского оборудования</p>
                 <a href="tel:<?php echo esc_attr(get_option('my_phone')); ?>" class="d-flex align-items-center gap-2 footer-phone text-decoration-none mb-4">

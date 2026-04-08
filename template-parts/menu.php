@@ -18,7 +18,7 @@ $wa_number = get_option('my_whatsapp') ?: get_option('my_phone');
 
                 <!-- Лого -->
                 <a href="<?php echo esc_url(home_url('/')); ?>" class="header-logo me-4">
-                    <img src="<?php echo get_template_directory_uri(); ?>/files/logotest.svg" alt="<?php bloginfo('name'); ?>" height="60">
+                    <img src="<?php echo get_template_directory_uri(); ?>/files/asiatermkg-logo.svg" alt="<?php bloginfo('name'); ?>" height="60">
                 </a>
 
                 <!-- Поиск (десктоп) -->
@@ -101,7 +101,7 @@ $wa_number = get_option('my_whatsapp') ?: get_option('my_phone');
 <div class="offcanvas offcanvas-start" id="mobileMenu">
     <div class="offcanvas-header">
         <a href="<?php echo esc_url(home_url('/')); ?>">
-            <img src="<?php echo get_template_directory_uri(); ?>/files/logotest.svg" height="36" alt="">
+            <img src="<?php echo get_template_directory_uri(); ?>/files/asiatermkg-logo.svg" height="36" alt="">
         </a>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
     </div>

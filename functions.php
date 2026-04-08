@@ -62,18 +62,7 @@ add_action('wp_enqueue_scripts', 'enqueue_owl_carousel');
 
 function enqueue_lightbox() {
     $lb_templates = ['page-singleproduct.php', 'page-complexproduct.php', 'page-portfolio.php', 'page-certificates.php', 'page-about.php', 'page-category.php'];
-    // Также для дочерних страниц портфолио (ID 29)
-    $is_portfolio_child = is_page() && !is_page_template() && wp_get_post_parent_id(get_the_ID());
-    if ($is_portfolio_child) {
-        $check = get_the_ID();
-        $is_portfolio_child = false;
-        while ($check) {
-            $p = wp_get_post_parent_id($check);
-            if ($p == 29) { $is_portfolio_child = true; break; }
-            $check = $p;
-        }
-    }
-    if (is_page_template($lb_templates) || $is_portfolio_child) {
+    if (is_page_template($lb_templates) || is_singular('portfolio')) {
         wp_enqueue_style('lightbox-css', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css');
         wp_enqueue_script('lightbox-js', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js', ['jquery'], null, true);
     }
@@ -92,6 +81,25 @@ function enqueue_theme_scripts() {
     }
 }
 add_action('wp_enqueue_scripts', 'enqueue_theme_scripts');
+
+// SVG support
+function asiaterm_allow_svg_upload($mimes) {
+    $mimes['svg']  = 'image/svg+xml';
+    $mimes['svgz'] = 'image/svg+xml';
+    return $mimes;
+}
+add_filter('upload_mimes', 'asiaterm_allow_svg_upload');
+
+function asiaterm_fix_svg_mime_check($data, $file, $filename, $mimes) {
+    $ext = pathinfo($filename, PATHINFO_EXTENSION);
+    if ($ext === 'svg' || $ext === 'svgz') {
+        $data['type'] = 'image/svg+xml';
+        $data['ext']  = $ext;
+        $data['proper_filename'] = $filename;
+    }
+    return $data;
+}
+add_filter('wp_check_filetype_and_ext', 'asiaterm_fix_svg_mime_check', 10, 4);
 
 function register_my_menu() {
     register_nav_menus([
@@ -473,128 +481,49 @@ function my_sliderims_fields_update( $post_id ){
 add_action( 'save_post', 'my_sliderims_fields_update', 0 );
 
 
-function create_prod_category_taxonomy() {
-    register_taxonomy(
-        'prod_category',
-        array('page'),
-        array(
-            'label'             => 'Категории продуктов',
-            'public'            => true,
-            'hierarchical'      => true,
-            'show_ui'           => true,
-            'show_admin_column' => true,
-            'query_var'         => true,
-            'rewrite'           => array(
-                'slug'       => 'prod-category',
-                'with_front' => false,
-            ),
-        )
-    );
+// CPT: Портфолио
+function my_post_type_portfolio() {
+    register_post_type('portfolio', [
+        'label'               => __('Портфолио', 'asiaterm25'),
+        'labels'              => [
+            'name'               => __('Портфолио', 'asiaterm25'),
+            'singular_name'      => __('Проект', 'asiaterm25'),
+            'add_new'            => __('Добавить проект', 'asiaterm25'),
+            'add_new_item'       => __('Новый проект', 'asiaterm25'),
+            'edit_item'          => __('Редактировать проект', 'asiaterm25'),
+            'all_items'          => __('Все проекты', 'asiaterm25'),
+            'search_items'       => __('Поиск проектов', 'asiaterm25'),
+            'not_found'          => __('Проекты не найдены', 'asiaterm25'),
+        ],
+        'public'              => true,
+        'has_archive'         => true,
+        'show_ui'             => true,
+        'menu_position'       => 6,
+        'menu_icon'           => 'dashicons-images-alt2',
+        'rewrite'             => ['slug' => 'portfolio', 'with_front' => false],
+        'supports'            => ['title', 'editor', 'thumbnail', 'excerpt', 'page-attributes'],
+    ]);
 }
-add_action('init', 'create_prod_category_taxonomy', 0);
+add_action('init', 'my_post_type_portfolio');
 
-function fix_prod_category_archive($query) {
-    if (!is_admin() && $query->is_main_query() && is_tax('prod_category')) {
-        $query->set('post_type', 'page');
-    }
+// Таксономия: Категории портфолио
+function create_portfolio_category_taxonomy() {
+    register_taxonomy('portfolio_category', 'portfolio', [
+        'label'             => __('Категории портфолио', 'asiaterm25'),
+        'labels'            => [
+            'name'          => __('Категории портфолио', 'asiaterm25'),
+            'singular_name' => __('Категория', 'asiaterm25'),
+            'add_new_item'  => __('Добавить категорию', 'asiaterm25'),
+            'search_items'  => __('Поиск категорий', 'asiaterm25'),
+        ],
+        'hierarchical'      => true,
+        'public'            => true,
+        'show_ui'           => true,
+        'show_admin_column' => true,
+        'rewrite'           => ['slug' => 'portfolio-cat', 'with_front' => false],
+    ]);
 }
-add_action('pre_get_posts', 'fix_prod_category_archive');
-
-function add_prod_category_menu() {
-    add_menu_page(
-        'Категории продуктов',
-        'Категории продуктов',
-        'manage_options',
-        'edit-tags.php?taxonomy=prod_category&post_type=page',
-        '',
-        'dashicons-category',
-        20
-    );
-}
-add_action('admin_menu', 'add_prod_category_menu');
-
-function add_prod_category_thumbnail_field($term = null) {
-    $thumbnail_id  = '';
-    $thumbnail_url = '';
-
-    if ($term && is_object($term)) {
-        $thumbnail_id  = get_term_meta($term->term_id, 'prod_category_thumbnail', true);
-        $thumbnail_url = $thumbnail_id ? wp_get_attachment_url($thumbnail_id) : '';
-    }
-    ?>
-    <tr class="form-field">
-        <th scope="row" valign="top"><label for="prod_category_thumbnail">Миниатюра</label></th>
-        <td>
-            <input type="hidden" id="prod_category_thumbnail" name="prod_category_thumbnail" value="<?php echo esc_attr($thumbnail_id); ?>">
-            <img id="prod_category_thumbnail_preview" src="<?php echo esc_url($thumbnail_url); ?>" style="max-width: 150px; height: auto; display: <?php echo $thumbnail_url ? 'block' : 'none'; ?>; margin-bottom: 10px;">
-            <button type="button" class="button upload_image_button">Выбрать изображение</button>
-            <button type="button" class="button remove_image_button" style="display: <?php echo $thumbnail_url ? 'inline-block' : 'none'; ?>;">Удалить</button>
-            <p class="description">Рекомендуемый размер: 300x300px</p>
-        </td>
-    </tr>
-    <?php
-}
-add_action('prod_category_add_form_fields', 'add_prod_category_thumbnail_field');
-add_action('prod_category_edit_form_fields', 'add_prod_category_thumbnail_field', 10, 2);
-
-function enqueue_prod_category_scripts($hook) {
-    if (!in_array($hook, ['edit-tags.php', 'term.php'])) {
-        return;
-    }
-    if (!isset($_GET['taxonomy']) || $_GET['taxonomy'] !== 'prod_category') {
-        return;
-    }
-
-    wp_enqueue_media();
-
-    $js_path = get_template_directory_uri() . '/js/prod-category-thumbnail.js';
-    wp_enqueue_script(
-        'prod-category-thumbnail-script',
-        $js_path,
-        array('jquery'),
-        '1.0.0',
-        true
-    );
-
-    wp_localize_script('prod-category-thumbnail-script', 'prodCategoryL10n', array(
-        'title'  => 'Выберите миниатюру категории',
-        'button' => 'Использовать это изображение'
-    ));
-}
-add_action('admin_enqueue_scripts', 'enqueue_prod_category_scripts');
-
-function save_prod_category_thumbnail($term_id) {
-    if (isset($_POST['prod_category_thumbnail'])) {
-        $thumbnail_id = absint($_POST['prod_category_thumbnail']);
-        if ($thumbnail_id) {
-            update_term_meta($term_id, 'prod_category_thumbnail', $thumbnail_id);
-        } else {
-            delete_term_meta($term_id, 'prod_category_thumbnail');
-        }
-    }
-}
-add_action('edited_prod_category', 'save_prod_category_thumbnail');
-add_action('created_prod_category', 'save_prod_category_thumbnail');
-
-function add_prod_category_thumbnail_column($columns) {
-    $columns['prod_category_thumbnail'] = 'Миниатюра';
-    return $columns;
-}
-add_filter('manage_edit-prod_category_columns', 'add_prod_category_thumbnail_column');
-
-function show_prod_category_thumbnail_column($content, $column_name, $term_id) {
-    if ($column_name === 'prod_category_thumbnail') {
-        $thumbnail_id = get_term_meta($term_id, 'prod_category_thumbnail', true);
-        if ($thumbnail_id) {
-            $thumbnail_url = wp_get_attachment_image_url($thumbnail_id, 'thumbnail');
-            if ($thumbnail_url) {
-                $content = '<img src="' . esc_url($thumbnail_url) . '" style="max-width: 50px; height: auto;">';
-            }
-        }
-    }
-    return $content;
-}
-add_filter('manage_prod_category_custom_column', 'show_prod_category_thumbnail_column', 10, 3);
+add_action('init', 'create_portfolio_category_taxonomy', 0);
 
 
 function your_prefix_get_all_descendants( $parent_id, $visited = [] ) {
@@ -837,17 +766,16 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
                 'name'        => esc_html__( 'Портфолио проекты', 'asiaterm25' ),
                 'id'          => $prefix . 'portfolio_pages',
                 'type'        => 'post',
-                'post_type'   => 'page',
+                'post_type'   => 'portfolio',
                 'field_type'  => 'select_advanced',
                 'multiple'    => true,
-                'placeholder' => esc_html__( 'Выберите портфолио', 'asiaterm25' ),
+                'placeholder' => esc_html__( 'Выберите проекты', 'asiaterm25' ),
                 'query_args'  => [
                     'post_status'    => 'publish',
                     'posts_per_page' => -1,
                     'orderby'        => 'title',
                     'order'          => 'ASC',
                 ],
-                'desc'        => esc_html__( 'Только страницы, вложенные в ID 29 (включая подуровни)', 'asiaterm25' ),
             ],
 
         ],
@@ -1153,6 +1081,24 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
         ],
     ];
 
+    // CPT Portfolio
+    $meta_boxes[] = [
+        'title'      => esc_html__( 'Галерея проекта', 'asiaterm25' ),
+        'id'         => 'portfolio_params',
+        'post_types' => ['portfolio'],
+        'context'    => 'normal',
+        'priority'   => 'high',
+        'fields'     => [
+            [
+                'name'             => esc_html__( 'Галерея', 'asiaterm25' ),
+                'id'               => 'portfolio_gallery',
+                'type'             => 'image_advanced',
+                'max_file_uploads' => 20,
+                'force_delete'     => false,
+            ],
+        ],
+    ];
+
     return $meta_boxes;
 }
 
@@ -1362,7 +1308,7 @@ function asiaterm_schema_output() {
     $phone     = get_option('my_phone');
     $email     = get_option('my_mymail');
     $address   = get_option('my_adress');
-    $logo_url  = get_template_directory_uri() . '/files/logotest.svg';
+    $logo_url  = get_template_directory_uri() . '/files/asiatermkg-logo.svg';
 
     // ── Organization / LocalBusiness — на всех страницах ──
     $org = [

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW 2021.5 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="960px" height="960px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 960 960"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil1 {fill:#FEFEFE}
+    .fil2 {fill:url(#id0)}
+    .fil0 {fill:url(#id1)}
+   ]]>
+  </style>
+  <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="322.727" y1="253.171" x2="736.78" y2="692.438">
+   <stop offset="0" style="stop-opacity:1; stop-color:#FF6B03"/>
+   <stop offset="0.721569" style="stop-opacity:1; stop-color:#D74802"/>
+   <stop offset="1" style="stop-opacity:1; stop-color:#AE2500"/>
+  </linearGradient>
+  <linearGradient id="id1" gradientUnits="userSpaceOnUse" x1="677.777" y1="915.075" x2="795.918" y2="939.825">
+   <stop offset="0" style="stop-opacity:1; stop-color:#F76403"/>
+   <stop offset="1" style="stop-opacity:1; stop-color:#AE2500"/>
+  </linearGradient>
+ </defs>
+ <g id="Слой_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g id="_2505512104832">
+   <polygon class="fil0" points="652.949,791.068 725.481,791.068 792.153,960 719.172,960 "/>
+   <path class="fil1" d="M256.393 366.52l83.568 187.603c-61.701,132.395 -168.309,289.421 -152.946,376.865 -202.875,-4.154 -171.81,-131.426 -84.767,-276.059 58.555,-97.295 119.716,-226.151 154.145,-288.409z"/>
+   <path class="fil1" d="M253.8 760.439l199.118 0 70.277 170.287c-106.317,-0.601 -212.632,-1.202 -318.949,-1.803 -9.215,-63.025 21.845,-115.309 49.554,-168.484z"/>
+   <polygon class="fil2" points="347.505,194.613 446.614,0 763.762,756.831 574.541,755.762 "/>
+   <polygon class="fil1" points="592.575,791.068 907.471,791.068 925.039,827.108 605.188,827.108 "/>
+   <polygon class="fil1" points="621.307,864.75 810.765,864.75 821.335,900.79 628.896,900.79 "/>
+  </g>
+ </g>
+</svg>

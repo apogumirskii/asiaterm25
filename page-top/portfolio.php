@@ -24,8 +24,6 @@
     </div>
 </section>
 
- 
-
 <script>
 jQuery(document).ready(function($) {
     function animateCountup() {
@@ -33,9 +31,7 @@ jQuery(document).ready(function($) {
             var $this   = $(this);
             var target  = parseInt($this.data('target'));
             var current = 0;
-            var duration = 2000;
-            var step = Math.ceil(target / (duration / 16));
-
+            var step = Math.ceil(target / (2000 / 16));
             var timer = setInterval(function() {
                 current += step;
                 if (current >= target) {
@@ -46,14 +42,11 @@ jQuery(document).ready(function($) {
             }, 16);
         });
     }
-
-    // Запускаем когда блок попадает в зону видимости
     var animated = false;
     $(window).on('scroll', function() {
         if (animated) return;
         var sectionTop = $('.stats-section').offset().top;
-        var scrollBottom = $(window).scrollTop() + $(window).height();
-        if (scrollBottom > sectionTop + 100) {
+        if ($(window).scrollTop() + $(window).height() > sectionTop + 100) {
             animated = true;
             animateCountup();
         }
@@ -61,30 +54,43 @@ jQuery(document).ready(function($) {
 });
 </script>
 
+<?php
+$portfolio_query = new WP_Query([
+    'post_type'      => 'portfolio',
+    'posts_per_page' => 12,
+    'orderby'        => 'date',
+    'order'          => 'DESC',
+]);
+
+if ($portfolio_query->have_posts()) :
+    $portfolio_items = [];
+    while ($portfolio_query->have_posts()) : $portfolio_query->the_post();
+        $pid = get_the_ID();
+        $gallery = rwmb_meta('portfolio_gallery', ['object_type' => 'post'], $pid);
+        $thumb = get_the_post_thumbnail_url($pid, 'costom-gallery')
+                 ?: ($gallery ? reset($gallery)['full_url'] : get_template_directory_uri() . '/files/topimg2.png');
+        $portfolio_items[] = [
+            'id'      => $pid,
+            'title'   => get_the_title(),
+            'url'     => get_permalink(),
+            'thumb'   => $thumb,
+            'gallery' => $gallery ? array_values($gallery) : [],
+        ];
+    endwhile;
+    wp_reset_postdata();
+?>
 
 <section class="portfolio-section py-5">
     <div class="container-fluid px-4">
 
-        <?php
-        $portfolio_pages = get_pages([
-            'parent'      => 29,
-            'post_status' => 'publish',
-            'sort_column' => 'menu_order',
-        ]);
-        ?>
-
         <div class="owl-carousel owl-portfolio">
-            <?php foreach ($portfolio_pages as $port) :
-                $port_id = $port->ID;
-                $gallery = rwmb_meta('prod_service_gallery', ['object_type' => 'post'], $port_id);
-                $thumb   = get_the_post_thumbnail_url($port_id, 'costom-gallery') ?: ($gallery ? reset($gallery)['full_url'] : get_template_directory_uri() . '/img/placeholder.jpg');
-            ?>
+            <?php foreach ($portfolio_items as $port) : ?>
                 <div class="portfolio-slide"
-                     data-page-id="<?php echo $port_id; ?>"
-                     data-title="<?php echo esc_attr($port->post_title); ?>"
-                     data-url="<?php echo esc_url(get_permalink($port_id)); ?>">
-                    <img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($port->post_title); ?>">
-                    <span class="portfolio-title"><?php echo esc_html($port->post_title); ?></span>
+                     data-page-id="<?php echo $port['id']; ?>"
+                     data-title="<?php echo esc_attr($port['title']); ?>"
+                     data-url="<?php echo esc_url($port['url']); ?>">
+                    <img src="<?php echo esc_url($port['thumb']); ?>" alt="<?php echo esc_attr($port['title']); ?>">
+                    <span class="portfolio-title"><?php echo esc_html($port['title']); ?></span>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -115,23 +121,18 @@ jQuery(document).ready(function($) {
 <script>
 jQuery(document).ready(function($) {
 
-    // Галереи страниц (загружаем через AJAX при клике)
     var galleries = {
-        <?php foreach ($portfolio_pages as $port) :
-            $port_id = $port->ID;
-            $gallery = rwmb_meta('prod_service_gallery', ['object_type' => 'post'], $port_id);
-            if (!$gallery) continue;
-            $images = array_values($gallery);
+        <?php foreach ($portfolio_items as $port) :
+            if (!$port['gallery']) continue;
         ?>
-        <?php echo $port_id; ?>: [
-            <?php foreach ($images as $img) : ?>
+        <?php echo $port['id']; ?>: [
+            <?php foreach ($port['gallery'] as $img) : ?>
             '<?php echo esc_url($img['full_url']); ?>',
             <?php endforeach; ?>
         ],
         <?php endforeach; ?>
     };
 
-    // Инициализация карусели портфолио
     $(".owl-portfolio").owlCarousel({
         loop: true,
         margin: 20,
@@ -148,7 +149,6 @@ jQuery(document).ready(function($) {
         }
     });
 
-    // Клик по слайду
     $(document).on('click', '.portfolio-slide', function() {
         var pageId = $(this).data('page-id');
         var title  = $(this).data('title');
@@ -158,7 +158,6 @@ jQuery(document).ready(function($) {
         $('#portfolioModalTitle').text(title);
         $('#portfolioModalLink').attr('href', url);
 
-        // Очищаем и наполняем галерею
         var $gallery = $('#portfolioModalGallery');
         $gallery.html('');
 
@@ -170,7 +169,6 @@ jQuery(document).ready(function($) {
             $gallery.append('<div class="portfolio-modal-slide"><p class="text-white text-center p-4">Галерея не заполнена</p></div>');
         }
 
-        // Инициализируем карусель модалки
         if ($gallery.hasClass('owl-loaded')) {
             $gallery.trigger('destroy.owl.carousel');
             $gallery.removeClass('owl-carousel owl-loaded');
@@ -190,3 +188,5 @@ jQuery(document).ready(function($) {
 
 });
 </script>
+
+<?php endif; ?>

@@ -129,39 +129,123 @@ include(locate_template('template-parts/phead.php'));
                 </div>
                 <?php endif; ?>
 
-                <?php if (isset($tabs['portfolio'])) : ?>
+                <?php if (isset($tabs['portfolio'])) :
+                    $port_items = [];
+                    foreach ($portfolio as $port_page) {
+                        $port_id = is_object($port_page) ? $port_page->ID : $port_page;
+                        $port_gallery = rwmb_meta('portfolio_gallery', ['object_type' => 'post'], $port_id);
+                        $port_thumb = get_the_post_thumbnail_url($port_id, 'costom-gallery')
+                                      ?: ($port_gallery ? reset($port_gallery)['full_url'] : '');
+                        $port_items[] = [
+                            'id'      => $port_id,
+                            'title'   => get_the_title($port_id),
+                            'url'     => get_permalink($port_id),
+                            'thumb'   => $port_thumb,
+                            'gallery' => $port_gallery ? array_values($port_gallery) : [],
+                        ];
+                    }
+                ?>
                 <div class="tab-pane fade" id="tab-portfolio">
                     <div class="row g-4">
-                        <?php foreach ($portfolio as $port_page) :
-                            $port_id = is_object($port_page) ? $port_page->ID : $port_page;
-                            $port_gallery = rwmb_meta('prod_service_gallery', ['object_type' => 'post'], $port_id);
-                            $port_thumb   = get_the_post_thumbnail_url($port_id, 'costom-gallery')
-                                            ?: ($port_gallery ? reset($port_gallery)['full_url'] : '');
-                        ?>
+                        <?php foreach ($port_items as $port) : ?>
                             <div class="col-md-6">
-                                <a href="<?php echo esc_url(get_permalink($port_id)); ?>" class="portfolio-card text-decoration-none d-block">
+                                <div class="portfolio-card d-block portfolio-slide-product"
+                                     data-page-id="<?php echo $port['id']; ?>"
+                                     data-title="<?php echo esc_attr($port['title']); ?>"
+                                     data-url="<?php echo esc_url($port['url']); ?>"
+                                     style="cursor:pointer;">
                                     <div class="portfolio-card-img">
-                                        <?php if ($port_thumb) : ?>
-                                            <img src="<?php echo esc_url($port_thumb); ?>" loading="lazy" alt="<?php echo esc_attr(get_the_title($port_id)); ?>">
+                                        <?php if ($port['thumb']) : ?>
+                                            <img src="<?php echo esc_url($port['thumb']); ?>" loading="lazy" alt="<?php echo esc_attr($port['title']); ?>">
                                         <?php endif; ?>
                                         <div class="portfolio-card-overlay">
-                                            <i class="fas fa-arrow-right"></i>
+                                            <i class="fas fa-images"></i>
                                         </div>
                                     </div>
                                     <div class="portfolio-card-body">
-                                        <h5 class="portfolio-card-title"><?php echo esc_html(get_the_title($port_id)); ?></h5>
-                                        <?php $port_excerpt = get_the_excerpt($port_id); if ($port_excerpt) : ?>
-                                            <p class="portfolio-card-desc"><?php echo esc_html($port_excerpt); ?></p>
-                                        <?php endif; ?>
+                                        <h5 class="portfolio-card-title"><?php echo esc_html($port['title']); ?></h5>
                                         <span class="portfolio-card-link">
-                                            <?php esc_html_e('Подробнее', 'asiaterm25'); ?> <i class="fas fa-arrow-right ms-1"></i>
+                                            <?php esc_html_e('Смотреть галерею', 'asiaterm25'); ?> <i class="fas fa-images ms-1"></i>
                                         </span>
                                     </div>
-                                </a>
+                                </div>
                             </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
+
+                <!-- Модальное окно портфолио (товар) -->
+                <div class="modal fade" id="portfolioModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                        <div class="modal-content bg-dark border-0">
+                            <div class="modal-header border-0">
+                                <h5 class="modal-title text-white" id="portfolioModalTitle"></h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body p-0">
+                                <div class="owl-carousel owl-portfolio-modal" id="portfolioModalGallery"></div>
+                            </div>
+                            <div class="modal-footer border-0 justify-content-center">
+                                <a href="#" id="portfolioModalLink" class="btn portfolio-detail-btn">
+                                    <?php esc_html_e('Подробнее', 'asiaterm25'); ?> <i class="fas fa-arrow-right ms-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                jQuery(document).ready(function($) {
+                    var productGalleries = {
+                        <?php foreach ($port_items as $port) :
+                            if (!$port['gallery']) continue;
+                        ?>
+                        <?php echo $port['id']; ?>: [
+                            <?php foreach ($port['gallery'] as $img) : ?>
+                            '<?php echo esc_url($img['full_url']); ?>',
+                            <?php endforeach; ?>
+                        ],
+                        <?php endforeach; ?>
+                    };
+
+                    $(document).on('click', '.portfolio-slide-product', function() {
+                        var pageId = $(this).data('page-id');
+                        var title  = $(this).data('title');
+                        var url    = $(this).data('url');
+                        var imgs   = productGalleries[pageId] || [];
+
+                        $('#portfolioModalTitle').text(title);
+                        $('#portfolioModalLink').attr('href', url);
+
+                        var $gallery = $('#portfolioModalGallery');
+                        $gallery.html('');
+
+                        if (imgs.length) {
+                            $.each(imgs, function(i, src) {
+                                $gallery.append('<div class="portfolio-modal-slide"><img src="' + src + '" alt=""></div>');
+                            });
+                        } else {
+                            $gallery.append('<div class="portfolio-modal-slide"><p class="text-white text-center p-4"><?php esc_html_e('Галерея не заполнена', 'asiaterm25'); ?></p></div>');
+                        }
+
+                        if ($gallery.hasClass('owl-loaded')) {
+                            $gallery.trigger('destroy.owl.carousel');
+                            $gallery.removeClass('owl-carousel owl-loaded');
+                            $gallery.find('.owl-stage-outer').children().unwrap();
+                        }
+
+                        $gallery.addClass('owl-carousel').owlCarousel({
+                            items: 1,
+                            loop: imgs.length > 1,
+                            nav: true,
+                            dots: true,
+                            navText: ["<i class='fas fa-chevron-left'></i>", "<i class='fas fa-chevron-right'></i>"],
+                        });
+
+                        $('#portfolioModal').modal('show');
+                    });
+                });
+                </script>
                 <?php endif; ?>
 
             </div>
