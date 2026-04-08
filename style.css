@@ -193,11 +193,18 @@ body {
 
 @media (max-width: 991px) {
     .site-header {
-        width: calc(100% - 1.25rem);
-        top: 0.5rem;
+        width: 100%;
+        top: 0;
+        border-radius: 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
     .header-top {
         padding: 0.75rem 0;
+        border-radius: 0;
+    }
+    .header-nav-bar {
+        background: var(--color-dark-deep);
+        border-radius: 0;
     }
     .header-logo img {
         height: 40px !important;
@@ -209,8 +216,8 @@ body {
         padding: 0.5rem 0.75rem;
         font-size: var(--font-size-sm);
     }
-    /* Скрыть весь блок каталога на мобильных — есть в offcanvas */
-    .catalog-dropdown {
+    /* Скрыть только подменю каталога, кнопка остаётся */
+    .catalog-dropdown-menu {
         display: none !important;
     }
 }
@@ -2377,6 +2384,37 @@ body {
 @media (max-width: 768px) {
     .partner-item { width: 100px; height: 80px; padding: 10px; }
     .partner-logo { max-width: 70px; max-height: 50px; }
+}
+
+/* Documents table mobile */
+@media (max-width: 767px) {
+    #docsTable thead { display: none; }
+    #docsTable tbody tr {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #dee2e6;
+    }
+    #docsTable tbody td {
+        border: none;
+        padding: 0.25rem 0.5rem;
+    }
+    #docsTable tbody td:first-child {
+        flex: 1 1 70%;
+        font-size: var(--font-size-sm);
+    }
+    #docsTable tbody td:nth-child(2),
+    #docsTable tbody td:nth-child(3) {
+        display: none;
+    }
+    #docsTable tbody td:nth-child(4) {
+        flex: 0 0 auto;
+    }
+    #docsTable tbody td:last-child {
+        flex: 0 0 auto;
+        text-align: right;
+    }
 }
 
 /*=============================================
