@@ -129,7 +129,7 @@ include(locate_template('template-parts/phead.php'));
                 <div class="owl-carousel owl-products">
                     <?php while ($products->have_posts()) : $products->the_post();
                         $id         = get_the_ID();
-                        $thumb      = get_the_post_thumbnail_url($id, 'catalog-thumb');
+                        $thumb      = get_the_post_thumbnail_url($id, 'medium_large');
                         $excerpt    = wp_trim_words(get_the_excerpt() ?: get_the_content(), 20);
                         $price      = rwmb_meta('prod_price', [], $id);
                         $var_titles = rwmb_meta('prod_var_titles', [], $id);

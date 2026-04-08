@@ -32,7 +32,7 @@ include(locate_template('template-parts/phead.php'));
             <div class="row g-4">
                 <?php foreach ($child_products as $child_product) :
                     $id         = $child_product->ID;
-                    $thumb      = get_the_post_thumbnail_url($id, 'catalog-thumb');
+                    $thumb      = get_the_post_thumbnail_url($id, 'medium_large');
                     $excerpt    = wp_trim_words($child_product->post_excerpt ?: $child_product->post_content, 20);
                     $price      = rwmb_meta('prod_price', [], $id);
                     $var_titles = rwmb_meta('prod_var_titles', [], $id);
