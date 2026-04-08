@@ -62,7 +62,18 @@ add_action('wp_enqueue_scripts', 'enqueue_owl_carousel');
 
 function enqueue_lightbox() {
     $lb_templates = ['page-singleproduct.php', 'page-complexproduct.php', 'page-portfolio.php', 'page-certificates.php', 'page-about.php', 'page-category.php'];
-    if (is_page_template($lb_templates)) {
+    // Также для дочерних страниц портфолио (ID 29)
+    $is_portfolio_child = is_page() && !is_page_template() && wp_get_post_parent_id(get_the_ID());
+    if ($is_portfolio_child) {
+        $check = get_the_ID();
+        $is_portfolio_child = false;
+        while ($check) {
+            $p = wp_get_post_parent_id($check);
+            if ($p == 29) { $is_portfolio_child = true; break; }
+            $check = $p;
+        }
+    }
+    if (is_page_template($lb_templates) || $is_portfolio_child) {
         wp_enqueue_style('lightbox-css', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css');
         wp_enqueue_script('lightbox-js', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js', ['jquery'], null, true);
     }

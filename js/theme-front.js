@@ -139,6 +139,24 @@ jQuery(document).ready(function($) {
         window.open($(this).data('href'), '_blank');
     });
 
+    // Portfolio filter
+    var $filterBtns = $('.portfolio-filter-btn');
+    if ($filterBtns.length) {
+        $filterBtns.on('click', function() {
+            var filter = $(this).data('filter');
+            $filterBtns.removeClass('active');
+            $(this).addClass('active');
+
+            $('#portfolioGrid .portfolio-item').each(function() {
+                if (filter === '*' || $(this).data('cats').indexOf(filter) !== -1) {
+                    $(this).removeClass('hidden');
+                } else {
+                    $(this).addClass('hidden');
+                }
+            });
+        });
+    }
+
     // Portfolio project gallery thumbs
     $(document).on('click', '.project-thumb', function() {
         var src = $(this).data('src');
