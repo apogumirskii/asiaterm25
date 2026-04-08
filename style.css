@@ -193,18 +193,18 @@ body {
 
 @media (max-width: 991px) {
     .site-header {
-        width: 100%;
-        top: 0;
-        border-radius: 0;
+        width: calc(100% - 1.25rem);
+        top: 1rem;
+        border-radius: 0.5rem;
         box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
     .header-top {
         padding: 0.75rem 0;
-        border-radius: 0;
+        border-radius: 0.5rem 0.5rem 0 0;
     }
     .header-nav-bar {
         background: var(--color-dark-deep);
-        border-radius: 0;
+        border-radius: 0 0 0.5rem 0.5rem;
     }
     .header-logo img {
         height: 40px !important;
