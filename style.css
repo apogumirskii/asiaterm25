@@ -289,20 +289,20 @@ body {
     top: 100%;
     left: 0;
     background: var(--color-white);
-    border-top: 2px solid var(--color-primary);
-    width: 48rem;
+    border-top: 3px solid var(--color-primary);
+    width: 60rem;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 0;
     list-style: none;
-    padding: 0.75rem;
+    padding: 1rem;
     margin: 0;
     opacity: 0;
     visibility: hidden;
     transition: opacity var(--transition), visibility var(--transition);
     z-index: 200;
-    box-shadow: var(--shadow-md);
-    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
 }
 
 .catalog-dropdown:hover .catalog-dropdown-menu {
@@ -313,13 +313,13 @@ body {
 .catalog-dropdown-menu li a {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
     color: #333;
-    font-size: var(--font-size-md);
-    font-weight: 500;
+    font-size: var(--font-size-xl);
+    font-weight: 600;
     text-decoration: none;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     transition: background var(--transition), color var(--transition);
 }
 
@@ -329,10 +329,10 @@ body {
 }
 
 .catalog-dropdown-menu li a img {
-    width: 3rem;
-    height: 3rem;
+    width: 4.5rem;
+    height: 4.5rem;
     object-fit: cover;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     flex-shrink: 0;
 }
 
