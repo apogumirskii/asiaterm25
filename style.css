@@ -192,6 +192,9 @@ body {
 }
 
 @media (max-width: 991px) {
+    html, body {
+        overflow-x: hidden;
+    }
     .site-header {
         width: 100%;
         top: 0;
@@ -199,10 +202,15 @@ body {
         transform: none;
         border-radius: 0;
         box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        overflow: hidden;
     }
     .header-top {
         padding: 0.25rem 0;
         border-radius: 0;
+    }
+    .header-top .container {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
     }
     .header-logo img {
         height: 40px !important;
