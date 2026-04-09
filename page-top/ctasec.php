@@ -103,9 +103,6 @@ $cat_pages = get_pages([
                         <input type="text" name="footer_name" class="form-control footer-input" placeholder="<?php esc_attr_e('Ваше имя', 'asiaterm25'); ?>">
                     </div>
                     <div class="mb-3">
-                        <input type="tel" name="footer_phone" class="form-control footer-input" placeholder="<?php esc_attr_e('Ваш телефон', 'asiaterm25'); ?>">
-                    </div>
-                    <div class="mb-3">
                         <textarea name="footer_message" class="form-control footer-input" rows="3" placeholder="<?php esc_attr_e('Сообщение...', 'asiaterm25'); ?>"></textarea>
                     </div>
                     <button type="submit" class="btn footer-submit-btn w-100">
@@ -120,7 +117,7 @@ $cat_pages = get_pages([
 
         <div class="footer-bottom d-flex flex-wrap justify-content-between align-items-center gap-2">
             <span>&copy; <?php echo date('Y'); ?> <?php esc_html_e('Запрещено к использованию без разрешения', 'asiaterm25'); ?> &mdash; <?php esc_html_e('ОсОО «Азия Терм»', 'asiaterm25'); ?></span>
-            <span><?php esc_html_e('Разработка и поддержка сайта', 'asiaterm25'); ?> <a href="https://imsbish.com" target="_blank" rel="noopener">IMS BISHKEK</a></span>
+            <span><?php esc_html_e('Разработка и поддержка сайта', 'asiaterm25'); ?> <a href="https://imse.kg" target="_blank" rel="noopener">IMS BISHKEK</a></span>
         </div>
     </div>
 </footer>
@@ -131,11 +128,9 @@ jQuery(document).ready(function($) {
     $('#footerWhatsAppForm').on('submit', function(e) {
         e.preventDefault();
         var name = this.footer_name.value.trim();
-        var phone = this.footer_phone.value.trim();
         var msg = this.footer_message.value.trim();
         var text = '';
         if (name) text += 'Имя: ' + name + '\n';
-        if (phone) text += 'Телефон: ' + phone + '\n';
         if (msg) text += msg;
         if (!text) text = 'Здравствуйте! Хочу узнать подробнее.';
         window.open('https://wa.me/' + waNum + '?text=' + encodeURIComponent(text), '_blank');

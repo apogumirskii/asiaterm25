@@ -2,6 +2,7 @@
 
 include(locate_template('template-parts/menu.php'));
 include(locate_template('template-parts/phead.php'));
+?>
 
 <section id="page" class="py-3 pt-3 mt-3">
     <div class="container">
