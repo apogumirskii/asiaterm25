@@ -1,20 +1,84 @@
+<?php
+$phone     = get_option('my_phone');
+$phone2    = get_option('my_phone2');
+$email     = get_option('my_mymail');
+$address   = get_option('my_adress');
+$wa_number = get_option('my_whatsapp') ?: $phone;
+$work_hours = get_option('my_work_hours') ?: 'Пн-Пт: 9:00-18:00, Сб: 10:00-15:00';
+$cat_pages = get_pages([
+    'parent'      => 13,
+    'post_status' => 'publish',
+    'sort_column' => 'menu_order',
+]);
+?>
 <footer class="site-footer pt-5 pb-3">
     <div class="container">
         <div class="row g-5">
 
-            <!-- Лого и контакты -->
+            <!-- Меню -->
             <div class="col-lg-3 col-md-6">
                 <a href="<?php echo esc_url(home_url('/')); ?>" class="d-inline-block mb-3">
                     <img src="<?php echo get_template_directory_uri(); ?>/files/asiatermkg-logo.svg" alt="<?php bloginfo('name'); ?>" height="50">
                 </a>
-                <p class="footer-desc mb-4">Крупнейший официальный диллер Европейского оборудования</p>
-                <a href="tel:<?php echo esc_attr(get_option('my_phone')); ?>" class="d-flex align-items-center gap-2 footer-phone text-decoration-none mb-4">
-                    <i class="fas fa-phone-alt"></i>
-                    <span><?php echo esc_html(get_option('my_phone')); ?></span>
-                </a>
-                <div class="d-flex gap-3">
-                    <?php $wa = get_option('my_whatsapp') ?: get_option('my_phone'); if ($wa) : ?>
-                        <a href="https://wa.me/<?php echo preg_replace('/\D/', '', $wa); ?>" target="_blank" class="footer-social"><i class="fab fa-whatsapp"></i></a>
+                <?php
+                wp_nav_menu([
+                    'theme_location' => 'topmenu',
+                    'container'      => false,
+                    'menu_class'     => 'list-unstyled footer-menu',
+                    'fallback_cb'    => false,
+                ]);
+                ?>
+                <ul class="list-unstyled footer-menu mt-2">
+                    <li><a href="<?php echo esc_url(home_url('/oferta-i-uslovija/')); ?>"><?php esc_html_e('Оферта и условия', 'asiaterm25'); ?></a></li>
+                </ul>
+            </div>
+
+            <!-- Категории -->
+            <div class="col-lg-2 col-md-6">
+                <h6 class="footer-heading mb-4"><?php esc_html_e('Каталог', 'asiaterm25'); ?></h6>
+                <ul class="list-unstyled footer-menu">
+                    <?php foreach ($cat_pages as $cat) : ?>
+                        <li><a href="<?php echo esc_url(get_permalink($cat->ID)); ?>"><?php echo esc_html($cat->post_title); ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+
+            <!-- Контакты -->
+            <div class="col-lg-3 col-md-6">
+                <h6 class="footer-heading mb-4"><?php esc_html_e('Контакты', 'asiaterm25'); ?></h6>
+                <ul class="list-unstyled footer-contacts">
+                    <?php if ($address) : ?>
+                    <li>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span><?php echo esc_html($address); ?></span>
+                    </li>
+                    <?php endif; ?>
+                    <?php if ($phone) : ?>
+                    <li>
+                        <i class="fas fa-phone-alt"></i>
+                        <a href="tel:<?php echo esc_attr($phone); ?>"><?php echo esc_html($phone); ?></a>
+                    </li>
+                    <?php endif; ?>
+                    <?php if ($phone2) : ?>
+                    <li>
+                        <i class="fas fa-phone-alt"></i>
+                        <a href="tel:<?php echo esc_attr($phone2); ?>"><?php echo esc_html($phone2); ?></a>
+                    </li>
+                    <?php endif; ?>
+                    <?php if ($email) : ?>
+                    <li>
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:<?php echo esc_attr($email); ?>"><?php echo esc_html($email); ?></a>
+                    </li>
+                    <?php endif; ?>
+                    <li>
+                        <i class="fas fa-clock"></i>
+                        <span><?php echo esc_html($work_hours); ?></span>
+                    </li>
+                </ul>
+                <div class="d-flex gap-3 mt-3">
+                    <?php if ($wa_number) : ?>
+                        <a href="https://wa.me/<?php echo preg_replace('/\D/', '', $wa_number); ?>" target="_blank" class="footer-social"><i class="fab fa-whatsapp"></i></a>
                     <?php endif; ?>
                     <?php if (get_option('my_telegram')) : ?>
                         <a href="<?php echo esc_url(get_option('my_telegram')); ?>" target="_blank" class="footer-social"><i class="fab fa-telegram"></i></a>
@@ -31,45 +95,22 @@
                 </div>
             </div>
 
-            <!-- О компании -->
+            <!-- Форма WhatsApp -->
             <div class="col-lg-4 col-md-6">
-                <h6 class="footer-heading mb-4">О компании</h6>
-                <div class="row">
-                    <div class="col-6">
-                        <ul class="list-unstyled footer-menu">
-                            <li><a href="#">Новости</a></li>
-                            <li><a href="#">FAQ</a></li>
-                            <li><a href="#">Контакты</a></li>
-                            <li><a href="#">Отзывы</a></li>
-                        </ul>
+                <h6 class="footer-heading mb-4"><?php esc_html_e('Связаться с нами', 'asiaterm25'); ?></h6>
+                <form id="footerWhatsAppForm" class="footer-wa-form">
+                    <div class="mb-3">
+                        <input type="text" name="footer_name" class="form-control footer-input" placeholder="<?php esc_attr_e('Ваше имя', 'asiaterm25'); ?>">
                     </div>
-                    <div class="col-6">
-                        <ul class="list-unstyled footer-menu">
-                            <li><a href="#">Каталог</a></li>
-                            <li><a href="#">Галлерея</a></li>
-                            <li><a href="#">О нас</a></li>
-                            <li><a href="#">Новости</a></li>
-                        </ul>
+                    <div class="mb-3">
+                        <input type="tel" name="footer_phone" class="form-control footer-input" placeholder="<?php esc_attr_e('Ваш телефон', 'asiaterm25'); ?>">
                     </div>
-                </div>
-            </div>
-
-            <!-- Обратный звонок -->
-            <div class="col-lg-4 col-md-12 ms-auto">
-                <h6 class="footer-heading mb-4">Обратный звонок</h6>
-                <form class="footer-callback-form">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control footer-input" placeholder="Ваш WhatsApp..">
-                        <button class="btn footer-submit-btn" type="submit">
-                            <i class="fab fa-telegram"></i>
-                        </button>
+                    <div class="mb-3">
+                        <textarea name="footer_message" class="form-control footer-input" rows="3" placeholder="<?php esc_attr_e('Сообщение...', 'asiaterm25'); ?>"></textarea>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input footer-check" type="checkbox" id="footerAgree" required>
-                        <label class="form-check-label footer-check-label" for="footerAgree">
-                            I have read and agree to the <a href="#">terms &amp; conditions</a>
-                        </label>
-                    </div>
+                    <button type="submit" class="btn footer-submit-btn w-100">
+                        <i class="fab fa-whatsapp me-2"></i><?php esc_html_e('Написать в WhatsApp', 'asiaterm25'); ?>
+                    </button>
                 </form>
             </div>
 
@@ -77,12 +118,27 @@
 
         <hr class="footer-divider mt-5">
 
-        <div class="text-center footer-copy">
-            © All Rights Reserved - <?php echo date('Y'); ?> - <a href="<?php echo esc_url(home_url('/')); ?>">IMS Bishkek</a>
+        <div class="footer-bottom d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <span>&copy; <?php echo date('Y'); ?> <?php esc_html_e('Запрещено к использованию без разрешения', 'asiaterm25'); ?> &mdash; <?php esc_html_e('ОсОО «Азия Терм»', 'asiaterm25'); ?></span>
+            <span><?php esc_html_e('Разработка и поддержка сайта', 'asiaterm25'); ?> <a href="https://imsbish.com" target="_blank" rel="noopener">IMS BISHKEK</a></span>
         </div>
     </div>
 </footer>
 
-<style>
-
-</style>
+<script>
+jQuery(document).ready(function($) {
+    var waNum = '<?php echo esc_js(preg_replace('/\D/', '', $wa_number)); ?>';
+    $('#footerWhatsAppForm').on('submit', function(e) {
+        e.preventDefault();
+        var name = this.footer_name.value.trim();
+        var phone = this.footer_phone.value.trim();
+        var msg = this.footer_message.value.trim();
+        var text = '';
+        if (name) text += 'Имя: ' + name + '\n';
+        if (phone) text += 'Телефон: ' + phone + '\n';
+        if (msg) text += msg;
+        if (!text) text = 'Здравствуйте! Хочу узнать подробнее.';
+        window.open('https://wa.me/' + waNum + '?text=' + encodeURIComponent(text), '_blank');
+    });
+});
+</script>

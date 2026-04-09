@@ -312,6 +312,11 @@ function my_2gis() {
     register_setting( 'general', 'my_2gis', 'esc_url_raw' );
 }
 
+function my_work_hours() {
+    add_settings_field( 'work_hours', 'Режим работы', 'callback_work_hours', 'general', 'custom_contact_section' );
+    register_setting( 'general', 'my_work_hours', 'sanitize_text_field' );
+}
+
 add_action('admin_init', 'my_mymail');
 add_action('admin_init', 'my_instagramm');
 add_action('admin_init', 'my_facebook');
@@ -322,6 +327,7 @@ add_action('admin_init', 'my_phone2');
 add_action('admin_init', 'my_whatsapp');
 add_action('admin_init', 'my_telegram');
 add_action('admin_init', 'my_2gis');
+add_action('admin_init', 'my_work_hours');
 
 function callback_mymail() {
     echo "<input class='regular-text' type='text' name='my_mymail' value='" . esc_attr(get_option('my_mymail')) . "'>";
@@ -352,6 +358,9 @@ function callback_telegram() {
 }
 function callback_2gis() {
     echo "<input class='regular-text' type='text' name='my_2gis' value='" . esc_attr(get_option('my_2gis')) . "' placeholder='https://2gis.kg/bishkek/...'>";
+}
+function callback_work_hours() {
+    echo "<input class='regular-text' type='text' name='my_work_hours' value='" . esc_attr(get_option('my_work_hours')) . "' placeholder='Пн-Пт: 9:00-18:00, Сб: 10:00-15:00'>";
 }
 
 

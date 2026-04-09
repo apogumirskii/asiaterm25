@@ -10,7 +10,7 @@ $wa_number  = get_option('my_whatsapp') ?: $phone;
 $telegram   = get_option('my_telegram');
 $instagram  = get_option('my_instagramm');
 $twogis     = get_option('my_2gis');
-$work_hours = rwmb_meta('contact_work_hours') ?: 'Пн-Пт: 9:00-18:00, Сб: 10:00-15:00';
+$work_hours = get_option('my_work_hours') ?: 'Пн-Пт: 9:00-18:00, Сб: 10:00-15:00';
 $map_embed  = rwmb_meta('contact_map_embed');
 $extra_info = rwmb_meta('contact_extra_info');
 ?>
