@@ -51,7 +51,7 @@
     <?php endif; ?>
 
     <?php $wa_number = get_option('my_whatsapp') ?: get_option('my_phone'); ?>
-    <a href="https://wa.me/<?php echo preg_replace('/\D/', '', $wa_number); ?>?text=<?php echo urlencode('Здравствуйте! Интересует товар: ' . get_the_title()); ?>"
+    <a href="https://wa.me/<?php echo preg_replace('/\D/', '', $wa_number); ?>?text=<?php echo urlencode("Меня интересует!\n\nНазвание товара: " . get_the_title() . "\nСсылка: " . get_permalink()); ?>"
        target="_blank"
        class="btn btn-primary btn-lg w-100">
         <i class="fab fa-whatsapp me-2"></i>

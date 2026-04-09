@@ -129,10 +129,10 @@ jQuery(document).ready(function($) {
         e.preventDefault();
         var name = this.footer_name.value.trim();
         var msg = this.footer_message.value.trim();
-        var text = '';
+        var text = 'Здравствуйте!\n\n';
         if (name) text += 'Имя: ' + name + '\n';
-        if (msg) text += msg;
-        if (!text) text = 'Здравствуйте! Хочу узнать подробнее.';
+        if (msg) text += 'Сообщение: ' + msg + '\n';
+        if (!name && !msg) text = 'Здравствуйте! Хочу узнать подробнее.';
         window.open('https://wa.me/' + waNum + '?text=' + encodeURIComponent(text), '_blank');
     });
 });
