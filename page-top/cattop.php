@@ -1,18 +1,12 @@
 <section class="categories-section py-5">
     <div class="container">
 
-        <div class="text-center mb-5">
-            <h6 class="section-subheading">Что мы предлагаем</h6>
-            <h2 class="section-heading">Категории товаров</h2>
-        </div>
+        <?php asiaterm_section_heading( 'Что мы предлагаем', 'Категории товаров' ); ?>
 
         <div class="row g-4">
             <?php
-            $categories = get_pages([
-                'parent'      => 13,
-                'post_status' => 'publish',
-                'sort_column' => 'menu_order',
-            ]);
+            $categories = asiaterm_catalog_children();
+            asiaterm_prime_thumbnails( $categories );
 
             foreach ($categories as $cat) :
                 $thumb = get_the_post_thumbnail_url($cat->ID, 'catalog-thumb');

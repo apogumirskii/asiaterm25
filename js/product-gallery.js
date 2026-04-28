@@ -1,45 +1,64 @@
-jQuery(document).ready(function($) {
-    var $main = $(".owl-product-gallery");
-    var $thumbs = $(".owl-product-thumbs");
+document.addEventListener('DOMContentLoaded', function () {
 
-    if (!$main.length) return;
+    var mainEl = document.querySelector('.swiper-product-gallery');
+    var thumbsEl = document.querySelector('.swiper-product-thumbs');
+    if (!mainEl || typeof Swiper === 'undefined') {
+        attachProductTabs();
+        attachDownloadRows();
+        return;
+    }
 
-    $main.owlCarousel({
-        items: 1,
+    var thumbs = null;
+    if (thumbsEl) {
+        thumbs = new Swiper(thumbsEl, {
+            slidesPerView: 5,
+            spaceBetween: 8,
+            watchSlidesProgress: true,
+            slideToClickedSlide: true,
+        });
+    }
+
+    var nextBtn = mainEl.querySelector('.swiper-button-next') || (mainEl.parentElement && mainEl.parentElement.querySelector('.swiper-button-next'));
+    var prevBtn = mainEl.querySelector('.swiper-button-prev') || (mainEl.parentElement && mainEl.parentElement.querySelector('.swiper-button-prev'));
+
+    new Swiper(mainEl, {
+        slidesPerView: 1,
         loop: true,
-        nav: true,
-        dots: false,
-        navText: ["<i class='fas fa-chevron-left'></i>", "<i class='fas fa-chevron-right'></i>"]
+        navigation: { prevEl: prevBtn, nextEl: nextBtn },
+        thumbs: thumbs ? { swiper: thumbs } : undefined
     });
 
-    $thumbs.owlCarousel({
-        items: 5,
-        loop: false,
-        nav: false,
-        dots: false,
-        margin: 8
-    });
+    attachProductTabs();
+    attachDownloadRows();
 
-    $thumbs.on('click', '.product-thumb', function() {
-        var idx = $(this).closest('.owl-item').index();
-        $main.trigger('to.owl.carousel', [idx, 300]);
-    });
+    function attachProductTabs() {
+        var tabs = document.getElementById('productTabs');
+        if (!tabs) return;
+        tabs.addEventListener('click', function (e) {
+            var link = e.target.closest('.nav-link');
+            if (!link) return;
+            e.preventDefault();
+            if (window.bootstrap && window.bootstrap.Tab) {
+                var tab = window.bootstrap.Tab.getOrCreateInstance(link);
+                tab.show();
+            }
+            var section = document.querySelector('.product-tabs');
+            if (!section) return;
+            var top = section.getBoundingClientRect().top + window.pageYOffset - 100;
+            if (window.pageYOffset > top) {
+                window.scrollTo({ top: top, behavior: 'smooth' });
+            }
+        });
+    }
 
-    // Product tabs: prevent scroll jump on tab click (mobile)
-    $('#productTabs').on('click', '.nav-link', function(e) {
-        e.preventDefault();
-        var $this = $(this);
-        $this.tab('show');
-        var tabsTop = $('.product-tabs').offset().top - 100;
-        if ($(window).scrollTop() > tabsTop) {
-            $('html, body').scrollTop(tabsTop);
-        }
-    });
-
-    // Clickable download rows
-    $('.download-list li').css('cursor', 'pointer').on('click', function(e) {
-        if ($(e.target).closest('a').length) return;
-        var href = $(this).find('a').first().attr('href');
-        if (href) window.open(href, '_blank');
-    });
+    function attachDownloadRows() {
+        document.querySelectorAll('.download-list li').forEach(function (li) {
+            li.style.cursor = 'pointer';
+            li.addEventListener('click', function (e) {
+                if (e.target.closest('a')) return;
+                var a = li.querySelector('a');
+                if (a && a.href) window.open(a.href, '_blank');
+            });
+        });
+    }
 });

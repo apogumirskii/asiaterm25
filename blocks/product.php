@@ -1,3 +1,4 @@
+<div class="swiper-slide">
 <div class="product-card">
 	<div class="product-card-img">
 		<a href="<?php echo esc_url(get_permalink($id)); ?>">
@@ -29,4 +30,5 @@
 			Подробнее <i class="fas fa-arrow-right ms-1"></i>
 		</a>
 	</div>
+</div>
 </div>

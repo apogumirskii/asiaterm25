@@ -12,10 +12,7 @@ $partner_logos = $partners_page ? rwmb_meta('partners_logos', ['size' => 'medium
 
 <section class="py-5">
     <div class="container">
-        <div class="text-center mb-4">
-            <h6 class="section-subheading"><?php esc_html_e('Партнёры', 'asiaterm25'); ?></h6>
-            <h2 class="section-heading"><?php esc_html_e('Наши партнёры', 'asiaterm25'); ?></h2>
-        </div>
+        <?php asiaterm_section_heading( __( 'Партнёры', 'asiaterm25' ), __( 'Наши партнёры', 'asiaterm25' ) ); ?>
         <?php include locate_template('template-parts/partners-carousel.php'); ?>
     </div>
 </section>

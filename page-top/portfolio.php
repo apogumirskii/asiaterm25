@@ -25,28 +25,29 @@
 </section>
 
 <script>
-jQuery(document).ready(function($) {
+document.addEventListener('DOMContentLoaded', function () {
+    var animated = false;
     function animateCountup() {
-        $('.countup').each(function() {
-            var $this   = $(this);
-            var target  = parseInt($this.data('target'));
+        document.querySelectorAll('.countup').forEach(function (el) {
+            var target  = parseInt(el.dataset.target, 10) || 0;
             var current = 0;
             var step = Math.ceil(target / (2000 / 16));
-            var timer = setInterval(function() {
+            var timer = setInterval(function () {
                 current += step;
                 if (current >= target) {
                     current = target;
                     clearInterval(timer);
                 }
-                $this.text(current);
+                el.textContent = current;
             }, 16);
         });
     }
-    var animated = false;
-    $(window).on('scroll', function() {
+    var statsSection = document.querySelector('.stats-section');
+    if (!statsSection) return;
+    window.addEventListener('scroll', function () {
         if (animated) return;
-        var sectionTop = $('.stats-section').offset().top;
-        if ($(window).scrollTop() + $(window).height() > sectionTop + 100) {
+        var rect = statsSection.getBoundingClientRect();
+        if (rect.top + 100 < window.innerHeight) {
             animated = true;
             animateCountup();
         }
@@ -83,16 +84,18 @@ if ($portfolio_query->have_posts()) :
 <section class="portfolio-section py-5">
     <div class="container-fluid px-4">
 
-        <div class="owl-carousel owl-portfolio">
+        <div class="swiper swiper-portfolio">
+            <div class="swiper-wrapper">
             <?php foreach ($portfolio_items as $port) : ?>
-                <div class="portfolio-slide"
+                <div class="swiper-slide portfolio-slide"
                      data-page-id="<?php echo $port['id']; ?>"
                      data-title="<?php echo esc_attr($port['title']); ?>"
                      data-url="<?php echo esc_url($port['url']); ?>">
-                    <img src="<?php echo esc_url($port['thumb']); ?>" alt="<?php echo esc_attr($port['title']); ?>">
+                    <img src="<?php echo esc_url($port['thumb']); ?>" alt="<?php echo esc_attr($port['title']); ?>" loading="lazy">
                     <span class="portfolio-title"><?php echo esc_html($port['title']); ?></span>
                 </div>
             <?php endforeach; ?>
+            </div>
         </div>
 
     </div>
@@ -111,15 +114,21 @@ if ($portfolio_query->have_posts()) :
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
             </div>
-            <div class="modal-body p-0 d-flex align-items-center">
-                <div class="owl-carousel owl-portfolio-modal w-100" id="portfolioModalGallery"></div>
+            <div class="modal-body p-0 d-flex align-items-center position-relative">
+                <div class="swiper swiper-portfolio-modal w-100" id="portfolioModalGallery">
+                    <div class="swiper-wrapper"></div>
+                    <div class="swiper-pagination"></div>
+                    <button class="swiper-button-prev" type="button"></button>
+                    <button class="swiper-button-next" type="button"></button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-jQuery(document).ready(function($) {
+document.addEventListener('DOMContentLoaded', function () {
+    if (typeof Swiper === 'undefined') return;
 
     var galleries = {
         <?php foreach ($portfolio_items as $port) :
@@ -127,65 +136,80 @@ jQuery(document).ready(function($) {
         ?>
         <?php echo $port['id']; ?>: [
             <?php foreach ($port['gallery'] as $img) : ?>
-            '<?php echo esc_url($img['full_url']); ?>',
+            '<?php echo esc_url(asiaterm_webp_url_swap($img['full_url'])); ?>',
             <?php endforeach; ?>
         ],
         <?php endforeach; ?>
     };
 
-    $(".owl-portfolio").owlCarousel({
+    new Swiper('.swiper-portfolio', {
         loop: true,
-        margin: 20,
-        nav: false,
-        dots: false,
-        autoplay: true,
-        autoplayTimeout: 3000,
-        autoplayHoverPause: true,
-        responsive: {
-            0:    { items: 1 },
-            576:  { items: 2 },
-            768:  { items: 3 },
-            1200: { items: 4 },
+        spaceBetween: 20,
+        autoplay: { delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: true },
+        breakpoints: {
+            576:  { slidesPerView: 2 },
+            768:  { slidesPerView: 3 },
+            1200: { slidesPerView: 4 }
         }
     });
 
-    $(document).on('click', '.portfolio-slide', function() {
-        var pageId = $(this).data('page-id');
-        var title  = $(this).data('title');
-        var url    = $(this).data('url');
+    var modalEl = document.getElementById('portfolioModal');
+    var modalGallery = document.getElementById('portfolioModalGallery');
+    var modalWrapper = modalGallery ? modalGallery.querySelector('.swiper-wrapper') : null;
+    var modalSwiper = null;
+
+    document.addEventListener('click', function (e) {
+        var slide = e.target.closest('.portfolio-slide');
+        if (!slide) return;
+        var pageId = slide.dataset.pageId;
+        var title  = slide.dataset.title || '';
+        var url    = slide.dataset.url || '#';
         var imgs   = galleries[pageId] || [];
 
-        $('#portfolioModalTitle').text(title);
-        $('#portfolioModalLink').attr('href', url);
+        var titleEl = document.getElementById('portfolioModalTitle');
+        var linkEl  = document.getElementById('portfolioModalLink');
+        if (titleEl) titleEl.textContent = title;
+        if (linkEl) linkEl.setAttribute('href', url);
 
-        var $gallery = $('#portfolioModalGallery');
-        $gallery.html('');
+        if (!modalWrapper) return;
+        modalWrapper.innerHTML = '';
 
         if (imgs.length) {
-            $.each(imgs, function(i, src) {
-                $gallery.append('<div class="portfolio-modal-slide"><img src="' + src + '" alt=""></div>');
+            imgs.forEach(function (src) {
+                var slideDiv = document.createElement('div');
+                slideDiv.className = 'swiper-slide portfolio-modal-slide';
+                slideDiv.innerHTML = '<img src="' + src + '" alt="">';
+                modalWrapper.appendChild(slideDiv);
             });
         } else {
-            $gallery.append('<div class="portfolio-modal-slide"><p class="text-white text-center p-4">Галерея не заполнена</p></div>');
+            var empty = document.createElement('div');
+            empty.className = 'swiper-slide portfolio-modal-slide';
+            empty.innerHTML = '<p class="text-white text-center p-4">Галерея не заполнена</p>';
+            modalWrapper.appendChild(empty);
         }
 
-        if ($gallery.hasClass('owl-loaded')) {
-            $gallery.trigger('destroy.owl.carousel');
-            $gallery.removeClass('owl-carousel owl-loaded');
-            $gallery.find('.owl-stage-outer').children().unwrap();
+        if (modalSwiper) {
+            modalSwiper.destroy(true, true);
+            modalSwiper = null;
         }
 
-        $gallery.addClass('owl-carousel').owlCarousel({
-            items: 1,
+        modalSwiper = new Swiper('#portfolioModalGallery', {
+            slidesPerView: 1,
             loop: imgs.length > 1,
-            nav: true,
-            dots: true,
-            navText: ["<i class='fas fa-chevron-left'></i>", "<i class='fas fa-chevron-right'></i>"],
+            navigation: {
+                prevEl: modalGallery.querySelector('.swiper-button-prev'),
+                nextEl: modalGallery.querySelector('.swiper-button-next')
+            },
+            pagination: {
+                el: modalGallery.querySelector('.swiper-pagination'),
+                clickable: true
+            }
         });
 
-        $('#portfolioModal').modal('show');
+        if (modalEl && window.bootstrap && window.bootstrap.Modal) {
+            window.bootstrap.Modal.getOrCreateInstance(modalEl).show();
+        }
     });
-
 });
 </script>
 

@@ -17,7 +17,7 @@ $about_map      = rwmb_meta('about_map_embed');
             <div class="col-lg-6">
                 <?php if ($about_image) :
                     $img = reset($about_image); ?>
-                    <img src="<?php echo esc_url($img['url']); ?>"
+                    <img src="<?php echo esc_url(asiaterm_webp_url_swap($img['url'])); ?>"
                          class="img-fluid company-img"
                          loading="lazy"
                          alt="<?php echo esc_attr($img['alt'] ?: get_the_title()); ?>">
@@ -140,9 +140,9 @@ $about_map      = rwmb_meta('about_map_embed');
         <div class="row g-3">
             <?php foreach ($about_gallery as $img) : ?>
             <div class="col-lg-4 col-md-6">
-                <a href="<?php echo esc_url($img['full_url']); ?>" data-lightbox="about-gallery" data-title="<?php echo esc_attr($img['alt'] ?: ''); ?>">
+                <a href="<?php echo esc_url(asiaterm_webp_url_swap($img['full_url'])); ?>" data-lightbox="about-gallery" data-title="<?php echo esc_attr($img['alt'] ?: ''); ?>">
                     <div class="cat-hero-img" style="height: 250px;">
-                        <img src="<?php echo esc_url($img['url']); ?>"
+                        <img src="<?php echo esc_url(asiaterm_webp_url_swap($img['url'])); ?>"
                              loading="lazy"
                              alt="<?php echo esc_attr($img['alt'] ?: 'Asiaterm'); ?>">
                     </div>

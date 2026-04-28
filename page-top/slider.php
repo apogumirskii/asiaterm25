@@ -10,7 +10,8 @@ $slides = new WP_Query([
 
 <section class="hero-slider">
 
-    <div class="owl-carousel owl-hero">
+    <div class="swiper swiper-hero">
+        <div class="swiper-wrapper">
         <?php if ($slides->have_posts()) : while ($slides->have_posts()) : $slides->the_post();
             $head     = get_post_meta(get_the_ID(), 'sliderhead', true);
             $text     = get_post_meta(get_the_ID(), 'slidertext', true);
@@ -22,7 +23,7 @@ $slides = new WP_Query([
             $file_mob  = $file_id ? wp_get_attachment_image_url($file_id, 'slider-mob') : get_the_post_thumbnail_url(get_the_ID(), 'slider-mob');
             $file_type = $file_id ? get_post_mime_type($file_id) : '';
         ?>
-        <div class="hero-slide">
+        <div class="swiper-slide hero-slide">
             <div class="hero-slide-bg">
                 <?php if (strpos($file_type, 'video') !== false) : ?>
                     <video autoplay muted loop playsinline>
@@ -63,7 +64,7 @@ $slides = new WP_Query([
             ['sub' => 'Тепловые насосы',           'title' => 'Экономия и практичность',       'img' => '/files/slide4.jpg'],
         ];
         foreach ($stub_slides as $s) : ?>
-        <div class="hero-slide">
+        <div class="swiper-slide hero-slide">
             <div class="hero-slide-bg">
                 <img src="<?php echo get_template_directory_uri() . $s['img']; ?>" alt="">
             </div>
@@ -77,6 +78,7 @@ $slides = new WP_Query([
             </div>
         </div>
         <?php endforeach; endif; ?>
+        </div>
     </div>
 
     <!-- Нумерация -->
@@ -84,8 +86,8 @@ $slides = new WP_Query([
 
     <!-- Блок поверх слайдера -->
     <?php
-    $promo_pages = get_pages(['meta_key' => '_wp_page_template', 'meta_value' => 'page-portfolio.php']);
-    $promo_url = $promo_pages ? get_permalink($promo_pages[0]->ID) : home_url('/');
+    $promo_page = asiaterm_portfolio_page();
+    $promo_url  = $promo_page ? get_permalink($promo_page->ID) : home_url('/');
     ?>
     <div class="hero-promo-box">
         <h4>Наши <span>реализованные проекты</span> отопления</h4>

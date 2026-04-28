@@ -5,11 +5,7 @@ $email     = get_option('my_mymail');
 $address   = get_option('my_adress');
 $wa_number = get_option('my_whatsapp') ?: $phone;
 $work_hours = get_option('my_work_hours') ?: 'Пн-Пт: 9:00-18:00, Сб: 10:00-15:00';
-$cat_pages = get_pages([
-    'parent'      => 13,
-    'post_status' => 'publish',
-    'sort_column' => 'menu_order',
-]);
+$cat_pages = asiaterm_catalog_children();
 ?>
 <footer class="site-footer pt-5 pb-3">
     <div class="container">

@@ -67,7 +67,7 @@ $brands_list = $brands ?: [
                     <div class="product-card-body">
                         <div class="d-flex align-items-center gap-3 mb-3">
                             <?php if ($logo && !empty($logo['url'])) : ?>
-                                <img src="<?php echo esc_url($logo['url']); ?>"
+                                <img src="<?php echo esc_url(asiaterm_webp_url_swap($logo['url'])); ?>"
                                      style="max-width: 50px; max-height: 35px; object-fit: contain;"
                                      alt="<?php echo esc_attr($brand['brand_name'] ?? ''); ?>">
                             <?php endif; ?>

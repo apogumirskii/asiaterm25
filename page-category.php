@@ -99,9 +99,9 @@ include(locate_template('template-parts/phead.php'));
             <div class="row g-3">
                 <?php foreach ($gallery_rest as $img) : ?>
                 <div class="col-lg-4 col-md-6">
-                    <a href="<?php echo esc_url($img['full_url']); ?>" data-lightbox="cat-gallery" data-title="<?php echo esc_attr($img['alt'] ?: ''); ?>">
+                    <a href="<?php echo esc_url(asiaterm_webp_url_swap($img['full_url'])); ?>" data-lightbox="cat-gallery" data-title="<?php echo esc_attr($img['alt'] ?: ''); ?>">
                         <div class="cat-hero-img" style="height: 250px;">
-                            <img src="<?php echo esc_url($img['url']); ?>" loading="lazy" alt="<?php echo esc_attr($img['alt'] ?: ''); ?>">
+                            <img src="<?php echo esc_url(asiaterm_webp_url_swap($img['url'])); ?>" loading="lazy" alt="<?php echo esc_attr($img['alt'] ?: ''); ?>">
                         </div>
                     </a>
                 </div>
@@ -126,7 +126,8 @@ include(locate_template('template-parts/phead.php'));
         <div class="mb-5">
             <h3 class="section-heading mb-4"><?php esc_html_e('Продукция', 'asiaterm25'); ?></h3>
             <div class="position-relative">
-                <div class="owl-carousel owl-products">
+                <div class="swiper swiper-products">
+                    <div class="swiper-wrapper">
                     <?php while ($products->have_posts()) : $products->the_post();
                         $id         = get_the_ID();
                         $thumb      = get_the_post_thumbnail_url($id, 'medium_large');
@@ -136,6 +137,7 @@ include(locate_template('template-parts/phead.php'));
                     ?>
                         <?php include locate_template('blocks/product.php'); ?>
                     <?php endwhile; wp_reset_postdata(); ?>
+                    </div>
                 </div>
 
                 <button class="products-nav products-prev"><i class="fas fa-chevron-left"></i></button>

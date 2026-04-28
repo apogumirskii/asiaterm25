@@ -1,0 +1,99 @@
+.atlb-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.atlb-overlay.atlb-visible {
+    display: flex;
+    opacity: 1;
+}
+body.atlb-open {
+    overflow: hidden;
+}
+
+.atlb-stage {
+    max-width: 95vw;
+    max-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.atlb-img {
+    max-width: 95vw;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+
+.atlb-caption {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 0.95rem;
+    text-align: center;
+    max-width: 80vw;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
+
+.atlb-counter {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    color: rgba(255,255,255,0.85);
+    font-size: 0.875rem;
+    background: rgba(0,0,0,0.4);
+    padding: 0.25rem 0.625rem;
+    border-radius: 999px;
+}
+
+.atlb-close,
+.atlb-prev,
+.atlb-next {
+    position: absolute;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(255,255,255,0.35);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+.atlb-close:hover,
+.atlb-prev:hover,
+.atlb-next:hover {
+    background: rgba(255,255,255,0.25);
+    border-color: rgba(255,255,255,0.6);
+    transform: scale(1.05);
+}
+
+.atlb-close { top: 1rem; right: 1rem; }
+.atlb-prev  { left: 1rem; top: 50%; transform: translateY(-50%); }
+.atlb-next  { right: 1rem; top: 50%; transform: translateY(-50%); }
+.atlb-prev:hover { transform: translateY(-50%) scale(1.05); }
+.atlb-next:hover { transform: translateY(-50%) scale(1.05); }
+
+@media (max-width: 575px) {
+    .atlb-close, .atlb-prev, .atlb-next {
+        width: 2.5rem; height: 2.5rem; font-size: 0.95rem;
+    }
+    .atlb-prev { left: 0.5rem; }
+    .atlb-next { right: 0.5rem; }
+    .atlb-close { top: 0.5rem; right: 0.5rem; }
+}

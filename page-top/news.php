@@ -1,10 +1,7 @@
 <section class="news-section py-5">
     <div class="container">
 
-        <div class="text-center mb-5">
-            <h6 class="section-subheading">Новости</h6>
-            <h2 class="section-heading">Последние статьи</h2>
-        </div>
+        <?php asiaterm_section_heading( 'Новости', 'Последние статьи' ); ?>
 
         <?php
         $news_query = new WP_Query([
@@ -33,7 +30,7 @@
                 <article class="news-card-large h-100">
                     <a href="<?php the_permalink(); ?>" class="news-img-wrap d-block">
                         <?php if ($thumb) : ?>
-                            <img src="<?php echo esc_url($thumb); ?>" alt="<?php the_title_attribute(); ?>">
+                            <img src="<?php echo esc_url($thumb); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy">
                         <?php endif; ?>
                         <?php if ($cat) : ?>
                             <span class="news-cat"><?php echo esc_html($cat->name); ?></span>
@@ -60,7 +57,7 @@
                 <article class="news-card-small d-flex gap-3">
                     <a href="<?php the_permalink(); ?>" class="news-small-img flex-shrink-0">
                         <?php if ($thumb) : ?>
-                            <img src="<?php echo esc_url($thumb); ?>" alt="<?php the_title_attribute(); ?>">
+                            <img src="<?php echo esc_url($thumb); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy">
                         <?php endif; ?>
                     </a>
                     <div class="news-body">
@@ -90,7 +87,7 @@
             <div class="col-lg-6">
                 <article class="news-card-large h-100">
                     <a href="#" class="news-img-wrap d-block">
-                        <img src="<?php echo get_template_directory_uri(); ?>/files/img1.jpg" alt="">
+                        <img src="<?php echo get_template_directory_uri(); ?>/files/img1.jpg" alt="" loading="lazy">
                         <span class="news-cat">Конвекторы</span>
                     </a>
                     <div class="news-body">
@@ -109,7 +106,7 @@
                     <?php for ($i = 1; $i <= 4; $i++) : ?>
                     <article class="news-card-small d-flex gap-3">
                         <a href="#" class="news-small-img flex-shrink-0">
-                            <img src="<?php echo get_template_directory_uri(); ?>/files/img1.jpg" alt="">
+                            <img src="<?php echo get_template_directory_uri(); ?>/files/img1.jpg" alt="" loading="lazy">
                         </a>
                         <div class="news-body">
                             <div class="news-meta">

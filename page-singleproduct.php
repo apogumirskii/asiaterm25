@@ -187,62 +187,90 @@ include(locate_template('template-parts/phead.php'));
                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                                 </div>
                             </div>
-                            <div class="modal-body p-0 d-flex align-items-center">
-                                <div class="owl-carousel owl-portfolio-modal w-100" id="portfolioModalGallery"></div>
+                            <div class="modal-body p-0 d-flex align-items-center position-relative">
+                                <div class="swiper swiper-portfolio-modal w-100" id="portfolioModalGallery">
+                                    <div class="swiper-wrapper"></div>
+                                    <div class="swiper-pagination"></div>
+                                    <button class="swiper-button-prev" type="button"></button>
+                                    <button class="swiper-button-next" type="button"></button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <script>
-                jQuery(document).ready(function($) {
+                document.addEventListener('DOMContentLoaded', function () {
+                    if (typeof Swiper === 'undefined') return;
+
                     var productGalleries = {
                         <?php foreach ($port_items as $port) :
                             if (!$port['gallery']) continue;
                         ?>
                         <?php echo $port['id']; ?>: [
                             <?php foreach ($port['gallery'] as $img) : ?>
-                            '<?php echo esc_url($img['full_url']); ?>',
+                            '<?php echo esc_url(asiaterm_webp_url_swap($img['full_url'])); ?>',
                             <?php endforeach; ?>
                         ],
                         <?php endforeach; ?>
                     };
 
-                    $(document).on('click', '.portfolio-slide-product', function() {
-                        var pageId = $(this).data('page-id');
-                        var title  = $(this).data('title');
-                        var url    = $(this).data('url');
+                    var modalEl = document.getElementById('portfolioModal');
+                    var galleryEl = document.getElementById('portfolioModalGallery');
+                    var wrapperEl = galleryEl ? galleryEl.querySelector('.swiper-wrapper') : null;
+                    var modalSwiper = null;
+
+                    document.addEventListener('click', function (e) {
+                        var slide = e.target.closest('.portfolio-slide-product');
+                        if (!slide) return;
+                        var pageId = slide.dataset.pageId;
+                        var title  = slide.dataset.title || '';
+                        var url    = slide.dataset.url || '#';
                         var imgs   = productGalleries[pageId] || [];
 
-                        $('#portfolioModalTitle').text(title);
-                        $('#portfolioModalLink').attr('href', url);
+                        var titleEl = document.getElementById('portfolioModalTitle');
+                        var linkEl  = document.getElementById('portfolioModalLink');
+                        if (titleEl) titleEl.textContent = title;
+                        if (linkEl) linkEl.setAttribute('href', url);
 
-                        var $gallery = $('#portfolioModalGallery');
-                        $gallery.html('');
+                        if (!wrapperEl) return;
+                        wrapperEl.innerHTML = '';
 
                         if (imgs.length) {
-                            $.each(imgs, function(i, src) {
-                                $gallery.append('<div class="portfolio-modal-slide"><img src="' + src + '" alt=""></div>');
+                            imgs.forEach(function (src) {
+                                var sl = document.createElement('div');
+                                sl.className = 'swiper-slide portfolio-modal-slide';
+                                sl.innerHTML = '<img src="' + src + '" alt="">';
+                                wrapperEl.appendChild(sl);
                             });
                         } else {
-                            $gallery.append('<div class="portfolio-modal-slide"><p class="text-white text-center p-4"><?php esc_html_e('Галерея не заполнена', 'asiaterm25'); ?></p></div>');
+                            var empty = document.createElement('div');
+                            empty.className = 'swiper-slide portfolio-modal-slide';
+                            empty.innerHTML = '<p class="text-white text-center p-4"><?php echo esc_js(__('Галерея не заполнена', 'asiaterm25')); ?></p>';
+                            wrapperEl.appendChild(empty);
                         }
 
-                        if ($gallery.hasClass('owl-loaded')) {
-                            $gallery.trigger('destroy.owl.carousel');
-                            $gallery.removeClass('owl-carousel owl-loaded');
-                            $gallery.find('.owl-stage-outer').children().unwrap();
+                        if (modalSwiper) {
+                            modalSwiper.destroy(true, true);
+                            modalSwiper = null;
                         }
 
-                        $gallery.addClass('owl-carousel').owlCarousel({
-                            items: 1,
+                        modalSwiper = new Swiper('#portfolioModalGallery', {
+                            slidesPerView: 1,
                             loop: imgs.length > 1,
-                            nav: true,
-                            dots: true,
-                            navText: ["<i class='fas fa-chevron-left'></i>", "<i class='fas fa-chevron-right'></i>"],
+                            navigation: {
+                                prevEl: galleryEl.querySelector('.swiper-button-prev'),
+                                nextEl: galleryEl.querySelector('.swiper-button-next')
+                            },
+                            pagination: {
+                                el: galleryEl.querySelector('.swiper-pagination'),
+                                clickable: true
+                            }
                         });
 
-                        $('#portfolioModal').modal('show');
+                        if (modalEl && window.bootstrap && window.bootstrap.Modal) {
+                            window.bootstrap.Modal.getOrCreateInstance(modalEl).show();
+                        }
                     });
                 });
                 </script>

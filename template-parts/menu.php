@@ -2,11 +2,8 @@
 $page13 = get_post(13);
 $page13_title = $page13 ? $page13->post_title : 'Каталог';
 $page13_url   = $page13 ? get_permalink(13) : '#';
-$cat_pages = get_pages([
-    'parent'      => 13,
-    'post_status' => 'publish',
-    'sort_column' => 'menu_order',
-]);
+$cat_pages = asiaterm_catalog_children();
+asiaterm_prime_thumbnails( $cat_pages );
 $wa_number = get_option('my_whatsapp') ?: get_option('my_phone');
 ?>
 <header class="site-header">
@@ -78,7 +75,6 @@ $wa_number = get_option('my_whatsapp') ?: get_option('my_phone');
                     'container'      => false,
                     'menu_class'     => 'header-nav-menu',
                     'fallback_cb'    => false,
-                    'walker'         => new Bootstrap5_Walker_Nav_Menu(),
                 ]);
                 ?>
             </div>

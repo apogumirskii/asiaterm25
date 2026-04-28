@@ -17,10 +17,10 @@ $gallery = rwmb_meta('cert_gallery', ['size' => 'costom-gallery']);
         <div class="row g-4">
             <?php foreach ($gallery as $image) : ?>
             <div class="col-6 col-md-4 col-lg-3">
-                <a href="<?php echo esc_url($image['full_url']); ?>" data-lightbox="certificates" data-title="<?php echo esc_attr($image['title']); ?>">
+                <a href="<?php echo esc_url(asiaterm_webp_url_swap($image['full_url'])); ?>" data-lightbox="certificates" data-title="<?php echo esc_attr($image['title']); ?>">
                     <div class="product-card" style="overflow: hidden;">
                         <div class="product-card-img" style="height: 300px;">
-                            <img src="<?php echo esc_url($image['url']); ?>"
+                            <img src="<?php echo esc_url(asiaterm_webp_url_swap($image['url'])); ?>"
                                  loading="lazy"
                                  alt="<?php echo esc_attr($image['alt'] ?: $image['title']); ?>">
                         </div>

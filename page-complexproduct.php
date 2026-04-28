@@ -24,6 +24,7 @@ include(locate_template('template-parts/phead.php'));
             'post_status' => 'publish',
             'sort_column' => 'menu_order',
         ]);
+        asiaterm_prime_thumbnails( $child_products );
         ?>
 
         <?php if ($child_products) : ?>

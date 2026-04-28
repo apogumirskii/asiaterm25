@@ -11,8 +11,8 @@ while (have_posts()) : the_post();
     }
     $terms = get_the_terms($current_id, 'portfolio_category');
     $excerpt = get_the_excerpt();
-    $portfolio_page = get_pages(['meta_key' => '_wp_page_template', 'meta_value' => 'page-portfolio.php']);
-    $portfolio_url = $portfolio_page ? get_permalink($portfolio_page[0]->ID) : home_url('/');
+    $portfolio_page = asiaterm_portfolio_page();
+    $portfolio_url = $portfolio_page ? get_permalink($portfolio_page->ID) : home_url('/');
 ?>
 
 <main>
@@ -82,7 +82,8 @@ if ($related_products->have_posts()) : ?>
         </div>
 
         <div class="position-relative">
-            <div class="owl-carousel owl-products">
+            <div class="swiper swiper-products">
+                <div class="swiper-wrapper">
                 <?php while ($related_products->have_posts()) : $related_products->the_post();
                     $id         = get_the_ID();
                     $thumb      = get_the_post_thumbnail_url($id, 'medium_large');
@@ -91,6 +92,7 @@ if ($related_products->have_posts()) : ?>
                     $var_titles = rwmb_meta('prod_var_titles', [], $id);
                     include(locate_template('blocks/product.php'));
                 endwhile; wp_reset_postdata(); ?>
+                </div>
             </div>
 
             <button class="products-nav products-prev"><i class="fas fa-chevron-left"></i></button>
