@@ -3,8 +3,7 @@ $slides = new WP_Query([
     'post_type'      => 'sliderims',
     'post_status'    => 'publish',
     'posts_per_page' => -1,
-    'orderby'        => 'menu_order',
-    'order'          => 'ASC',
+    'orderby'        => ['menu_order' => 'ASC', 'date' => 'ASC'],
 ]);
 ?>
 

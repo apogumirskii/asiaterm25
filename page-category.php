@@ -81,8 +81,7 @@ include(locate_template('template-parts/phead.php'));
             'post_status'    => 'publish',
             'posts_per_page' => -1,
             'post_parent'    => $current_id,
-            'orderby'        => 'menu_order',
-            'order'          => 'ASC',
+            'orderby'        => ['menu_order' => 'ASC', 'title' => 'ASC'],
         ]);
         ?>
 

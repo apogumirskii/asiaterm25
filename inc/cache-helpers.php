@@ -1,13 +1,13 @@
 <?php
 
 function asiaterm_catalog_children() {
-    $key = 'asiaterm_catalog_children_v1';
+    $key = 'asiaterm_catalog_children_v2';
     $cached = get_transient($key);
     if ($cached !== false) return $cached;
     $pages = get_pages([
         'parent'      => 13,
         'post_status' => 'publish',
-        'sort_column' => 'menu_order',
+        'sort_column' => 'menu_order, post_title',
     ]);
     set_transient($key, $pages, HOUR_IN_SECONDS);
     return $pages;
@@ -25,6 +25,7 @@ function asiaterm_portfolio_page() {
 
 function asiaterm_invalidate_page_caches() {
     delete_transient('asiaterm_catalog_children_v1');
+    delete_transient('asiaterm_catalog_children_v2');
     delete_transient('asiaterm_portfolio_page_v1');
 }
 add_action('save_post_page', 'asiaterm_invalidate_page_caches');
