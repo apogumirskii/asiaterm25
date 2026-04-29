@@ -22,3 +22,4 @@ require_once $inc . 'post-duplicate.php';
 require_once $inc . 'ajax-handlers.php';
 require_once $inc . 'seo-schema.php';
 require_once $inc . 'webp.php';
+require_once $inc . 'admin-cleanup.php';

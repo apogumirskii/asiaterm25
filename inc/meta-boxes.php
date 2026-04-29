@@ -408,7 +408,7 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
                 'type'             => 'image_advanced',
                 'name'             => esc_html__( 'Галерея сертификатов', 'asiaterm25' ),
                 'id'               => 'cert_gallery',
-                'max_file_uploads' => 20,
+                'max_file_uploads' => 999,
             ],
         ],
     ];

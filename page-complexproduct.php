@@ -92,16 +92,22 @@ include(locate_template('template-parts/phead.php'));
         <div class="cat-features mb-5">
             <div class="row g-0">
                 <?php foreach ($features_list as $feature) :
-                    $f_icon  = !empty($feature['feature_icon']) ? reset($feature['feature_icon']) : null;
+                    $f_icon_raw = !empty($feature['feature_icon']) ? reset($feature['feature_icon']) : null;
+                    $f_icon_url = '';
+                    if (is_array($f_icon_raw) && !empty($f_icon_raw['url'])) {
+                        $f_icon_url = $f_icon_raw['url'];
+                    } elseif (is_numeric($f_icon_raw)) {
+                        $f_icon_url = wp_get_attachment_url((int) $f_icon_raw);
+                    }
                     $f_fa    = $feature['feature_fa'] ?? '';
                     $f_title = $feature['feature_title'] ?? '';
                     $f_desc  = $feature['feature_desc'] ?? '';
                 ?>
                 <div class="col-lg-3 col-md-4 col-6">
                     <div class="cat-feature-item">
-                        <?php if ($f_icon && !empty($f_icon['url'])) : ?>
+                        <?php if ($f_icon_url) : ?>
                             <div class="cat-feature-icon">
-                                <img src="<?php echo esc_url($f_icon['url']); ?>" alt="<?php echo esc_attr($f_title); ?>" loading="lazy">
+                                <img src="<?php echo esc_url($f_icon_url); ?>" alt="<?php echo esc_attr($f_title); ?>" loading="lazy">
                             </div>
                         <?php elseif ($f_fa) : ?>
                             <div class="cat-feature-icon">
