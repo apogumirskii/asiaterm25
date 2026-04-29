@@ -106,14 +106,16 @@ function asiaterm_render_cat_features( $post_id = null ) {
                 } elseif ( is_numeric( $f_icon_raw ) ) {
                     $f_icon_url = wp_get_attachment_url( (int) $f_icon_raw );
                 }
+                $f_white = ! empty( $feature['feature_icon_white'] );
                 $f_fa    = $feature['feature_fa']    ?? '';
                 $f_title = $feature['feature_title'] ?? '';
                 $f_desc  = $feature['feature_desc']  ?? '';
+                $icon_cls = 'cat-feature-icon' . ( $f_white ? ' cat-feature-icon--no-filter' : '' );
             ?>
                 <div class="col-lg-3 col-md-4 col-6">
                     <div class="cat-feature-item">
                         <?php if ( $f_icon_url ) : ?>
-                            <div class="cat-feature-icon">
+                            <div class="<?php echo esc_attr( $icon_cls ); ?>">
                                 <img src="<?php echo esc_url( $f_icon_url ); ?>" alt="<?php echo esc_attr( $f_title ); ?>" loading="lazy">
                             </div>
                         <?php elseif ( $f_fa ) : ?>

@@ -64,7 +64,13 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
                         'id'               => 'feature_icon',
                         'type'             => 'image_advanced',
                         'max_file_uploads' => 1,
-                        'desc'             => esc_html__( 'SVG или PNG иконка', 'asiaterm25' ),
+                        'desc'             => esc_html__( 'SVG или PNG иконка. По умолчанию применяется белый фильтр (для тёмных иконок).', 'asiaterm25' ),
+                    ],
+                    [
+                        'name' => esc_html__( 'Иконка уже белая', 'asiaterm25' ),
+                        'id'   => 'feature_icon_white',
+                        'type' => 'checkbox',
+                        'desc' => esc_html__( 'Включи если иконка уже белая/светлая — белый фильтр не будет применён', 'asiaterm25' ),
                     ],
                     [
                         'name' => esc_html__( 'Заголовок', 'asiaterm25' ),

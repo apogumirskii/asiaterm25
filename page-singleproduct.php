@@ -25,6 +25,9 @@ include(locate_template('template-parts/phead.php'));
             <?php include(locate_template('template-parts/product-header.php')); ?>
         </div>
 
+        <!-- Иконки-преимущества -->
+        <?php asiaterm_render_cat_features(get_the_ID()); ?>
+
         <?php
         $tabs = [];
         if ($shortdesc)    $tabs['desc'] = __('Описание', 'asiaterm25');
