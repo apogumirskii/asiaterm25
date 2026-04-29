@@ -87,26 +87,31 @@ include(locate_template('template-parts/phead.php'));
         ]);
         ?>
 
-        <?php if ($products->have_posts()) : ?>
+        <?php if ($products->have_posts()) :
+            $count = $products->post_count;
+            // Адаптивные классы Bootstrap по количеству товаров
+            if ($count === 1) {
+                $col_cls = 'col-12 col-md-6 mx-auto';
+            } elseif ($count === 2) {
+                $col_cls = 'col-6 col-md-6';
+            } else {
+                $col_cls = 'col-6 col-md-3';
+            }
+        ?>
         <div class="mb-5">
             <h3 class="section-heading mb-4"><?php esc_html_e('Продукция', 'asiaterm25'); ?></h3>
-            <div class="position-relative">
-                <div class="swiper swiper-products">
-                    <div class="swiper-wrapper">
-                    <?php while ($products->have_posts()) : $products->the_post();
-                        $id         = get_the_ID();
-                        $thumb      = get_the_post_thumbnail_url($id, 'medium_large');
-                        $excerpt    = wp_trim_words(get_the_excerpt() ?: get_the_content(), 20);
-                        $price      = rwmb_meta('prod_price', [], $id);
-                        $var_titles = rwmb_meta('prod_var_titles', [], $id);
-                    ?>
-                        <?php include locate_template('blocks/product.php'); ?>
-                    <?php endwhile; wp_reset_postdata(); ?>
+            <div class="row g-4">
+                <?php while ($products->have_posts()) : $products->the_post();
+                    $id         = get_the_ID();
+                    $thumb      = get_the_post_thumbnail_url($id, 'medium_large');
+                    $excerpt    = wp_trim_words(get_the_excerpt() ?: get_the_content(), 20);
+                    $price      = rwmb_meta('prod_price', [], $id);
+                    $var_titles = rwmb_meta('prod_var_titles', [], $id);
+                ?>
+                    <div class="<?php echo esc_attr($col_cls); ?>">
+                        <?php $no_swiper_wrap = true; include locate_template('blocks/product.php'); ?>
                     </div>
-                </div>
-
-                <button class="products-nav products-prev"><i class="fas fa-chevron-left"></i></button>
-                <button class="products-nav products-next"><i class="fas fa-chevron-right"></i></button>
+                <?php endwhile; wp_reset_postdata(); ?>
             </div>
         </div>
         <?php else : ?>

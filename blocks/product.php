@@ -1,4 +1,5 @@
-<div class="swiper-slide">
+<?php $no_swiper = !empty($no_swiper_wrap); ?>
+<?php if (!$no_swiper) : ?><div class="swiper-slide"><?php endif; ?>
 <div class="product-card">
 	<div class="product-card-img">
 		<a href="<?php echo esc_url(get_permalink($id)); ?>">
@@ -31,4 +32,4 @@
 		</a>
 	</div>
 </div>
-</div>
+<?php if (!$no_swiper) : ?></div><?php endif; ?>

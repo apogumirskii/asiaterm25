@@ -12,7 +12,7 @@ $slides = new WP_Query([
     <div class="swiper swiper-hero">
         <div class="swiper-wrapper">
         <?php if ($slides->have_posts()) : while ($slides->have_posts()) : $slides->the_post();
-            $head     = get_post_meta(get_the_ID(), 'sliderhead', true);
+            $head     = get_post_meta(get_the_ID(), 'sliderhead', true) ?: get_the_title();
             $text     = get_post_meta(get_the_ID(), 'slidertext', true);
             $btntext  = get_post_meta(get_the_ID(), 'sliderbtntext', true) ?: 'В каталог';
             $link_id  = get_post_meta(get_the_ID(), 'sliderlink', true);

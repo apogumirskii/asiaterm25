@@ -58,33 +58,40 @@ include(locate_template('template-parts/phead.php'));
 					</div>
 					<div class="col-md-9">
 						<div class="tab-content p-4 border border-start-0">
+               <?php
+               // Первый существующий таб всегда получает класс "show active"
+               $first_tab_key = $tabs ? array_key_first($tabs) : null;
+               $pane_cls = function ($key) use ($first_tab_key) {
+                   return 'tab-pane fade' . ($key === $first_tab_key ? ' show active' : '');
+               };
+               ?>
 
                <?php if (isset($tabs['desc'])) : ?>
-					<div class="tab-pane fade show active" id="tab-desc">
+					<div class="<?php echo $pane_cls('desc'); ?>" id="tab-desc">
 						<?php echo apply_filters('the_content', get_the_content()); ?>
 					</div>
 				<?php endif; ?>
 
                 <?php if (isset($tabs['specs'])) : ?>
-                <div class="tab-pane fade" id="tab-specs">
+                <div class="<?php echo $pane_cls('specs'); ?>" id="tab-specs">
                     <?php echo do_shortcode(wp_kses_post($specs)); ?>
                 </div>
                 <?php endif; ?>
 
                 <?php if (isset($tabs['custom'])) : ?>
-                <div class="tab-pane fade" id="tab-custom">
+                <div class="<?php echo $pane_cls('custom'); ?>" id="tab-custom">
                     <?php echo do_shortcode(wp_kses_post($costomdescr)); ?>
                 </div>
                 <?php endif; ?>
 
                 <?php if (isset($tabs['complect'])) : ?>
-                <div class="tab-pane fade" id="tab-complect">
+                <div class="<?php echo $pane_cls('complect'); ?>" id="tab-complect">
                     <?php echo do_shortcode(wp_kses_post($complect)); ?>
                 </div>
                 <?php endif; ?>
 
                 <?php if (isset($tabs['download'])) : ?>
-                <div class="tab-pane fade" id="tab-download">
+                <div class="<?php echo $pane_cls('download'); ?>" id="tab-download">
                     <ul class="list-unstyled download-list">
                         <?php foreach ($downloads as $file) :
                             $ext = strtolower($file['extension'] ?? pathinfo($file['url'], PATHINFO_EXTENSION));
@@ -111,7 +118,7 @@ include(locate_template('template-parts/phead.php'));
                 <?php endif; ?>
 
                 <?php if (isset($tabs['related'])) : ?>
-                <div class="tab-pane fade" id="tab-related">
+                <div class="<?php echo $pane_cls('related'); ?>" id="tab-related">
                     <div class="row g-3">
                         <?php foreach ($related as $rel_page) :
                             $rel_id = is_object($rel_page) ? $rel_page->ID : $rel_page;
@@ -148,7 +155,7 @@ include(locate_template('template-parts/phead.php'));
                         ];
                     }
                 ?>
-                <div class="tab-pane fade" id="tab-portfolio">
+                <div class="<?php echo $pane_cls('portfolio'); ?>" id="tab-portfolio">
                     <div class="row g-4">
                         <?php foreach ($port_items as $port) : ?>
                             <div class="col-md-6">
