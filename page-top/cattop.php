@@ -9,7 +9,7 @@
             asiaterm_prime_thumbnails( $categories );
 
             foreach ($categories as $cat) :
-                $thumb = get_the_post_thumbnail_url($cat->ID, 'catalog-thumb');
+                $thumb = get_the_post_thumbnail_url($cat->ID, 'medium_large');
                 $excerpt = $cat->post_excerpt ?: wp_trim_words($cat->post_content, 20);
            
 		   include(locate_template('blocks/category.php')); 

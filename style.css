@@ -1803,6 +1803,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
     transition: transform 0.5s;
 }
 
@@ -1877,6 +1878,62 @@ body {
 .cat-hero-img--thumb img {
     height: 100%;
     object-fit: cover;
+}
+
+/* Галерея категории */
+.cat-gallery-item {
+    position: relative;
+    display: block;
+    height: 18rem;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--color-gray-light);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.cat-gallery-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.cat-gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s;
+}
+
+.cat-gallery-item:hover img {
+    transform: scale(1.06);
+}
+
+.cat-gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(232, 98, 26, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--transition);
+}
+
+.cat-gallery-overlay i {
+    color: var(--color-white);
+    font-size: 2rem;
+    opacity: 0;
+    transform: scale(0.7);
+    transition: opacity var(--transition), transform var(--transition);
+}
+
+.cat-gallery-item:hover .cat-gallery-overlay {
+    background: rgba(232, 98, 26, 0.45);
+}
+
+.cat-gallery-item:hover .cat-gallery-overlay i {
+    opacity: 1;
+    transform: scale(1);
 }
 
 .cat-hero-title {

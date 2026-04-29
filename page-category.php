@@ -60,13 +60,15 @@ include(locate_template('template-parts/phead.php'));
         <?php $gallery_rest = !empty($gallery) ? array_slice($gallery, 1) : []; ?>
         <?php if (!empty($gallery_rest)) : ?>
         <div class="mb-5">
-            <div class="row g-3">
+            <div class="row g-4">
                 <?php foreach ($gallery_rest as $img) : ?>
                 <div class="col-lg-4 col-md-6">
-                    <a href="<?php echo esc_url(asiaterm_webp_url_swap($img['full_url'])); ?>" data-lightbox="cat-gallery" data-title="<?php echo esc_attr($img['alt'] ?: ''); ?>">
-                        <div class="cat-hero-img cat-hero-img--thumb" style="height: 250px;">
-                            <img src="<?php echo esc_url(asiaterm_webp_url_swap($img['url'])); ?>" loading="lazy" alt="<?php echo esc_attr($img['alt'] ?: ''); ?>">
-                        </div>
+                    <a href="<?php echo esc_url(asiaterm_webp_url_swap($img['full_url'])); ?>"
+                       data-lightbox="cat-gallery"
+                       data-title="<?php echo esc_attr($img['alt'] ?: ''); ?>"
+                       class="cat-gallery-item">
+                        <img src="<?php echo esc_url(asiaterm_webp_url_swap($img['url'])); ?>" loading="lazy" alt="<?php echo esc_attr($img['alt'] ?: ''); ?>">
+                        <span class="cat-gallery-overlay"><i class="fas fa-search-plus"></i></span>
                     </a>
                 </div>
                 <?php endforeach; ?>
