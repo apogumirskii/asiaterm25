@@ -39,7 +39,7 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
         'context'    => 'normal',
         'priority'   => 'high',
         'show'       => [
-            'template' => ['page-category.php', 'page-complexproduct.php'],
+            'template' => ['page-category.php', 'page-complexproduct.php', 'page-singleproduct.php'],
         ],
         'fields'     => [
             [

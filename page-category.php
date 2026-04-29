@@ -53,50 +53,7 @@ include(locate_template('template-parts/phead.php'));
         </div>
 
         <!-- Иконки-преимущества -->
-        <?php
-        $features_list = $cat_features ?: [
-            ['feature_icon' => [], 'feature_fa' => 'fas fa-check-circle',  'feature_title' => 'Сертификация',         'feature_desc' => 'Всё оборудование сертифицировано и соответствует международным стандартам'],
-            ['feature_icon' => [], 'feature_fa' => 'fas fa-shield-alt',    'feature_title' => 'Гарантия',             'feature_desc' => 'Официальная гарантия производителя на все модели'],
-            ['feature_icon' => [], 'feature_fa' => 'fas fa-tools',         'feature_title' => 'Монтаж',               'feature_desc' => 'Профессиональный монтаж и пуско-наладка оборудования'],
-            ['feature_icon' => [], 'feature_fa' => 'fas fa-headset',       'feature_title' => 'Поддержка',            'feature_desc' => 'Техническая консультация и сервисное обслуживание'],
-        ];
-        ?>
-        <div class="cat-features mb-5">
-            <div class="row g-0">
-                <?php foreach ($features_list as $feature) :
-                    $f_icon_raw = !empty($feature['feature_icon']) ? reset($feature['feature_icon']) : null;
-                    $f_icon_url = '';
-                    if (is_array($f_icon_raw) && !empty($f_icon_raw['url'])) {
-                        $f_icon_url = $f_icon_raw['url'];
-                    } elseif (is_numeric($f_icon_raw)) {
-                        $f_icon_url = wp_get_attachment_url((int) $f_icon_raw);
-                    }
-                    $f_fa    = $feature['feature_fa'] ?? '';
-                    $f_title = $feature['feature_title'] ?? '';
-                    $f_desc  = $feature['feature_desc'] ?? '';
-                ?>
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="cat-feature-item">
-                        <?php if ($f_icon_url) : ?>
-                            <div class="cat-feature-icon">
-                                <img src="<?php echo esc_url($f_icon_url); ?>" alt="<?php echo esc_attr($f_title); ?>" loading="lazy">
-                            </div>
-                        <?php elseif ($f_fa) : ?>
-                            <div class="cat-feature-icon">
-                                <i class="<?php echo esc_attr($f_fa); ?>" style="font-size: 2rem; color: var(--color-white);"></i>
-                            </div>
-                        <?php endif; ?>
-                        <?php if ($f_title) : ?>
-                            <h6 class="cat-feature-title"><?php echo esc_html($f_title); ?></h6>
-                        <?php endif; ?>
-                        <?php if ($f_desc) : ?>
-                            <p class="cat-feature-desc"><?php echo esc_html($f_desc); ?></p>
-                        <?php endif; ?>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
+        <?php asiaterm_render_cat_features($current_id); ?>
 
         <!-- Галерея (пропускаем первое фото — оно в описании) -->
         <?php $gallery_rest = !empty($gallery) ? array_slice($gallery, 1) : []; ?>
