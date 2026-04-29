@@ -13,14 +13,14 @@
         </div>
     <?php else : ?>
         <?php
-        $content = get_the_content();
-        $content = apply_filters('the_content', $content);
-        $lines   = explode("\n", $content);
-        $lines   = array_filter($lines, fn($l) => trim($l) !== '');
+        $content = apply_filters('the_content', get_the_content());
+        $lines   = preg_split('/\r\n|\r|\n/', $content);
+        $lines   = array_values(array_filter($lines, fn($l) => trim($l) !== ''));
         $lines   = array_slice($lines, 0, 10);
+        $excerpt_html = force_balance_tags(implode("\n", $lines));
         ?>
         <div class="product-shortdesc mb-4">
-            <?php echo wp_kses_post(implode("\n", $lines)); ?>
+            <?php echo wp_kses_post($excerpt_html); ?>
         </div>
     <?php endif; ?>
 

@@ -13,8 +13,9 @@ include(locate_template('template-parts/phead.php'));
             $shortdesc   = rwmb_meta('prod_cat_shortdesc', [], $current_id);
             $cat_features = rwmb_meta('prod_cat_features', [], $current_id);
             $gallery     = rwmb_meta('prod_service_gallery', ['size' => 'costom-gallery'], $current_id);
-            // Основное фото: первое из галереи, или миниатюра записи
-            $hero_img    = !empty($gallery) ? reset($gallery)['url'] : get_the_post_thumbnail_url($current_id, 'large');
+            $gallery_full = rwmb_meta('prod_service_gallery', ['size' => 'large'], $current_id);
+            // Основное фото: первое из галереи в полном размере (не обрезано)
+            $hero_img    = !empty($gallery_full) ? reset($gallery_full)['url'] : get_the_post_thumbnail_url($current_id, 'large');
         ?>
 
         <!-- Описание категории -->
@@ -63,7 +64,7 @@ include(locate_template('template-parts/phead.php'));
                 <?php foreach ($gallery_rest as $img) : ?>
                 <div class="col-lg-4 col-md-6">
                     <a href="<?php echo esc_url(asiaterm_webp_url_swap($img['full_url'])); ?>" data-lightbox="cat-gallery" data-title="<?php echo esc_attr($img['alt'] ?: ''); ?>">
-                        <div class="cat-hero-img" style="height: 250px;">
+                        <div class="cat-hero-img cat-hero-img--thumb" style="height: 250px;">
                             <img src="<?php echo esc_url(asiaterm_webp_url_swap($img['url'])); ?>" loading="lazy" alt="<?php echo esc_attr($img['alt'] ?: ''); ?>">
                         </div>
                     </a>

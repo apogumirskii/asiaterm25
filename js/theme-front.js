@@ -9,8 +9,6 @@ document.addEventListener('DOMContentLoaded', function () {
             loop: true,
             speed: 800,
             autoplay: { delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true },
-            effect: 'fade',
-            fadeEffect: { crossFade: true },
             on: {
                 init: function (s) {
                     if (!bulletsContainer) return;

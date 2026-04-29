@@ -602,6 +602,7 @@ body {
     left: 0.9375rem;
     transform: translateY(-50%);
     max-width: 45rem;
+    z-index: 5;
 }
 
 .hero-subheading {
@@ -1856,18 +1857,26 @@ body {
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-md);
+    background: var(--color-gray-light);
 }
 
 .cat-hero-img img {
     width: 100%;
-    height: 22rem;
-    object-fit: cover;
+    height: auto;
+    max-height: 28rem;
+    object-fit: contain;
     display: block;
     transition: transform 0.4s;
 }
 
 .cat-hero-img:hover img {
     transform: scale(1.03);
+}
+
+/* Превью галереи под героем — там обрезка нужна (одинаковая высота) */
+.cat-hero-img--thumb img {
+    height: 100%;
+    object-fit: cover;
 }
 
 .cat-hero-title {
