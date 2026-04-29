@@ -47,9 +47,11 @@ $slides = new WP_Query([
                     <?php if ($head) : ?>
                         <h2 class="hero-heading"><?php echo esc_html($head); ?></h2>
                     <?php endif; ?>
-                    <a href="<?php echo esc_url($link_url); ?>" class="btn hero-slider-btn">
-                        <?php echo esc_html($btntext); ?> <i class="fas fa-arrow-right ms-2"></i>
-                    </a>
+                    <?php if ($btntext) : ?>
+                        <a href="<?php echo esc_url($link_url); ?>" class="btn hero-slider-btn">
+                            <?php echo esc_html($btntext); ?> <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

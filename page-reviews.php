@@ -1,16 +1,16 @@
-<?php /* Template Name: Сертификаты */ get_header();
+<?php /* Template Name: Отзывы */ get_header();
 include(locate_template('template-parts/menu.php'));
 include(locate_template('template-parts/phead.php'));
 
-$gallery = rwmb_meta('cert_gallery');
+$gallery = rwmb_meta('reviews_gallery');
 ?>
 
 <section class="py-5">
     <div class="container">
         <div class="text-center mb-5">
-            <h6 class="section-subheading"><?php esc_html_e('Документы', 'asiaterm25'); ?></h6>
+            <h6 class="section-subheading"><?php esc_html_e('Доверие', 'asiaterm25'); ?></h6>
             <h2 class="section-heading"><?php the_title(); ?></h2>
-            <p class="company-text mt-3" style="max-width: 600px; margin: 0 auto;"><?php esc_html_e('Все наше оборудование имеет официальную сертификацию и соответствует международным стандартам качества.', 'asiaterm25'); ?></p>
+            <p class="company-text mt-3" style="max-width: 600px; margin: 0 auto;"><?php esc_html_e('Реальные отзывы наших клиентов и партнёров о работе с компанией Asiaterm.', 'asiaterm25'); ?></p>
         </div>
 
         <?php if ($gallery) : ?>
@@ -19,12 +19,12 @@ $gallery = rwmb_meta('cert_gallery');
             <div class="col-md-6">
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-search"></i></span>
-                    <input type="text" id="certSearch" class="form-control form-control-lg" placeholder="<?php esc_attr_e('Поиск по названию сертификата...', 'asiaterm25'); ?>">
+                    <input type="text" id="reviewSearch" class="form-control form-control-lg" placeholder="<?php esc_attr_e('Поиск по названию отзыва...', 'asiaterm25'); ?>">
                 </div>
             </div>
         </div>
 
-        <div class="row g-4" id="certGrid">
+        <div class="row g-4" id="reviewGrid">
             <?php foreach ($gallery as $image) :
                 $title    = $image['title'] ?? '';
                 $alt      = $image['alt']   ?? '';
@@ -47,7 +47,7 @@ $gallery = rwmb_meta('cert_gallery');
             ?>
             <div class="col-6 col-md-4 col-lg-3 cert-item" data-name="<?php echo esc_attr(mb_strtolower($title)); ?>">
                 <a href="<?php echo esc_url($href); ?>"
-                   <?php if ($is_pdf) : ?>data-cert-pdf="<?php echo esc_url($href); ?>" data-cert-title="<?php echo esc_attr($title); ?>"<?php else : ?>data-lightbox="certificates" data-title="<?php echo esc_attr($title); ?>"<?php endif; ?>
+                   <?php if ($is_pdf) : ?>data-cert-pdf="<?php echo esc_url($href); ?>" data-cert-title="<?php echo esc_attr($title); ?>"<?php else : ?>data-lightbox="reviews" data-title="<?php echo esc_attr($title); ?>"<?php endif; ?>
                    class="cert-card">
                     <div class="cert-card-img">
                         <?php if ($is_pdf) : ?>
@@ -73,7 +73,7 @@ $gallery = rwmb_meta('cert_gallery');
             </div>
             <?php endforeach; ?>
         </div>
-        <p class="text-muted mt-3 small text-center" id="certCount"><?php printf(esc_html__('Всего сертификатов: %d', 'asiaterm25'), count($gallery)); ?></p>
+        <p class="text-muted mt-3 small text-center" id="reviewCount"><?php printf(esc_html__('Всего отзывов: %d', 'asiaterm25'), count($gallery)); ?></p>
 
         <?php else : ?>
         <!-- Демо-заглушка -->
@@ -82,17 +82,17 @@ $gallery = rwmb_meta('cert_gallery');
             <div class="col-6 col-md-4 col-lg-3">
                 <div class="cert-card">
                     <div class="cert-card-img d-flex align-items-center justify-content-center" style="background: var(--color-gray);">
-                        <i class="fas fa-file-pdf fa-4x" style="color: var(--color-primary); opacity: 0.3;"></i>
+                        <i class="fas fa-comment-dots fa-4x" style="color: var(--color-primary); opacity: 0.3;"></i>
                     </div>
                     <div class="cert-card-body">
-                        <p class="cert-card-title"><?php printf(esc_html__('Сертификат %d', 'asiaterm25'), $i); ?></p>
+                        <p class="cert-card-title"><?php printf(esc_html__('Отзыв %d', 'asiaterm25'), $i); ?></p>
                     </div>
                 </div>
             </div>
             <?php endfor; ?>
         </div>
         <div class="text-center mt-4">
-            <p class="text-muted"><?php esc_html_e('Загрузите сертификаты через редактор страницы в Meta Box → Галерея сертификатов', 'asiaterm25'); ?></p>
+            <p class="text-muted"><?php esc_html_e('Загрузите отзывы через редактор страницы в Meta Box → Галерея отзывов', 'asiaterm25'); ?></p>
         </div>
         <?php endif; ?>
     </div>
@@ -100,20 +100,20 @@ $gallery = rwmb_meta('cert_gallery');
 
 <?php if ($gallery) : ?>
 <!-- Модалка PDF просмотра -->
-<div class="modal fade" id="certPdfModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="reviewPdfModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content bg-dark border-0">
             <div class="modal-header border-0 py-2 px-3">
-                <h6 class="modal-title text-white mb-0" id="certPdfTitle"></h6>
+                <h6 class="modal-title text-white mb-0" id="reviewPdfTitle"></h6>
                 <div class="d-flex align-items-center gap-3 ms-auto">
-                    <a href="#" id="certPdfDownload" target="_blank" rel="noopener" class="btn btn-sm portfolio-detail-btn">
+                    <a href="#" id="reviewPdfDownload" target="_blank" rel="noopener" class="btn btn-sm portfolio-detail-btn">
                         <i class="fas fa-download me-1"></i> <?php esc_html_e('Скачать', 'asiaterm25'); ?>
                     </a>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
             </div>
             <div class="modal-body p-0">
-                <iframe id="certPdfFrame" src="" style="width:100%; height:100%; border:0; background:#525659;"></iframe>
+                <iframe id="reviewPdfFrame" src="" style="width:100%; height:100%; border:0; background:#525659;"></iframe>
             </div>
         </div>
     </div>
@@ -121,10 +121,10 @@ $gallery = rwmb_meta('cert_gallery');
 
 <script>
 jQuery(document).ready(function($) {
-    var $items = $('#certGrid .cert-item');
+    var $items = $('#reviewGrid .cert-item');
     var total = $items.length;
 
-    $('#certSearch').on('input', function() {
+    $('#reviewSearch').on('input', function() {
         var q = $(this).val().trim().toLowerCase();
         var visible = 0;
         $items.each(function() {
@@ -132,26 +132,25 @@ jQuery(document).ready(function($) {
             $(this).toggle(match);
             if (match) visible++;
         });
-        $('#certCount').text(q
-            ? '<?php echo esc_js(__('Найдено сертификатов:', 'asiaterm25')); ?> ' + visible + ' / ' + total
-            : '<?php echo esc_js(__('Всего сертификатов:', 'asiaterm25')); ?> ' + total);
+        $('#reviewCount').text(q
+            ? '<?php echo esc_js(__('Найдено отзывов:', 'asiaterm25')); ?> ' + visible + ' / ' + total
+            : '<?php echo esc_js(__('Всего отзывов:', 'asiaterm25')); ?> ' + total);
     });
 
     // Открытие PDF в модалке
-    $(document).on('click', '[data-cert-pdf]', function(e) {
+    $(document).on('click', '#reviewGrid [data-cert-pdf]', function(e) {
         e.preventDefault();
         var url   = $(this).data('cert-pdf');
         var title = $(this).data('cert-title') || 'PDF';
-        $('#certPdfTitle').text(title);
-        $('#certPdfDownload').attr('href', url);
-        $('#certPdfFrame').attr('src', url);
-        var modal = new bootstrap.Modal(document.getElementById('certPdfModal'));
+        $('#reviewPdfTitle').text(title);
+        $('#reviewPdfDownload').attr('href', url);
+        $('#reviewPdfFrame').attr('src', url);
+        var modal = new bootstrap.Modal(document.getElementById('reviewPdfModal'));
         modal.show();
     });
 
-    // Очистить iframe при закрытии (остановить загрузку)
-    $('#certPdfModal').on('hidden.bs.modal', function() {
-        $('#certPdfFrame').attr('src', '');
+    $('#reviewPdfModal').on('hidden.bs.modal', function() {
+        $('#reviewPdfFrame').attr('src', '');
     });
 });
 </script>

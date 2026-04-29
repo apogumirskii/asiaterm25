@@ -411,10 +411,33 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
                 ],
             ],
             [
-                'type'             => 'image_advanced',
+                'type'             => 'file_advanced',
                 'name'             => esc_html__( 'Галерея сертификатов', 'asiaterm25' ),
                 'id'               => 'cert_gallery',
                 'max_file_uploads' => 999,
+                'mime_type'        => 'image,application/pdf',
+                'desc'             => esc_html__( 'Поддерживаются изображения и PDF', 'asiaterm25' ),
+            ],
+        ],
+    ];
+
+    $meta_boxes[] = [
+        'title'      => esc_html__( 'Контент страницы "Отзывы"', 'asiaterm25' ),
+        'id'         => 'reviews_params',
+        'post_types' => ['page'],
+        'context'    => 'normal',
+        'priority'   => 'high',
+        'show'       => [
+            'template' => ['page-reviews.php'],
+        ],
+        'fields'     => [
+            [
+                'type'             => 'file_advanced',
+                'name'             => esc_html__( 'Галерея отзывов', 'asiaterm25' ),
+                'id'               => 'reviews_gallery',
+                'max_file_uploads' => 999,
+                'mime_type'        => 'image,application/pdf',
+                'desc'             => esc_html__( 'Поддерживаются изображения и PDF', 'asiaterm25' ),
             ],
         ],
     ];

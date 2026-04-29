@@ -75,7 +75,7 @@ function asiaterm_enqueue_swiper() {
 add_action('wp_enqueue_scripts', 'asiaterm_enqueue_swiper');
 
 function asiaterm_enqueue_lightbox() {
-    $lb_templates = ['page-singleproduct.php', 'page-complexproduct.php', 'page-portfolio.php', 'page-certificates.php', 'page-about.php', 'page-category.php'];
+    $lb_templates = ['page-singleproduct.php', 'page-complexproduct.php', 'page-portfolio.php', 'page-certificates.php', 'page-reviews.php', 'page-about.php', 'page-category.php'];
     if (is_page_template($lb_templates) || is_singular('portfolio')) {
         $uri = get_template_directory_uri();
         $ver = wp_get_theme()->get('Version');
