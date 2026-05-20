@@ -560,9 +560,9 @@ body {
 
 .hero-slide {
     position: relative;
-    height: 100vh;
-    min-height: 40rem;
-    max-height: 60rem;
+    height: 70vh;
+    min-height: 32rem;
+    max-height: 44rem;
 }
 
 .hero-slide-bg {
@@ -663,16 +663,23 @@ body {
 .hero-promo-box {
     position: absolute;
     bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 2rem;
     z-index: 10;
     background: rgba(28, 43, 40, 0.92);
-    padding: 2.5rem 3rem;
-    max-width: 40rem;
+    padding: 1.5rem 1.75rem;
+    max-width: 22rem;
     width: 90%;
-    text-align: center;
+    text-align: left;
     border-radius: var(--radius-lg);
     backdrop-filter: blur(8px);
+}
+
+.hero-promo-box h4 {
+    color: var(--color-white);
+    font-size: var(--font-size-lg) !important;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 0.75rem;
 }
 
 .hero-promo-box h4 {
@@ -2508,17 +2515,35 @@ body {
 =============================================*/
 .swiper-partners { margin: 20px 0; }
 .partner-item {
-    width: 120px; height: 100px; display: flex; align-items: center;
-    justify-content: center; padding: 15px; border: 1px solid #dee2e6;
-    border-radius: 8px; background: #fff; margin: 0 5px;
+    width: 200px;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-lg);
+    background: var(--color-dark);
+    margin: 0 auto;
     transition: all var(--transition);
 }
-.partner-item:hover { border-color: var(--color-primary); box-shadow: var(--shadow-md); transform: translateY(-2px); }
-.partner-logo { max-width: 90px; max-height: 70px; width: auto; height: auto; object-fit: contain; }
+.partner-item:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 8px 24px rgba(232, 98, 26, 0.2);
+    transform: translateY(-3px);
+}
+.partner-logo {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
 
 @media (max-width: 768px) {
-    .partner-item { width: 100px; height: 80px; padding: 10px; }
-    .partner-logo { max-width: 70px; max-height: 50px; }
+    .partner-item { width: 150px; height: 110px; padding: 1rem; }
 }
 
 /* Documents table mobile */
