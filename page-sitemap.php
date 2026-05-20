@@ -2,12 +2,23 @@
 include(locate_template('template-parts/menu.php'));
 include(locate_template('template-parts/phead.php'));
 
-// Все страницы кроме служебных (sitemap, oferta — выводим отдельно)
+// Все страницы кроме каталога (ID 13) и его потомков — каталог отдельным блоком
 $current_id = get_the_ID();
+$catalog_id = 13;
+
+// Соберём все ID-потомков каталога рекурсивно
+$catalog_descendants = get_pages([
+    'child_of'    => $catalog_id,
+    'post_status' => 'publish',
+]);
+$catalog_excl = [$catalog_id, $current_id];
+foreach ($catalog_descendants as $p) $catalog_excl[] = $p->ID;
+
+// Обычные страницы (без каталога)
 $all_pages = get_pages([
     'post_status' => 'publish',
     'sort_column' => 'menu_order, post_title',
-    'exclude'     => [$current_id],
+    'exclude'     => $catalog_excl,
 ]);
 
 // Сгруппируем по родителю для дерева
@@ -15,6 +26,21 @@ $pages_by_parent = [];
 foreach ($all_pages as $p) {
     $pages_by_parent[$p->post_parent][] = $p;
 }
+
+// Каталог отдельным деревом
+$catalog_page = get_post($catalog_id);
+$catalog_by_parent = [];
+foreach ($catalog_descendants as $p) {
+    $catalog_by_parent[$p->post_parent][] = $p;
+}
+// Сортируем дочерние по menu_order, потом title
+foreach ($catalog_by_parent as $pid => &$kids) {
+    usort($kids, function ($a, $b) {
+        $ord = $a->menu_order <=> $b->menu_order;
+        return $ord !== 0 ? $ord : strcasecmp($a->post_title, $b->post_title);
+    });
+}
+unset($kids);
 
 function asiaterm_sitemap_branch($parent_id, $pages_by_parent, $level = 0) {
     if (empty($pages_by_parent[$parent_id])) return;
@@ -51,13 +77,13 @@ $xml_url = home_url('/wp-sitemap.xml');
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <p class="text-muted mb-4">
+                <div class="sitemap-intro">
                     <i class="fas fa-sitemap me-2" style="color: var(--color-primary);"></i>
                     <?php esc_html_e('Полная навигация по сайту. Для поисковых систем доступна', 'asiaterm25'); ?>
                     <a href="<?php echo esc_url($xml_url); ?>" target="_blank" rel="noopener">
                         XML-карта сайта <i class="fas fa-external-link-alt ms-1"></i>
                     </a>.
-                </p>
+                </div>
             </div>
         </div>
 
@@ -72,6 +98,23 @@ $xml_url = home_url('/wp-sitemap.xml');
                     <?php asiaterm_sitemap_branch(0, $pages_by_parent); ?>
                 </div>
             </div>
+
+            <!-- Каталог -->
+            <?php if ($catalog_page) : ?>
+            <div class="col-lg-6">
+                <div class="sitemap-card">
+                    <h3 class="sitemap-card-title">
+                        <i class="fas fa-th-large me-2"></i><?php echo esc_html($catalog_page->post_title); ?>
+                    </h3>
+                    <ul class="sitemap-list sitemap-list--root">
+                        <li>
+                            <a href="<?php echo esc_url(get_permalink($catalog_page->ID)); ?>"><?php esc_html_e('Все категории', 'asiaterm25'); ?></a>
+                            <?php asiaterm_sitemap_branch($catalog_id, $catalog_by_parent, 1); ?>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <?php endif; ?>
 
             <!-- Проекты -->
             <?php if ($portfolios->have_posts()) : ?>
