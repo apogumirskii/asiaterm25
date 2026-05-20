@@ -679,15 +679,26 @@ body {
     color: var(--color-primary);
 }
 
-.hero-promo-box {
+.hero-promo-wrap {
     position: absolute;
     bottom: 2rem;
-    right: 2rem;
+    left: 0;
+    right: 0;
     z-index: 10;
+    pointer-events: none;
+}
+
+.hero-promo-wrap .container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.hero-promo-box {
+    pointer-events: auto;
     background: rgba(28, 43, 40, 0.92);
     padding: 1.5rem 1.75rem;
     max-width: 22rem;
-    width: 90%;
+    width: 100%;
     text-align: left;
     border-radius: var(--radius-lg);
     backdrop-filter: blur(8px);
@@ -738,11 +749,15 @@ body {
     .hero-slide-inner { padding: 0 1rem; }
     .hero-slide-text  { padding: 1.25rem 1.5rem; border-radius: 0.75rem; }
     .hero-bullets { display: none; }
-    .hero-promo-box {
+    .hero-promo-wrap {
         position: relative;
         bottom: auto;
-        left: auto;
-        transform: none;
+    }
+    .hero-promo-wrap .container {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .hero-promo-box {
         width: 100%;
         max-width: 100%;
         border-radius: 0;
@@ -2738,6 +2753,104 @@ body {
     z-index: 2;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     letter-spacing: 0.04em;
+}
+
+/*=============================================
+=            Sitemap                          =
+=============================================*/
+
+.sitemap-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-gray);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem 2rem;
+    height: 100%;
+    box-shadow: var(--shadow-sm);
+}
+
+.sitemap-card-title {
+    color: var(--color-black);
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 2px solid var(--color-primary);
+    display: flex;
+    align-items: center;
+}
+
+.sitemap-card-title i {
+    color: var(--color-primary);
+}
+
+.sitemap-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.sitemap-list li {
+    position: relative;
+    padding-left: 1.25rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+.sitemap-list li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+.sitemap-list a {
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color var(--transition);
+}
+
+.sitemap-list a:hover {
+    color: var(--color-primary);
+}
+
+.sitemap-list--root > li {
+    margin-bottom: 0.75rem;
+}
+
+.sitemap-list--root > li > a {
+    font-weight: 600;
+    color: var(--color-black);
+}
+
+/* Вложенные ссылки (подстраницы каталога) */
+.sitemap-list .sitemap-list {
+    margin-top: 0.5rem;
+    padding-left: 0.5rem;
+}
+
+.sitemap-list .sitemap-list li::before {
+    color: var(--color-text-muted);
+}
+
+.sitemap-date {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+}
+
+.sitemap-card--xml {
+    background: var(--color-dark);
+    color: var(--color-white);
+    border-color: var(--color-dark);
+}
+
+.sitemap-card--xml .sitemap-card-title,
+.sitemap-card--xml .sitemap-card-title i {
+    color: var(--color-white);
+}
+
+.sitemap-card--xml p {
+    color: rgba(255,255,255,0.7);
 }
 
 .cert-pdf-preview span {

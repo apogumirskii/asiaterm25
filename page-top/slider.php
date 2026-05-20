@@ -91,10 +91,14 @@ $promo_url  = $promo_page ? get_permalink($promo_page->ID) : home_url('/');
 
     <div class="hero-bullets" id="heroBullets"></div>
 
-    <div class="hero-promo-box">
-        <h4>Наши <span>реализованные проекты</span> отопления</h4>
-        <a href="<?php echo esc_url($promo_url); ?>" class="hero-promo-link">
-            <?php esc_html_e('Подробнее', 'asiaterm25'); ?> <i class="fas fa-arrow-right ms-1"></i>
-        </a>
+    <div class="hero-promo-wrap">
+        <div class="container">
+            <div class="hero-promo-box">
+                <h4>Наши <span>реализованные проекты</span> отопления</h4>
+                <a href="<?php echo esc_url($promo_url); ?>" class="hero-promo-link">
+                    <?php esc_html_e('Подробнее', 'asiaterm25'); ?> <i class="fas fa-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
     </div>
 </section>
