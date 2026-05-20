@@ -5,32 +5,35 @@ $slides = new WP_Query([
     'posts_per_page' => -1,
     'orderby'        => ['menu_order' => 'ASC', 'date' => 'ASC'],
 ]);
+
+$promo_page = asiaterm_portfolio_page();
+$promo_url  = $promo_page ? get_permalink($promo_page->ID) : home_url('/');
 ?>
 
 <section class="hero-slider">
-
     <div class="swiper swiper-hero">
         <div class="swiper-wrapper">
         <?php if ($slides->have_posts()) : while ($slides->have_posts()) : $slides->the_post();
-            $head     = get_post_meta(get_the_ID(), 'sliderhead', true) ?: get_the_title();
-            $text     = get_post_meta(get_the_ID(), 'slidertext', true);
-            $btntext  = get_post_meta(get_the_ID(), 'sliderbtntext', true) ?: 'В каталог';
-            $link_id  = get_post_meta(get_the_ID(), 'sliderlink', true);
-            $link_url = $link_id ? get_permalink($link_id) : '#';
-            $file_id   = get_post_meta(get_the_ID(), 'sliderfile', true);
+            $sid       = get_the_ID();
+            $head      = get_post_meta($sid, 'sliderhead', true) ?: get_the_title();
+            $text      = get_post_meta($sid, 'slidertext', true);
+            $btntext   = get_post_meta($sid, 'sliderbtntext', true) ?: 'В каталог';
+            $link_id   = get_post_meta($sid, 'sliderlink', true);
+            $link_url  = $link_id ? get_permalink($link_id) : '#';
+            $file_id   = get_post_meta($sid, 'sliderfile', true);
             $file_type = $file_id ? get_post_mime_type($file_id) : '';
             $is_video  = $file_id && strpos($file_type, 'video') !== false;
             if ($is_video) {
                 $file_url = wp_get_attachment_url($file_id);
                 $file_mob = '';
             } else {
-                $file_url = $file_id ? wp_get_attachment_image_url($file_id, 'slider-desc') : get_the_post_thumbnail_url(get_the_ID(), 'slider-desc');
-                $file_mob = $file_id ? wp_get_attachment_image_url($file_id, 'slider-mob')  : get_the_post_thumbnail_url(get_the_ID(), 'slider-mob');
+                $file_url = $file_id ? wp_get_attachment_image_url($file_id, 'slider-desc') : get_the_post_thumbnail_url($sid, 'slider-desc');
+                $file_mob = $file_id ? wp_get_attachment_image_url($file_id, 'slider-mob')  : get_the_post_thumbnail_url($sid, 'slider-mob');
             }
         ?>
         <div class="swiper-slide hero-slide">
-            <div class="hero-slide-bg">
-                <?php if (strpos($file_type, 'video') !== false) : ?>
+            <div class="hero-slide-media">
+                <?php if ($is_video) : ?>
                     <video autoplay muted loop playsinline>
                         <source src="<?php echo esc_url($file_url); ?>" type="<?php echo esc_attr($file_type); ?>">
                     </video>
@@ -39,21 +42,22 @@ $slides = new WP_Query([
                         <?php if ($file_mob) : ?>
                             <source media="(max-width: 768px)" srcset="<?php echo esc_url($file_mob); ?>">
                         <?php endif; ?>
-                        <img src="<?php echo esc_url($file_url ?: get_template_directory_uri() . '/files/slide1.jpg'); ?>" alt="<?php the_title(); ?>">
+                        <img src="<?php echo esc_url($file_url ?: get_template_directory_uri() . '/files/slide1.jpg'); ?>" alt="<?php echo esc_attr($head); ?>">
                     </picture>
                 <?php endif; ?>
+                <span class="hero-slide-tint"></span>
             </div>
-            <div class="hero-slide-overlay"></div>
-            <div class="container h-100">
-                <div class="hero-slide-content">
+
+            <div class="hero-slide-inner">
+                <div class="hero-slide-text">
                     <?php if ($text) : ?>
-                        <h6 class="hero-subheading"><?php echo esc_html($text); ?></h6>
+                        <p class="hero-slide-sub"><?php echo esc_html($text); ?></p>
                     <?php endif; ?>
                     <?php if ($head) : ?>
-                        <h2 class="hero-heading"><?php echo esc_html($head); ?></h2>
+                        <h2 class="hero-slide-title"><?php echo esc_html($head); ?></h2>
                     <?php endif; ?>
                     <?php if ($btntext) : ?>
-                        <a href="<?php echo esc_url($link_url); ?>" class="btn hero-slider-btn">
+                        <a href="<?php echo esc_url($link_url); ?>" class="hero-slide-cta">
                             <?php echo esc_html($btntext); ?> <i class="fas fa-arrow-right ms-2"></i>
                         </a>
                     <?php endif; ?>
@@ -62,46 +66,31 @@ $slides = new WP_Query([
         </div>
         <?php endwhile; wp_reset_postdata();
         else : ?>
-        <!-- Заглушка -->
-        <?php
-        $stub_slides = [
-            ['sub' => 'Внутрипольные конвекторы', 'title' => 'Стиль и практичность',         'img' => '/files/slide1.jpg'],
-            ['sub' => 'Фанкойлы',                  'title' => 'Охлаждение и обогрев',          'img' => '/files/slide2.jpg'],
-            ['sub' => 'Отопительные котлы',        'title' => 'Прямые поставки',               'img' => '/files/slide3.jpg'],
-            ['sub' => 'Тепловые насосы',           'title' => 'Экономия и практичность',       'img' => '/files/slide4.jpg'],
-        ];
-        foreach ($stub_slides as $s) : ?>
         <div class="swiper-slide hero-slide">
-            <div class="hero-slide-bg">
-                <img src="<?php echo get_template_directory_uri() . $s['img']; ?>" alt="">
+            <div class="hero-slide-media">
+                <img src="<?php echo get_template_directory_uri(); ?>/files/slide1.jpg" alt="">
+                <span class="hero-slide-tint"></span>
             </div>
-            <div class="hero-slide-overlay"></div>
-            <div class="container h-100">
-                <div class="hero-slide-content">
-                    <h6 class="hero-subheading"><?php echo esc_html($s['sub']); ?></h6>
-                    <h2 class="hero-heading"><?php echo esc_html($s['title']); ?></h2>
-                    <a href="#" class="btn hero-slider-btn">В каталог <i class="fas fa-arrow-right ms-2"></i></a>
+            <div class="hero-slide-inner">
+                <div class="hero-slide-text">
+                    <p class="hero-slide-sub">Asiaterm</p>
+                    <h2 class="hero-slide-title">Комплексное отопление и охлаждение</h2>
+                    <a href="<?php echo esc_url(get_permalink(13) ?: home_url('/')); ?>" class="hero-slide-cta">
+                        В каталог <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
                 </div>
             </div>
         </div>
-        <?php endforeach; endif; ?>
+        <?php endif; ?>
         </div>
     </div>
 
-    <!-- Нумерация -->
     <div class="hero-bullets" id="heroBullets"></div>
 
-    <!-- Блок поверх слайдера -->
-    <?php
-    $promo_page = asiaterm_portfolio_page();
-    $promo_url  = $promo_page ? get_permalink($promo_page->ID) : home_url('/');
-    ?>
     <div class="hero-promo-box">
         <h4>Наши <span>реализованные проекты</span> отопления</h4>
         <a href="<?php echo esc_url($promo_url); ?>" class="hero-promo-link">
             <?php esc_html_e('Подробнее', 'asiaterm25'); ?> <i class="fas fa-arrow-right ms-1"></i>
         </a>
     </div>
-
 </section>
-

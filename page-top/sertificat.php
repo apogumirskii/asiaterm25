@@ -5,7 +5,7 @@
 
             <!-- Кнопка видео -->
             <div class="col-lg-3 col-md-2 text-center">
-                <a href="https://www.youtube.com/watch?v=jnLSYfObARA"
+                <a href="https://www.youtube.com/watch?v=ovUHY4AG53U"
                    class="video-play-btn"
                    data-bs-toggle="modal"
                    data-bs-target="#videoModal">
@@ -19,8 +19,11 @@
                     Создаем <span>комфорт и уют</span> в вашем доме или офисе
                 </h2>
                 <div class="d-flex flex-wrap gap-3">
-                    <a href="/contacts/" class="btn hero-btn">Сертификаты <i class="fas fa-arrow-right ms-2"></i></a>
-                    <a href="/contacts/" class="btn hero-btn">Протоколы испытаний <i class="fas fa-arrow-right ms-2"></i></a>
+                    <?php
+                    $cert_pages = get_pages(['meta_key' => '_wp_page_template', 'meta_value' => 'page-certificates.php']);
+                    $cert_url = $cert_pages ? get_permalink($cert_pages[0]->ID) : home_url('/');
+                    ?>
+                    <a href="<?php echo esc_url($cert_url); ?>" class="btn hero-btn">Сертификаты <i class="fas fa-arrow-right ms-2"></i></a>
                 </div>
             </div>
 
@@ -39,7 +42,7 @@
                 <div class="ratio ratio-16x9">
                     <iframe id="youtubeFrame"
                             src=""
-                            data-src="https://www.youtube.com/embed/jnLSYfObARA?autoplay=1"
+                            data-src="https://www.youtube.com/embed/ovUHY4AG53U?autoplay=1"
                             title="YouTube video"
                             allowfullscreen
                             allow="autoplay; encrypted-media">

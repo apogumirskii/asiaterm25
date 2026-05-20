@@ -47,20 +47,34 @@ $brands_list = $brands ?: [
 
         <div class="row g-4">
             <?php foreach ($brands_list as $brand) :
-                $logo  = !empty($brand['brand_logo']) ? reset($brand['brand_logo']) : null;
-                $photo = !empty($brand['brand_photo']) ? reset($brand['brand_photo']) : null;
+                // Логотип — поддержка двух форматов Meta Box (массив с url или просто ID)
+                $logo_raw = !empty($brand['brand_logo']) ? reset($brand['brand_logo']) : null;
+                $logo_url = '';
+                if (is_array($logo_raw) && !empty($logo_raw['url'])) {
+                    $logo_url = $logo_raw['url'];
+                } elseif (is_numeric($logo_raw)) {
+                    $logo_url = wp_get_attachment_url((int) $logo_raw);
+                }
+                // Фото
+                $photo_raw = !empty($brand['brand_photo']) ? reset($brand['brand_photo']) : null;
+                $photo_url = '';
+                if (is_array($photo_raw) && !empty($photo_raw['url'])) {
+                    $photo_url = $photo_raw['url'];
+                } elseif (is_numeric($photo_raw)) {
+                    $photo_url = wp_get_attachment_url((int) $photo_raw);
+                }
             ?>
             <div class="col-lg-4 col-md-6">
                 <div class="product-card h-100">
-                    <?php if ($photo && !empty($photo['url'])) : ?>
+                    <?php if ($photo_url) : ?>
                         <div class="product-card-img">
-                            <img src="<?php echo esc_url($photo['url']); ?>"
+                            <img src="<?php echo esc_url($photo_url); ?>"
                                  loading="lazy"
                                  alt="<?php echo esc_attr($brand['brand_name'] ?? ''); ?>">
                         </div>
-                    <?php elseif ($logo && !empty($logo['url'])) : ?>
+                    <?php elseif ($logo_url) : ?>
                         <div class="product-card-img brand-logo-fallback">
-                            <img src="<?php echo esc_url(asiaterm_webp_url_swap($logo['url'])); ?>"
+                            <img src="<?php echo esc_url(asiaterm_webp_url_swap($logo_url)); ?>"
                                  loading="lazy"
                                  alt="<?php echo esc_attr($brand['brand_name'] ?? ''); ?>">
                         </div>
@@ -72,8 +86,8 @@ $brands_list = $brands ?: [
 
                     <div class="product-card-body">
                         <div class="d-flex align-items-center gap-3 mb-3">
-                            <?php if ($logo && !empty($logo['url'])) : ?>
-                                <img src="<?php echo esc_url(asiaterm_webp_url_swap($logo['url'])); ?>"
+                            <?php if ($logo_url) : ?>
+                                <img src="<?php echo esc_url(asiaterm_webp_url_swap($logo_url)); ?>"
                                      style="max-width: 50px; max-height: 35px; object-fit: contain;"
                                      alt="<?php echo esc_attr($brand['brand_name'] ?? ''); ?>">
                             <?php endif; ?>

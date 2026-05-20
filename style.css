@@ -563,81 +563,82 @@ body {
     height: 70vh;
     min-height: 32rem;
     max-height: 44rem;
-}
-
-.hero-slide-bg {
-    position: absolute;
-    inset: 0;
     overflow: hidden;
 }
 
-.hero-slide-bg img,
-.hero-slide-bg video {
+/* Картинка / видео фоном */
+.hero-slide-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.hero-slide-media img,
+.hero-slide-media video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    animation: heroZoom 8s ease-in-out infinite alternate;
+    display: block;
 }
 
-@keyframes heroZoom {
-    from { transform: scale(1); }
-    to   { transform: scale(1.08); }
-}
-
-.hero-slide-overlay {
+.hero-slide-tint {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.4) 100%);
-    z-index: 1;
+    background: linear-gradient(90deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.35) 100%);
+    pointer-events: none;
 }
 
-.hero-slide .container {
+/* Контент поверх картинки */
+.hero-slide-inner {
     position: relative;
-    z-index: 2;
-    height: 100%;
-}
-
-.hero-slide-content {
-    position: absolute;
-    top: 50%;
-    left: 0.9375rem;
-    transform: translateY(-50%);
-    max-width: 45rem;
     z-index: 5;
-    padding: 1rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 5%;
 }
 
-.hero-subheading {
+.hero-slide-text {
+    max-width: 42rem;
+    color: #fff;
+}
+
+.hero-slide-sub {
     color: var(--color-primary);
-    font-size: var(--font-size-lg);
+    font-size: 1.05rem;
     font-weight: 600;
-    letter-spacing: 0.0625rem;
-    margin-bottom: 0.75rem;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    line-height: 1.5;
+    margin: 0 0 1rem;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.7);
 }
 
-.hero-heading {
-    color: var(--color-white);
-    font-size: clamp(2rem, 5vw, 4rem);
+.hero-slide-title {
+    color: #fff;
+    font-size: clamp(2rem, 4.5vw, 3.75rem);
     font-weight: 800;
     line-height: 1.15;
-    margin-bottom: 2rem;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+    margin: 0 0 1.75rem;
+    text-shadow: 0 3px 14px rgba(0,0,0,0.8);
 }
 
-.hero-slider-btn {
+.hero-slide-cta {
+    display: inline-flex;
+    align-items: center;
     background: var(--color-primary);
-    color: var(--color-white);
+    color: #fff !important;
     padding: 1rem 2.5rem;
-    border-radius: var(--radius-pill);
-    font-weight: 600;
-    font-size: var(--font-size-lg);
-    transition: background var(--transition);
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 1.125rem;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(232, 98, 26, 0.4);
+    transition: background 0.2s, transform 0.2s;
 }
 
-.hero-slider-btn:hover {
+.hero-slide-cta:hover {
     background: var(--color-primary-dark);
-    color: var(--color-white);
+    color: #fff !important;
+    transform: translateY(-2px);
 }
 
 .hero-bullets {
@@ -716,16 +717,10 @@ body {
         min-height: 24rem;
         max-height: 36rem;
     }
-    .hero-heading {
-        font-size: 1.5rem;
-    }
-    .hero-subheading {
-        font-size: var(--font-size-sm);
-    }
-    .btn.hero-slider-btn {
-        padding: 0.625rem 1.5rem;
-        font-size: var(--font-size-sm);
-    }
+    .hero-slide-title { font-size: 1.5rem; margin-bottom: 1rem; }
+    .hero-slide-sub   { font-size: 0.875rem; margin-bottom: 0.5rem; }
+    .hero-slide-cta   { padding: 0.625rem 1.5rem; font-size: 0.95rem; }
+    .hero-slide-inner { padding: 0 1.25rem; }
     .hero-bullets { display: none; }
     .hero-promo-box {
         position: relative;
@@ -2531,7 +2526,7 @@ body {
 =============================================*/
 .swiper-partners { margin: 20px 0; }
 .partner-item {
-    width: 200px;
+    width: 100%;
     height: 140px;
     display: flex;
     align-items: center;
@@ -2540,14 +2535,21 @@ body {
     border: 1px solid var(--color-gray);
     border-radius: var(--radius-lg);
     background: var(--color-white);
-    margin: 0 auto;
     transition: all var(--transition);
     overflow: hidden;
+    box-sizing: border-box;
 }
 .partner-item:hover {
     border-color: var(--color-primary);
     box-shadow: 0 8px 24px rgba(232, 98, 26, 0.15);
     transform: translateY(-3px);
+}
+
+.swiper-partners .swiper-slide {
+    height: auto;
+    display: flex;
+    padding: 0 0.5rem;
+    box-sizing: border-box;
 }
 .partner-logo {
     max-width: 100%;

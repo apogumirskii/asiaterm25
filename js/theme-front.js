@@ -70,8 +70,9 @@ document.addEventListener('DOMContentLoaded', function () {
             loop: true,
             autoplay: { delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: true },
             breakpoints: {
-                600:  { slidesPerView: 4 },
-                1000: { slidesPerView: 8 }
+                576:  { slidesPerView: 3 },
+                768:  { slidesPerView: 4 },
+                1200: { slidesPerView: 5 }
             }
         });
     });
