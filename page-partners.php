@@ -58,6 +58,12 @@ $brands_list = $brands ?: [
                                  loading="lazy"
                                  alt="<?php echo esc_attr($brand['brand_name'] ?? ''); ?>">
                         </div>
+                    <?php elseif ($logo && !empty($logo['url'])) : ?>
+                        <div class="product-card-img brand-logo-fallback">
+                            <img src="<?php echo esc_url(asiaterm_webp_url_swap($logo['url'])); ?>"
+                                 loading="lazy"
+                                 alt="<?php echo esc_attr($brand['brand_name'] ?? ''); ?>">
+                        </div>
                     <?php else : ?>
                         <div class="product-card-img d-flex align-items-center justify-content-center" style="background: var(--color-gray);">
                             <i class="fas fa-industry fa-4x" style="color: var(--color-primary); opacity: 0.3;"></i>

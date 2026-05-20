@@ -6,7 +6,7 @@ add_theme_support( 'title-tag' );
 add_image_size( 'small', 60, 60, true );
 add_image_size( 'vert-thumb', 400, 800, true );
 add_image_size( 'catalog-thumb', 300, 400, true  );
-add_image_size( 'slider-desc', 1920, 350, true  );
+add_image_size( 'slider-desc', 1920, 900, true  );
 add_image_size( 'slider-mob', 720, 720, true  );
 add_image_size( 'costom-gallery', 1290, 580, true  );
 

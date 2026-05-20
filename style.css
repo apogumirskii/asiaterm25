@@ -587,7 +587,8 @@ body {
 .hero-slide-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,0.45);
+    background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.4) 100%);
+    z-index: 1;
 }
 
 .hero-slide .container {
@@ -603,6 +604,7 @@ body {
     transform: translateY(-50%);
     max-width: 45rem;
     z-index: 5;
+    padding: 1rem;
 }
 
 .hero-subheading {
@@ -611,6 +613,7 @@ body {
     font-weight: 600;
     letter-spacing: 0.0625rem;
     margin-bottom: 0.75rem;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .hero-heading {
@@ -619,6 +622,7 @@ body {
     font-weight: 800;
     line-height: 1.15;
     margin-bottom: 2rem;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
 }
 
 .hero-slider-btn {
@@ -1141,6 +1145,18 @@ body {
 
 .product-card:hover .product-card-img img {
     transform: scale(1.04);
+}
+
+/* Логотип бренда как fallback вместо фото */
+.brand-logo-fallback {
+    background: var(--color-white) !important;
+    padding: 2rem !important;
+}
+
+.brand-logo-fallback img {
+    max-width: 70% !important;
+    max-height: 70% !important;
+    margin: 0 auto;
 }
 
 .product-card-body {
@@ -2521,15 +2537,16 @@ body {
     align-items: center;
     justify-content: center;
     padding: 1.5rem;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid var(--color-gray);
     border-radius: var(--radius-lg);
-    background: var(--color-dark);
+    background: var(--color-white);
     margin: 0 auto;
     transition: all var(--transition);
+    overflow: hidden;
 }
 .partner-item:hover {
     border-color: var(--color-primary);
-    box-shadow: 0 8px 24px rgba(232, 98, 26, 0.2);
+    box-shadow: 0 8px 24px rgba(232, 98, 26, 0.15);
     transform: translateY(-3px);
 }
 .partner-logo {
