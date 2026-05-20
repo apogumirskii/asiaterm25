@@ -49,6 +49,7 @@ $promo_url  = $promo_page ? get_permalink($promo_page->ID) : home_url('/');
             </div>
 
             <div class="hero-slide-inner">
+                <div class="container">
                 <div class="hero-slide-text">
                     <?php if ($text) : ?>
                         <p class="hero-slide-sub"><?php echo esc_html($text); ?></p>
@@ -62,6 +63,7 @@ $promo_url  = $promo_page ? get_permalink($promo_page->ID) : home_url('/');
                         </a>
                     <?php endif; ?>
                 </div>
+                </div>
             </div>
         </div>
         <?php endwhile; wp_reset_postdata();
@@ -72,12 +74,14 @@ $promo_url  = $promo_page ? get_permalink($promo_page->ID) : home_url('/');
                 <span class="hero-slide-tint"></span>
             </div>
             <div class="hero-slide-inner">
+                <div class="container">
                 <div class="hero-slide-text">
                     <p class="hero-slide-sub">Asiaterm</p>
                     <h2 class="hero-slide-title">Комплексное отопление и охлаждение</h2>
                     <a href="<?php echo esc_url(get_permalink(13) ?: home_url('/')); ?>" class="hero-slide-cta">
                         В каталог <i class="fas fa-arrow-right ms-2"></i>
                     </a>
+                </div>
                 </div>
             </div>
         </div>

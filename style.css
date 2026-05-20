@@ -561,9 +561,9 @@ body {
 .hero-slide,
 .swiper-hero .swiper-slide.hero-slide {
     position: relative !important;
-    height: 70vh !important;
-    min-height: 600px !important;
-    max-height: 50rem !important;
+    height: 85vh !important;
+    min-height: 720px !important;
+    max-height: 60rem !important;
     overflow: hidden !important;
     box-sizing: border-box;
 }
@@ -587,20 +587,23 @@ body {
 .hero-slide-tint {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.65) 50%, rgba(0,0,0,0.45) 100%);
+    background: linear-gradient(90deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.2) 100%);
     pointer-events: none;
     z-index: 2;
 }
 
-/* Контент поверх картинки — абсолютное центрирование */
+/* Контент поверх картинки — абсолютное центрирование с сдвигом вниз */
 .hero-slide-inner {
     position: absolute;
     inset: 0;
     z-index: 5;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    padding: 0 5%;
+    pointer-events: none;
+    padding-top: 30px;
+}
+
+.hero-slide-inner > .container {
     pointer-events: none;
 }
 
