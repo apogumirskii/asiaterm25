@@ -34,31 +34,40 @@ $gallery = rwmb_meta('cert_gallery');
                 $is_pdf   = $ext === 'pdf';
                 $att_id   = $image['ID']  ?? 0;
                 $href     = $is_pdf ? $full_url : asiaterm_webp_url_swap($full_url);
+
+                // Превью: для картинок — middle, для PDF — авто-превью WP (если есть Ghostscript)
                 $thumb_url = '';
-                if (!$is_pdf) {
-                    if ($att_id) {
-                        $thumb_arr = wp_get_attachment_image_src($att_id, 'medium');
-                        $thumb_url = $thumb_arr ? $thumb_arr[0] : $full_url;
-                    } else {
-                        $thumb_url = $full_url;
+                if ($att_id) {
+                    $thumb_arr = wp_get_attachment_image_src($att_id, 'medium');
+                    if ($thumb_arr && !empty($thumb_arr[0]) && substr($thumb_arr[0], -4) !== '.pdf') {
+                        $thumb_url = $thumb_arr[0];
                     }
+                }
+                if (!$thumb_url && !$is_pdf) {
+                    $thumb_url = $full_url;
+                }
+                if ($thumb_url) {
                     $thumb_url = asiaterm_webp_url_swap($thumb_url);
                 }
+                $has_preview = (bool) $thumb_url;
             ?>
             <div class="col-6 col-md-4 col-lg-3 cert-item" data-name="<?php echo esc_attr(mb_strtolower($title)); ?>">
                 <a href="<?php echo esc_url($href); ?>"
                    <?php if ($is_pdf) : ?>data-cert-pdf="<?php echo esc_url($href); ?>" data-cert-title="<?php echo esc_attr($title); ?>"<?php else : ?>data-lightbox="certificates" data-title="<?php echo esc_attr($title); ?>"<?php endif; ?>
                    class="cert-card">
                     <div class="cert-card-img">
-                        <?php if ($is_pdf) : ?>
+                        <?php if ($has_preview) : ?>
+                            <img src="<?php echo esc_url($thumb_url); ?>"
+                                 loading="lazy"
+                                 alt="<?php echo esc_attr($title); ?>">
+                            <?php if ($is_pdf) : ?>
+                                <span class="cert-pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>
+                            <?php endif; ?>
+                        <?php else : ?>
                             <div class="cert-pdf-preview">
                                 <i class="fas fa-file-pdf"></i>
                                 <span class="small text-uppercase mt-2">PDF</span>
                             </div>
-                        <?php else : ?>
-                            <img src="<?php echo esc_url($thumb_url); ?>"
-                                 loading="lazy"
-                                 alt="<?php echo esc_attr($title); ?>">
                         <?php endif; ?>
                         <div class="cert-card-overlay">
                             <i class="fas fa-search-plus"></i>

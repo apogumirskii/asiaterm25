@@ -558,19 +558,22 @@ body {
     overflow: hidden;
 }
 
-.hero-slide {
-    position: relative;
-    height: 70vh;
-    min-height: 32rem;
-    max-height: 44rem;
-    overflow: hidden;
+.hero-slide,
+.swiper-hero .swiper-slide.hero-slide {
+    position: relative !important;
+    height: 70vh !important;
+    min-height: 600px !important;
+    max-height: 50rem !important;
+    overflow: hidden !important;
+    box-sizing: border-box;
 }
 
 /* Картинка / видео фоном */
 .hero-slide-media {
     position: absolute;
     inset: 0;
-    z-index: 0;
+    z-index: 1;
+    overflow: hidden;
 }
 
 .hero-slide-media img,
@@ -584,23 +587,33 @@ body {
 .hero-slide-tint {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.35) 100%);
+    background: linear-gradient(90deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.65) 50%, rgba(0,0,0,0.45) 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Контент поверх картинки — абсолютное центрирование */
+.hero-slide-inner {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 5%;
     pointer-events: none;
 }
 
-/* Контент поверх картинки */
-.hero-slide-inner {
-    position: relative;
-    z-index: 5;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    padding: 0 5%;
-}
-
 .hero-slide-text {
-    max-width: 42rem;
+    max-width: 46rem;
+    width: 100%;
     color: #fff;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(6px);
+    padding: 2rem 2.5rem;
+    border-radius: 1rem;
+    border-left: 4px solid var(--color-primary);
+    pointer-events: auto;
 }
 
 .hero-slide-sub {
@@ -609,16 +622,14 @@ body {
     font-weight: 600;
     line-height: 1.5;
     margin: 0 0 1rem;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.7);
 }
 
 .hero-slide-title {
     color: #fff;
-    font-size: clamp(2rem, 4.5vw, 3.75rem);
+    font-size: clamp(1.75rem, 4vw, 3.25rem);
     font-weight: 800;
-    line-height: 1.15;
-    margin: 0 0 1.75rem;
-    text-shadow: 0 3px 14px rgba(0,0,0,0.8);
+    line-height: 1.2;
+    margin: 0 0 1.5rem;
 }
 
 .hero-slide-cta {
@@ -626,10 +637,10 @@ body {
     align-items: center;
     background: var(--color-primary);
     color: #fff !important;
-    padding: 1rem 2.5rem;
+    padding: 0.9rem 2.25rem;
     border-radius: 999px;
     font-weight: 700;
-    font-size: 1.125rem;
+    font-size: 1.0625rem;
     text-decoration: none;
     box-shadow: 0 6px 20px rgba(232, 98, 26, 0.4);
     transition: background 0.2s, transform 0.2s;
@@ -712,15 +723,17 @@ body {
 }
 
 @media (max-width: 768px) {
-    .hero-slide {
-        height: 70vh;
-        min-height: 24rem;
-        max-height: 36rem;
+    .hero-slide,
+    .swiper-hero .swiper-slide.hero-slide {
+        height: 70vh !important;
+        min-height: 28rem !important;
+        max-height: 40rem !important;
     }
     .hero-slide-title { font-size: 1.5rem; margin-bottom: 1rem; }
     .hero-slide-sub   { font-size: 0.875rem; margin-bottom: 0.5rem; }
     .hero-slide-cta   { padding: 0.625rem 1.5rem; font-size: 0.95rem; }
-    .hero-slide-inner { padding: 0 1.25rem; }
+    .hero-slide-inner { padding: 0 1rem; }
+    .hero-slide-text  { padding: 1.25rem 1.5rem; border-radius: 0.75rem; }
     .hero-bullets { display: none; }
     .hero-promo-box {
         position: relative;
@@ -2707,6 +2720,21 @@ body {
     color: #d33;
     font-size: 4rem;
     transition: transform var(--transition);
+}
+
+.cert-pdf-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: #d33;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    z-index: 2;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    letter-spacing: 0.04em;
 }
 
 .cert-pdf-preview span {
