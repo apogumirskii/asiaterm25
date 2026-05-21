@@ -137,28 +137,28 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Portfolio filter
-    var filterBtns = document.querySelectorAll('.portfolio-filter-btn');
-    if (filterBtns.length) {
-        filterBtns.forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                var filter = btn.dataset.filter;
-                filterBtns.forEach(function (b) { b.classList.remove('active'); });
-                btn.classList.add('active');
+    // Portfolio filter (event delegation — устойчиво к динамической перерисовке)
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest('.portfolio-filter-btn');
+        if (!btn) return;
+        e.preventDefault();
 
-                var grid = document.getElementById('portfolioGrid');
-                if (!grid) return;
-                grid.querySelectorAll('.portfolio-item').forEach(function (item) {
-                    var cats = (item.dataset.cats || '').toString();
-                    if (filter === '*' || cats.indexOf(filter) !== -1) {
-                        item.classList.remove('hidden');
-                    } else {
-                        item.classList.add('hidden');
-                    }
-                });
-            });
+        var filter = btn.getAttribute('data-filter') || '*';
+
+        document.querySelectorAll('.portfolio-filter-btn').forEach(function (b) {
+            b.classList.remove('active');
         });
-    }
+        btn.classList.add('active');
+
+        var grid = document.getElementById('portfolioGrid');
+        if (!grid) return;
+
+        grid.querySelectorAll('.portfolio-item').forEach(function (item) {
+            var cats = (item.getAttribute('data-cats') || '').split(/\s+/);
+            var show = (filter === '*') || cats.indexOf(filter) !== -1;
+            item.classList.toggle('hidden', !show);
+        });
+    });
 
     // Portfolio project gallery thumbs
     document.addEventListener('click', function (e) {

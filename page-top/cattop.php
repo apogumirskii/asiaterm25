@@ -10,10 +10,15 @@
 
             foreach ($categories as $cat) :
                 $thumb = get_the_post_thumbnail_url($cat->ID, 'medium_large');
-                $excerpt = $cat->post_excerpt ?: wp_trim_words($cat->post_content, 20);
-           
-		   include(locate_template('blocks/category.php')); 
-		   
+                $shortdesc = rwmb_meta('prod_cat_shortdesc', [], $cat->ID);
+                if ($shortdesc) {
+                    $excerpt = wp_trim_words(wp_strip_all_tags($shortdesc), 25);
+                } else {
+                    $excerpt = $cat->post_excerpt ?: wp_trim_words($cat->post_content, 20);
+                }
+
+		   include(locate_template('blocks/category.php'));
+
 		   endforeach; ?>
         </div>
 

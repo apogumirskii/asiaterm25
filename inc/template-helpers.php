@@ -84,7 +84,7 @@ function asiaterm_get_cat_features( $post_id = null ) {
     return [
         ['feature_icon' => [], 'feature_fa' => 'fas fa-check-circle', 'feature_title' => 'Сертификация', 'feature_desc' => 'Всё оборудование сертифицировано и соответствует международным стандартам'],
         ['feature_icon' => [], 'feature_fa' => 'fas fa-shield-alt',   'feature_title' => 'Гарантия',     'feature_desc' => 'Официальная гарантия производителя на все модели'],
-        ['feature_icon' => [], 'feature_fa' => 'fas fa-tools',        'feature_title' => 'Монтаж',       'feature_desc' => 'Профессиональный монтаж и пуско-наладка оборудования'],
+        ['feature_icon' => [], 'feature_fa' => 'fas fa-tools',        'feature_title' => 'Шеф-Монтаж',   'feature_desc' => 'Экспертный надзор и контроль качества на каждом этапе установки'],
         ['feature_icon' => [], 'feature_fa' => 'fas fa-headset',      'feature_title' => 'Поддержка',    'feature_desc' => 'Техническая консультация и сервисное обслуживание'],
     ];
 }

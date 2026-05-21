@@ -8,6 +8,8 @@ $partners_page = get_posts([
     'meta_value'     => 'page-partners.php',
 ]);
 $partner_logos = $partners_page ? rwmb_meta('partners_logos', ['size' => 'medium'], $partners_page[0]->ID) : [];
+
+if (empty($partner_logos)) return;
 ?>
 
 <section class="py-5">

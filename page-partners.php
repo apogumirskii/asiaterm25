@@ -9,35 +9,9 @@ $wa_number     = get_option('my_whatsapp') ?: get_option('my_phone');
 ?>
 
 <!-- Карточки брендов -->
-<?php
-$brands_list = $brands ?: [
-    [
-        'brand_name' => 'Minib',
-        'brand_desc' => 'Чешский производитель внутрипольных конвекторов и настенных обогревателей. Более 25 лет на рынке отопительного оборудования.',
-        'brand_product_type' => 'Внутрипольные конвекторы',
-        'brand_address' => 'Чехия, Прага',
-        'brand_website' => 'https://www.minib.cz',
-        'brand_logo' => [], 'brand_photo' => [],
-    ],
-    [
-        'brand_name' => 'Kermi',
-        'brand_desc' => 'Немецкий производитель стальных панельных радиаторов, полотенцесушителей и систем вентиляции.',
-        'brand_product_type' => 'Радиаторы, полотенцесушители',
-        'brand_address' => 'Германия, Платтлинг',
-        'brand_website' => 'https://www.kermi.com',
-        'brand_logo' => [], 'brand_photo' => [],
-    ],
-    [
-        'brand_name' => 'Protherm',
-        'brand_desc' => 'Европейский производитель газовых и электрических котлов для отопления жилых и коммерческих помещений.',
-        'brand_product_type' => 'Газовые и электрические котлы',
-        'brand_address' => 'Словакия, Братислава',
-        'brand_website' => 'https://www.protherm.com',
-        'brand_logo' => [], 'brand_photo' => [],
-    ],
-];
-?>
+<?php $brands_list = $brands ?: []; ?>
 
+<?php if ($brands_list) : ?>
 <section class="py-5" style="background: var(--color-gray-light);">
     <div class="container">
         <div class="text-center mb-5">
@@ -85,14 +59,7 @@ $brands_list = $brands ?: [
                     <?php endif; ?>
 
                     <div class="product-card-body">
-                        <div class="d-flex align-items-center gap-3 mb-3">
-                            <?php if ($logo_url) : ?>
-                                <img src="<?php echo esc_url(asiaterm_webp_url_swap($logo_url)); ?>"
-                                     style="max-width: 50px; max-height: 35px; object-fit: contain;"
-                                     alt="<?php echo esc_attr($brand['brand_name'] ?? ''); ?>">
-                            <?php endif; ?>
-                            <h5 class="fw-bold mb-0"><?php echo esc_html($brand['brand_name'] ?? ''); ?></h5>
-                        </div>
+                        <h5 class="fw-bold mb-3"><?php echo esc_html($brand['brand_name'] ?? ''); ?></h5>
 
                         <?php if (!empty($brand['brand_product_type'])) : ?>
                             <div class="mb-2">
@@ -102,27 +69,12 @@ $brands_list = $brands ?: [
 
                         <p class="product-card-desc" style="-webkit-line-clamp: 4;"><?php echo esc_html($brand['brand_desc'] ?? ''); ?></p>
 
-                        <div class="d-flex flex-column gap-1 mb-3" style="font-size: var(--font-size-sm);">
-                            <?php if (!empty($brand['brand_address'])) : ?>
-                                <span style="color: var(--color-text-muted);">
-                                    <i class="fas fa-map-marker-alt me-2" style="color: var(--color-primary);"></i><?php echo esc_html($brand['brand_address']); ?>
-                                </span>
-                            <?php endif; ?>
-                            <?php if (!empty($brand['brand_website'])) : ?>
-                                <span>
-                                    <i class="fas fa-globe me-2" style="color: var(--color-primary);"></i>
-                                    <a href="<?php echo esc_url($brand['brand_website']); ?>" target="_blank" rel="noopener" class="text-decoration-none" style="color: var(--color-primary);">
-                                        <?php echo esc_html(str_replace(['https://', 'http://', 'www.'], '', $brand['brand_website'])); ?>
-                                    </a>
-                                </span>
-                            <?php endif; ?>
-                        </div>
-
-                        <?php if (!empty($brand['brand_website'])) : ?>
-                            <a href="<?php echo esc_url($brand['brand_website']); ?>" target="_blank" rel="noopener" class="btn product-card-btn">
-                                <?php esc_html_e('Подробнее', 'asiaterm25'); ?> <i class="fas fa-arrow-right ms-1"></i>
-                            </a>
+                        <?php if (!empty($brand['brand_address'])) : ?>
+                            <div class="mb-3" style="font-size: var(--font-size-sm); color: var(--color-text-muted);">
+                                <i class="fas fa-map-marker-alt me-2" style="color: var(--color-primary);"></i><?php echo esc_html($brand['brand_address']); ?>
+                            </div>
                         <?php endif; ?>
+
                     </div>
                 </div>
             </div>
@@ -130,8 +82,10 @@ $brands_list = $brands ?: [
         </div>
     </div>
 </section>
+<?php endif; ?>
 
 <!-- Карусель логотипов -->
+<?php if (!empty($partner_logos)) : ?>
 <section class="py-5">
     <div class="container">
         <div class="text-center mb-4">
@@ -141,6 +95,7 @@ $brands_list = $brands ?: [
         <?php include locate_template('template-parts/partners-carousel.php'); ?>
     </div>
 </section>
+<?php endif; ?>
 
 <!-- Документы для скачивания -->
 <?php

@@ -30,14 +30,12 @@ include(locate_template('template-parts/phead.php'));
             <div class="col-lg-7">
                 <?php if ($shortdesc) : ?>
                     <div class="company-text mb-4"><?php echo do_shortcode(wp_kses_post($shortdesc)); ?></div>
-                <?php elseif (get_the_excerpt()) : ?>
-                    <p class="company-text mb-4"><?php the_excerpt(); ?></p>
-                <?php endif; ?>
-
-                <?php if (get_the_content()) : ?>
+                <?php elseif (get_the_content()) : ?>
                     <div class="cat-description mb-4">
                         <?php the_content(); ?>
                     </div>
+                <?php elseif (get_the_excerpt()) : ?>
+                    <p class="company-text mb-4"><?php the_excerpt(); ?></p>
                 <?php endif; ?>
 
                 <?php if ($var_titles) : ?>

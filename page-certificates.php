@@ -85,23 +85,9 @@ $gallery = rwmb_meta('cert_gallery');
         <p class="text-muted mt-3 small text-center" id="certCount"><?php printf(esc_html__('Всего сертификатов: %d', 'asiaterm25'), count($gallery)); ?></p>
 
         <?php else : ?>
-        <!-- Демо-заглушка -->
-        <div class="row g-4">
-            <?php for ($i = 1; $i <= 8; $i++) : ?>
-            <div class="col-6 col-md-4 col-lg-3">
-                <div class="cert-card">
-                    <div class="cert-card-img d-flex align-items-center justify-content-center" style="background: var(--color-gray);">
-                        <i class="fas fa-file-pdf fa-4x" style="color: var(--color-primary); opacity: 0.3;"></i>
-                    </div>
-                    <div class="cert-card-body">
-                        <p class="cert-card-title"><?php printf(esc_html__('Сертификат %d', 'asiaterm25'), $i); ?></p>
-                    </div>
-                </div>
-            </div>
-            <?php endfor; ?>
-        </div>
-        <div class="text-center mt-4">
-            <p class="text-muted"><?php esc_html_e('Загрузите сертификаты через редактор страницы в Meta Box → Галерея сертификатов', 'asiaterm25'); ?></p>
+        <div class="text-center py-5">
+            <i class="fas fa-file-pdf fa-3x mb-3" style="color: var(--color-primary); opacity: 0.3;"></i>
+            <p class="text-muted"><?php esc_html_e('Сертификаты пока не добавлены.', 'asiaterm25'); ?></p>
         </div>
         <?php endif; ?>
     </div>

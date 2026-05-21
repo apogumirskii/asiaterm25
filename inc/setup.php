@@ -58,6 +58,16 @@ function enqueue_theme_styles() {
 }
 add_action('wp_enqueue_scripts', 'enqueue_theme_styles');
 
+function asiaterm_favicon() {
+    $icon = 'https://asiaterm.kg/wp-content/uploads/asiatermkg-icon-1.svg';
+    echo '<link rel="icon" type="image/svg+xml" href="' . esc_url($icon) . '">' . "\n";
+    echo '<link rel="shortcut icon" href="' . esc_url($icon) . '">' . "\n";
+    echo '<link rel="apple-touch-icon" href="' . esc_url($icon) . '">' . "\n";
+}
+add_action('wp_head', 'asiaterm_favicon', 2);
+// Отключаем стандартный WP site-icon чтобы не дублировать
+add_filter('get_site_icon_url', '__return_false');
+
 function enqueue_bootstrap() {
     wp_enqueue_style('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css', [], '5.3.3');
     wp_enqueue_script('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js', ['jquery'], '5.3.3', true);
@@ -65,7 +75,7 @@ function enqueue_bootstrap() {
 add_action('wp_enqueue_scripts', 'enqueue_bootstrap');
 
 function asiaterm_enqueue_swiper() {
-    $swiper_templates = ['page-front.php', 'page-catalog.php', 'page-singleproduct.php', 'page-complexproduct.php', 'page-category.php', 'page-partners.php', 'page-about.php'];
+    $swiper_templates = ['page-front.php', 'page-catalog.php', 'page-singleproduct.php', 'page-complexproduct.php', 'page-category.php', 'page-partners.php', 'page-about.php', 'page-portfolio.php'];
     if (is_page_template($swiper_templates) || is_front_page() || is_singular('portfolio')) {
         $uri = get_template_directory_uri();
         wp_enqueue_style ('swiper', $uri . '/assets/swiper/swiper-bundle.min.css', [], '11.0.0');
@@ -91,7 +101,7 @@ function enqueue_theme_scripts() {
     }
     $front_templates = ['page-front.php', 'page-catalog.php', 'page-category.php', 'page-partners.php', 'page-about.php', 'page-portfolio.php'];
     if (is_page_template($front_templates) || is_front_page() || is_singular('portfolio')) {
-        wp_enqueue_script('theme-front', get_template_directory_uri() . '/js/theme-front.js', ['jquery', 'swiper'], '1.1.0', true);
+        wp_enqueue_script('theme-front', get_template_directory_uri() . '/js/theme-front.js', ['jquery', 'swiper'], '1.1.1', true);
     }
 }
 add_action('wp_enqueue_scripts', 'enqueue_theme_scripts');
