@@ -11,8 +11,7 @@ while (have_posts()) : the_post();
     }
     $terms = get_the_terms($current_id, 'portfolio_category');
     $excerpt = get_the_excerpt();
-    $portfolio_page = asiaterm_portfolio_page();
-    $portfolio_url = $portfolio_page ? get_permalink($portfolio_page->ID) : home_url('/');
+    $portfolio_url = asiaterm_url('portfolio');
 ?>
 
 <main>

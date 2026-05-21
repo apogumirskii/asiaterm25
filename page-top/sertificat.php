@@ -19,11 +19,7 @@
                     Создаем <span>комфорт и уют</span> в вашем доме или офисе
                 </h2>
                 <div class="d-flex flex-wrap gap-3">
-                    <?php
-                    $cert_pages = get_pages(['meta_key' => '_wp_page_template', 'meta_value' => 'page-certificates.php']);
-                    $cert_url = $cert_pages ? get_permalink($cert_pages[0]->ID) : home_url('/');
-                    ?>
-                    <a href="<?php echo esc_url($cert_url); ?>" class="btn hero-btn">Сертификаты <i class="fas fa-arrow-right ms-2"></i></a>
+                    <a href="<?php echo esc_url(asiaterm_url('certificates')); ?>" class="btn hero-btn">Сертификаты <i class="fas fa-arrow-right ms-2"></i></a>
                 </div>
             </div>
 

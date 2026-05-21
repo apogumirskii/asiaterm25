@@ -16,7 +16,7 @@
                 <p class="company-text mb-5">Мы предлагаем точные расчеты, обеспечиваем надежное и эффективное отопление вашего дома или бизнеса, по все территории Кыргызской Республики</p>
 
                 <div class="d-flex align-items-center gap-3 flex-wrap">
-                    <a href="/about-us/" class="btn company-btn-primary">
+                    <a href="<?php echo esc_url(asiaterm_url('about')); ?>" class="btn company-btn-primary">
                         Подробнее <i class="fas fa-arrow-right ms-2"></i>
                     </a>
                     <a href="tel:<?php echo esc_attr(get_option('my_phone')); ?>" class="btn company-btn-phone">

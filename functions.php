@@ -10,6 +10,7 @@ require_once $inc . 'svg-support.php';
 require_once $inc . 'menu.php';
 require_once $inc . 'emoji-disable.php';
 require_once $inc . 'cache-helpers.php';
+require_once $inc . 'url-helpers.php';
 require_once $inc . 'asset-prime.php';
 require_once $inc . 'template-helpers.php';
 require_once $inc . 'breadcrumbs.php';

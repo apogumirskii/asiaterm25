@@ -42,7 +42,7 @@ $about_map      = rwmb_meta('about_map_embed');
                     <p class="company-text mb-5">Мы реализуем проекты любого масштаба: от частных домов до крупных коммерческих объектов. Наша команда обеспечивает полный цикл — от проектирования до монтажа и сервисного обслуживания.</p>
                 <?php endif; ?>
                 <div class="d-flex align-items-center gap-3 flex-wrap">
-                    <a href="/contacts/" class="btn company-btn-primary">
+                    <a href="<?php echo esc_url(asiaterm_url('contact')); ?>" class="btn company-btn-primary">
                         <?php esc_html_e('Связаться с нами', 'asiaterm25'); ?> <i class="fas fa-arrow-right ms-2"></i>
                     </a>
                     <?php if (get_option('my_phone')) : ?>
@@ -85,7 +85,7 @@ $about_map      = rwmb_meta('about_map_embed');
                     <?php endforeach; ?>
                 </ul>
 
-                <a href="/catalog/" class="btn about-btn"><?php esc_html_e('В каталог', 'asiaterm25'); ?> <i class="fas fa-arrow-right ms-2"></i></a>
+                <a href="<?php echo esc_url(asiaterm_url('catalog')); ?>" class="btn about-btn"><?php esc_html_e('В каталог', 'asiaterm25'); ?> <i class="fas fa-arrow-right ms-2"></i></a>
             </div>
             <div class="col-lg-6 text-center">
                 <img src="<?php echo get_template_directory_uri(); ?>/files/topimg2.png"

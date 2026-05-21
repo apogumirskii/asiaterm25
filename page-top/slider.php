@@ -7,8 +7,7 @@ $slides = new WP_Query([
     'no_found_rows'  => true,
 ]);
 
-$promo_page = asiaterm_portfolio_page();
-$promo_url  = $promo_page ? get_permalink($promo_page->ID) : home_url('/');
+$promo_url = asiaterm_url('portfolio');
 ?>
 
 <section class="hero-slider">
@@ -79,7 +78,7 @@ $promo_url  = $promo_page ? get_permalink($promo_page->ID) : home_url('/');
                 <div class="hero-slide-text">
                     <p class="hero-slide-sub">Asiaterm</p>
                     <h2 class="hero-slide-title">Комплексное отопление и охлаждение</h2>
-                    <a href="<?php echo esc_url(get_permalink(13) ?: home_url('/')); ?>" class="hero-slide-cta">
+                    <a href="<?php echo esc_url(asiaterm_url('catalog')); ?>" class="hero-slide-cta">
                         В каталог <i class="fas fa-arrow-right ms-2"></i>
                     </a>
                 </div>

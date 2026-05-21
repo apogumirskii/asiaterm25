@@ -116,7 +116,7 @@ $services_list = $services ?: [
                         </div>
                     </li>
                 </ul>
-                <a href="/contacts/" class="btn about-btn"><?php esc_html_e('Оставить заявку', 'asiaterm25'); ?> <i class="fas fa-arrow-right ms-2"></i></a>
+                <a href="<?php echo esc_url(asiaterm_url('contact')); ?>" class="btn about-btn"><?php esc_html_e('Оставить заявку', 'asiaterm25'); ?> <i class="fas fa-arrow-right ms-2"></i></a>
             </div>
             <div class="col-lg-6 text-center">
                 <img src="<?php echo get_template_directory_uri(); ?>/files/topimg2.png"

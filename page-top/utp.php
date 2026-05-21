@@ -37,7 +37,7 @@
                     </li>
                 </ul>
 
-                <a href="<?php echo esc_url(get_permalink(13) ?: home_url('/')); ?>" class="btn about-btn">В каталог <i class="fas fa-arrow-right ms-2"></i></a>
+                <a href="<?php echo esc_url(asiaterm_url('catalog')); ?>" class="btn about-btn">В каталог <i class="fas fa-arrow-right ms-2"></i></a>
             </div>
 
             <div class="col-lg-6 text-center">

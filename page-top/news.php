@@ -138,7 +138,7 @@
     <div class="container">
         <div class="cta-inner text-center">
             <h4 class="cta-title mb-4">Как выбрать <span>нужную</span> систему отопления</h4>
-            <a href="/faq/" class="btn cta-btn">Читать статью <i class="fas fa-arrow-right ms-2"></i></a>
+            <a href="<?php echo esc_url(asiaterm_url('faq')); ?>" class="btn cta-btn">Читать статью <i class="fas fa-arrow-right ms-2"></i></a>
         </div>
     </div>
 </section>

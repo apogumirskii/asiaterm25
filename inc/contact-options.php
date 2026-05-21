@@ -85,6 +85,16 @@ function my_google_verification() {
     register_setting( 'general', 'my_google_verification', 'sanitize_text_field' );
 }
 
+function my_oferta_page_id() {
+    add_settings_field( 'oferta_page_id', 'ID страницы «Оферта и условия»', 'callback_oferta_page_id', 'general', 'custom_contact_section' );
+    register_setting( 'general', 'my_oferta_page_id', 'absint' );
+}
+
+function my_faq_page_id() {
+    add_settings_field( 'faq_page_id', 'ID страницы FAQ', 'callback_faq_page_id', 'general', 'custom_contact_section' );
+    register_setting( 'general', 'my_faq_page_id', 'absint' );
+}
+
 add_action('admin_init', 'my_mymail');
 add_action('admin_init', 'my_instagramm');
 add_action('admin_init', 'my_facebook');
@@ -100,6 +110,8 @@ add_action('admin_init', 'my_geo_lat');
 add_action('admin_init', 'my_geo_lng');
 add_action('admin_init', 'my_yandex_verification');
 add_action('admin_init', 'my_google_verification');
+add_action('admin_init', 'my_oferta_page_id');
+add_action('admin_init', 'my_faq_page_id');
 
 function callback_mymail() {
     echo "<input class='regular-text' type='text' name='my_mymail' value='" . esc_attr(get_option('my_mymail')) . "'>";
@@ -145,4 +157,10 @@ function callback_yandex_verification() {
 }
 function callback_google_verification() {
     echo "<input class='regular-text' type='text' name='my_google_verification' value='" . esc_attr(get_option('my_google_verification')) . "' placeholder='XXXXXXXXXXXXXXXXXXXXXXXX'>";
+}
+function callback_oferta_page_id() {
+    echo "<input class='small-text' type='number' name='my_oferta_page_id' value='" . esc_attr(get_option('my_oferta_page_id')) . "' placeholder='42'> <span style='color:#666; font-size:12px;'>ID страницы оферты (Страницы → Все → видно в URL ?post=ID)</span>";
+}
+function callback_faq_page_id() {
+    echo "<input class='small-text' type='number' name='my_faq_page_id' value='" . esc_attr(get_option('my_faq_page_id')) . "' placeholder='43'> <span style='color:#666; font-size:12px;'>ID страницы FAQ</span>";
 }

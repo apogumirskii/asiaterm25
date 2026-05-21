@@ -25,12 +25,10 @@ $cat_pages = asiaterm_catalog_children();
                 ]);
                 ?>
                 <ul class="list-unstyled footer-menu mt-2">
-                    <li><a href="<?php echo esc_url(home_url('/oferta-i-uslovija/')); ?>"><?php esc_html_e('Оферта и условия', 'asiaterm25'); ?></a></li>
-                    <?php
-                    $sitemap_pages = get_pages(['meta_key' => '_wp_page_template', 'meta_value' => 'page-sitemap.php']);
-                    if ($sitemap_pages) :
-                    ?>
-                        <li><a href="<?php echo esc_url(get_permalink($sitemap_pages[0]->ID)); ?>"><?php esc_html_e('Карта сайта', 'asiaterm25'); ?></a></li>
+                    <li><a href="<?php echo esc_url(asiaterm_url('oferta')); ?>"><?php esc_html_e('Оферта и условия', 'asiaterm25'); ?></a></li>
+                    <?php $sitemap_id = asiaterm_page_id_by_template('page-sitemap.php'); ?>
+                    <?php if ($sitemap_id) : ?>
+                        <li><a href="<?php echo esc_url(asiaterm_url('sitemap')); ?>"><?php esc_html_e('Карта сайта', 'asiaterm25'); ?></a></li>
                     <?php endif; ?>
                 </ul>
             </div>
