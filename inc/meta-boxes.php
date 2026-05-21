@@ -286,31 +286,6 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
                 ],
             ],
             [
-                'name'       => esc_html__( 'Команда', 'asiaterm25' ),
-                'id'         => 'about_team',
-                'type'       => 'group',
-                'clone'      => true,
-                'add_button' => esc_html__( '+ Добавить сотрудника', 'asiaterm25' ),
-                'fields'     => [
-                    [
-                        'type'             => 'image_advanced',
-                        'name'             => esc_html__( 'Фото', 'asiaterm25' ),
-                        'id'               => 'team_photo',
-                        'max_file_uploads' => 1,
-                    ],
-                    [
-                        'name' => esc_html__( 'Имя', 'asiaterm25' ),
-                        'id'   => 'team_name',
-                        'type' => 'text',
-                    ],
-                    [
-                        'name' => esc_html__( 'Должность', 'asiaterm25' ),
-                        'id'   => 'team_position',
-                        'type' => 'text',
-                    ],
-                ],
-            ],
-            [
                 'name' => esc_html__( 'HTML-код карты', 'asiaterm25' ),
                 'id'   => 'about_map_embed',
                 'type' => 'textarea',

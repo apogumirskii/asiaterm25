@@ -4,6 +4,7 @@ $slides = new WP_Query([
     'post_status'    => 'publish',
     'posts_per_page' => -1,
     'orderby'        => ['menu_order' => 'ASC', 'date' => 'ASC'],
+    'no_found_rows'  => true,
 ]);
 
 $promo_page = asiaterm_portfolio_page();

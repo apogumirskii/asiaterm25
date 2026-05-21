@@ -10,6 +10,7 @@
             'posts_per_page' => 4,
             'orderby'        => 'date',
             'order'          => 'DESC',
+            'no_found_rows'  => true,
         ]);
         ?>
 

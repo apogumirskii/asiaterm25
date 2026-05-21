@@ -2,40 +2,12 @@
 include(locate_template('template-parts/menu.php'));
 include(locate_template('template-parts/phead.php'));
 
-$portfolio_query = new WP_Query([
-    'post_type'      => 'portfolio',
-    'posts_per_page' => -1,
-    'orderby'        => 'menu_order date',
-    'order'          => 'ASC',
-]);
+// Кэшированный listing портфолио (TTL 12 часов, инвалидация при save_post_portfolio)
+$portfolio_data = asiaterm_portfolio_listing();
+$items    = $portfolio_data['items'];
+$all_cats = $portfolio_data['all_cats'];
 
-if ($portfolio_query->have_posts()) :
-    // Собираем категории
-    $all_cats = [];
-    $items = [];
-    while ($portfolio_query->have_posts()) : $portfolio_query->the_post();
-        $pid = get_the_ID();
-        $terms = get_the_terms($pid, 'portfolio_category');
-        $cat_slugs = [];
-        if ($terms && !is_wp_error($terms)) {
-            foreach ($terms as $term) {
-                $all_cats[$term->slug] = $term->name;
-                $cat_slugs[] = $term->slug;
-            }
-        }
-        $gallery = rwmb_meta('portfolio_gallery', ['object_type' => 'post'], $pid);
-        $items[] = [
-            'id'      => $pid,
-            'title'   => get_the_title(),
-            'excerpt' => get_the_excerpt(),
-            'thumb'   => get_the_post_thumbnail_url($pid, 'costom-gallery')
-                         ?: ($gallery ? reset($gallery)['full_url'] : get_template_directory_uri() . '/files/topimg2.png'),
-            'url'     => get_permalink(),
-            'cats'    => implode(' ', $cat_slugs),
-        ];
-    endwhile;
-    wp_reset_postdata();
-    asort($all_cats);
+if ($items) :
 ?>
 
 <section id="portfolio-page" class="py-5">

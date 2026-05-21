@@ -6,7 +6,6 @@ $about_image    = rwmb_meta('about_image', ['size' => 'large']);
 $about_text     = rwmb_meta('about_text');
 $about_gallery  = rwmb_meta('about_gallery', ['size' => 'costom-gallery']);
 $about_features = rwmb_meta('about_features');
-$about_team     = rwmb_meta('about_team');
 $about_map      = rwmb_meta('about_map_embed');
 ?>
 
@@ -147,49 +146,6 @@ $about_map      = rwmb_meta('about_map_embed');
                              alt="<?php echo esc_attr($img['alt'] ?: 'Asiaterm'); ?>">
                     </div>
                 </a>
-            </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
-</section>
-<?php endif; ?>
-
-<!-- Команда -->
-<?php
-$team = $about_team ?: [
-    ['team_name' => 'Директор', 'team_position' => 'Генеральный директор', 'team_photo' => []],
-    ['team_name' => 'Менеджер', 'team_position' => 'Отдел продаж', 'team_photo' => []],
-    ['team_name' => 'Инженер', 'team_position' => 'Технический отдел', 'team_photo' => []],
-];
-if (!empty($team)) : ?>
-<section class="py-5" style="background: var(--color-gray-light);">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h6 class="section-subheading"><?php esc_html_e('Команда', 'asiaterm25'); ?></h6>
-            <h2 class="section-heading"><?php esc_html_e('Наша команда', 'asiaterm25'); ?></h2>
-        </div>
-        <div class="row g-4 justify-content-center">
-            <?php foreach ($team as $member) :
-                $photo = !empty($member['team_photo']) ? reset($member['team_photo']) : null;
-            ?>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="text-center">
-                    <?php if ($photo && !empty($photo['url'])) : ?>
-                        <div class="cat-hero-img mb-3" style="width: 160px; height: 160px; margin: 0 auto; border-radius: 50%;">
-                            <img src="<?php echo esc_url($photo['url']); ?>"
-                                 style="border-radius: 50%;"
-                                 loading="lazy"
-                                 alt="<?php echo esc_attr($member['team_name'] ?? ''); ?>">
-                        </div>
-                    <?php else : ?>
-                        <div class="d-inline-flex align-items-center justify-content-center mb-3"
-                             style="width: 160px; height: 160px; border-radius: 50%; background: var(--color-white); box-shadow: var(--shadow-sm);">
-                            <i class="fas fa-user fa-3x" style="color: var(--color-primary);"></i>
-                        </div>
-                    <?php endif; ?>
-                    <h5 class="fw-bold mb-1"><?php echo esc_html($member['team_name'] ?? ''); ?></h5>
-                    <p style="color: var(--color-primary); font-weight: 600; font-size: var(--font-size-sm);"><?php echo esc_html($member['team_position'] ?? ''); ?></p>
-                </div>
             </div>
             <?php endforeach; ?>
         </div>

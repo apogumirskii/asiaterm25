@@ -60,21 +60,17 @@ while (have_posts()) : the_post();
 </section>
 
 <?php
-// Товары, в которых указан этот проект
-$related_products = new WP_Query([
+// Кэшированный список товаров, ссылающихся на этот проект (TTL 12 часов)
+$related_ids = asiaterm_related_products_for_portfolio($current_id);
+$related_products = $related_ids ? new WP_Query([
     'post_type'      => 'page',
-    'post_status'    => 'publish',
+    'post__in'       => $related_ids,
+    'orderby'        => 'post__in',
     'posts_per_page' => -1,
-    'meta_query'     => [
-        [
-            'key'     => 'prod_portfolio_pages',
-            'value'   => $current_id,
-            'compare' => 'LIKE',
-        ],
-    ],
-]);
+    'no_found_rows'  => true,
+]) : null;
 
-if ($related_products->have_posts()) : ?>
+if ($related_products && $related_products->have_posts()) : ?>
 <section class="products-section py-5">
     <div class="container">
         <div class="text-center mb-5">

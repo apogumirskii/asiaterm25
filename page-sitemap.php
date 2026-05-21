@@ -60,6 +60,7 @@ $portfolios = new WP_Query([
     'post_type'      => 'portfolio',
     'posts_per_page' => -1,
     'orderby'        => ['menu_order' => 'ASC', 'date' => 'DESC'],
+    'no_found_rows'  => true,
 ]);
 
 // Записи (новости)
@@ -68,6 +69,7 @@ $posts_q = new WP_Query([
     'posts_per_page' => -1,
     'orderby'        => 'date',
     'order'          => 'DESC',
+    'no_found_rows'  => true,
 ]);
 
 $xml_url = home_url('/wp-sitemap.xml');

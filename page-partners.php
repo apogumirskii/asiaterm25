@@ -99,62 +99,8 @@ $wa_number     = get_option('my_whatsapp') ?: get_option('my_phone');
 
 <!-- Документы для скачивания -->
 <?php
-// Собираем все файлы из prod_downloads со всех товарных страниц
-// Если у родительской страницы есть файлы — дочерние пропускаем (без дублей)
-$docs_query = new WP_Query([
-    'post_type'      => 'page',
-    'post_status'    => 'publish',
-    'posts_per_page' => -1,
-    'meta_query'     => [
-        [
-            'key'     => 'prod_downloads',
-            'compare' => 'EXISTS',
-        ],
-    ],
-]);
-
-// Собираем ID страниц у которых есть файлы
-$pages_with_docs = [];
-if ($docs_query->have_posts()) {
-    foreach ($docs_query->posts as $p) {
-        $files = rwmb_meta('prod_downloads', ['object_type' => 'post'], $p->ID);
-        if ($files) {
-            $pages_with_docs[$p->ID] = true;
-        }
-    }
-}
-
-$all_docs = [];
-if ($docs_query->have_posts()) {
-    while ($docs_query->have_posts()) {
-        $docs_query->the_post();
-        $page_id   = get_the_ID();
-        $parent_id = wp_get_post_parent_id($page_id);
-
-        // Пропускаем дочернюю страницу, если у родителя тоже есть файлы
-        if ($parent_id && !empty($pages_with_docs[$parent_id])) {
-            continue;
-        }
-
-        $page_title = get_the_title();
-        $category   = $parent_id ? get_the_title($parent_id) : '';
-        $files      = rwmb_meta('prod_downloads', ['object_type' => 'post'], $page_id);
-
-        if ($files) {
-            foreach ($files as $file) {
-                $all_docs[] = [
-                    'name'     => $file['title'] ?: $file['name'] ?: basename($file['url']),
-                    'url'      => $file['url'],
-                    'page'     => $page_title,
-                    'category' => $category,
-                    'type'     => strtoupper(pathinfo($file['url'], PATHINFO_EXTENSION)),
-                    'size'     => size_format($file['filesize'] ?? 0),
-                ];
-            }
-        }
-    }
-    wp_reset_postdata();
-}
+// Кэшированный список документов (TTL 6 часов, инвалидация при изменении prod_downloads)
+$all_docs = asiaterm_partners_documents();
 ?>
 
 <section class="py-5" id="documents-section">

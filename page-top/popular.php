@@ -9,6 +9,7 @@
 			'post_status'    => 'publish',
 			'posts_per_page' => -1,
 			'orderby'        => ['menu_order' => 'ASC', 'title' => 'ASC'],
+			'no_found_rows'  => true,
 			'meta_query'     => [
 				[
 					'key'     => 'prod_show_on_home',
