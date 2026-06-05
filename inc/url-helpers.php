@@ -74,6 +74,95 @@ function asiaterm_url($key, $fallback = null) {
     return $fallback;
 }
 
+/**
+ * Получить URL бренд-изображения из Customizer или fallback из файлов темы.
+ *
+ * @param string $key           Ключ без префикса: hero_about, utp, slider_fallback, portfolio_fallback
+ * @param string $default_file  Относительный путь fallback внутри темы, например 'files/show.webp'
+ * @return string URL
+ */
+function asiaterm_brand_image($key, $default_file = '') {
+    $custom = get_theme_mod('asiaterm_' . $key . '_image', '');
+    if ($custom) return $custom;
+    return $default_file
+        ? get_template_directory_uri() . '/' . ltrim($default_file, '/')
+        : '';
+}
+
+/**
+ * Получить attachment ID бренд-изображения из Customizer (если загружено из медиатеки).
+ * Нужно для wp_get_attachment_image_src(): возвращает 0 если в Customizer прямой URL,
+ * не из медиабиблиотеки, либо не задано.
+ */
+function asiaterm_brand_image_id($key) {
+    $url = get_theme_mod('asiaterm_' . $key . '_image', '');
+    if (!$url) return 0;
+    return (int) attachment_url_to_postid($url);
+}
+
+/**
+ * Универсальный рендер <picture> с desktop/mobile <source> и WebP swap.
+ *
+ * @param int|string $attachment   Attachment ID, либо прямой URL (для fallback из /files/)
+ * @param string     $size_desktop Зарегистрированный image size, например 'about-hero'
+ * @param string     $size_mobile  Image size для мобильного <source>, например 'about-hero-mob'
+ * @param array      $args         ['alt', 'class', 'loading', 'mobile_breakpoint', 'sizes']
+ * @return string HTML
+ */
+function asiaterm_picture_tag($attachment, $size_desktop = 'large', $size_mobile = '', $args = []) {
+    $defaults = [
+        'alt'               => '',
+        'class'             => '',
+        'loading'           => 'lazy',
+        'mobile_breakpoint' => 768,
+        'sizes'             => '',
+    ];
+    $args = array_merge($defaults, $args);
+
+    $desktop = '';
+    $mobile  = '';
+    $alt     = $args['alt'];
+
+    if (is_numeric($attachment) && (int) $attachment > 0) {
+        $att_id  = (int) $attachment;
+        $desktop = wp_get_attachment_image_url($att_id, $size_desktop);
+        if ($size_mobile) {
+            $mobile = wp_get_attachment_image_url($att_id, $size_mobile);
+        }
+        if (!$alt) {
+            $alt = get_post_meta($att_id, '_wp_attachment_image_alt', true);
+        }
+    } else {
+        // Прямой URL (Customizer URL без media-attachment или хардкод-fallback)
+        $desktop = is_string($attachment) ? $attachment : '';
+    }
+
+    if (!$desktop) return '';
+
+    // WebP swap уже встроен в фильтры WordPress (wp_get_attachment_image_url),
+    // но для прямых URL прогоним вручную:
+    if (function_exists('asiaterm_webp_url_swap')) {
+        $desktop = asiaterm_webp_url_swap($desktop);
+        if ($mobile) $mobile = asiaterm_webp_url_swap($mobile);
+    }
+
+    $cls = $args['class'] ? ' class="' . esc_attr($args['class']) . '"' : '';
+    $sizes_attr = $args['sizes'] ? ' sizes="' . esc_attr($args['sizes']) . '"' : '';
+
+    ob_start();
+    ?>
+    <picture<?php echo $cls; ?>>
+        <?php if ($mobile) : ?>
+        <source media="(max-width: <?php echo (int) $args['mobile_breakpoint']; ?>px)" srcset="<?php echo esc_url($mobile); ?>">
+        <?php endif; ?>
+        <img src="<?php echo esc_url($desktop); ?>"
+             alt="<?php echo esc_attr($alt); ?>"
+             loading="<?php echo esc_attr($args['loading']); ?>"<?php echo $sizes_attr; ?>>
+    </picture>
+    <?php
+    return ob_get_clean();
+}
+
 // Инвалидация кэша page_id_by_template
 add_action('save_post_page', function () {
     global $wpdb;

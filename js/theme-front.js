@@ -77,6 +77,21 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    // About Gallery / UTP Gallery Carousel (main page)
+    document.querySelectorAll('.swiper-about-gallery, .swiper-utp-gallery').forEach(function (el) {
+        if (typeof Swiper === 'undefined') return;
+        new Swiper(el, {
+            slidesPerView: 1,
+            loop: el.querySelectorAll('.swiper-slide').length > 1,
+            speed: 600,
+            autoplay: { delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true },
+            pagination: {
+                el: el.querySelector('.about-gallery-pagination'),
+                clickable: true,
+            },
+        });
+    });
+
     // Video Modal (certificates)
     var videoModal = document.getElementById('videoModal');
     if (videoModal) {

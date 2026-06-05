@@ -32,6 +32,34 @@ function your_prefix_register_meta_boxes( $meta_boxes ) {
         ],
     ];
 
+    // Главная страница (TopPage) — галереи блоков «О нас» и УТП
+    $meta_boxes[] = [
+        'title'      => esc_html__( 'Главная: галереи блоков', 'asiaterm25' ),
+        'id'         => 'front_about_params',
+        'post_types' => ['page'],
+        'context'    => 'normal',
+        'priority'   => 'high',
+        'show'       => [
+            'template' => ['page-front.php'],
+        ],
+        'fields'     => [
+            [
+                'type'             => 'image_advanced',
+                'name'             => esc_html__( 'Галерея блока «О нас»', 'asiaterm25' ),
+                'id'               => 'front_about_gallery',
+                'max_file_uploads' => 20,
+                'desc'             => esc_html__( '2+ фото → карусель. 1 фото → обычная картинка. 0 → fallback из Customizer (Внешний вид → Настроить → Изображения сайта).', 'asiaterm25' ),
+            ],
+            [
+                'type'             => 'image_advanced',
+                'name'             => esc_html__( 'Галерея УТП-блока («Мы поставляем…»)', 'asiaterm25' ),
+                'id'               => 'front_utp_gallery',
+                'max_file_uploads' => 20,
+                'desc'             => esc_html__( '2+ фото → карусель. 1 фото → обычная картинка. 0 → fallback из Customizer (Изображения сайта → UTP).', 'asiaterm25' ),
+            ],
+        ],
+    ];
+
     $meta_boxes[] = [
         'title'      => esc_html__( 'Параметры категории / Иконки', 'asiaterm25' ),
         'id'         => 'category_params',

@@ -26,3 +26,4 @@ require_once $inc . 'webp.php';
 require_once $inc . 'admin-cleanup.php';
 require_once $inc . 'analytics.php';
 require_once $inc . 'robots.php';
+require_once $inc . 'customizer.php';

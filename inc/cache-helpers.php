@@ -123,7 +123,7 @@ function asiaterm_portfolio_listing() {
             $gallery = rwmb_meta('portfolio_gallery', ['object_type' => 'post'], $pid);
             $thumb   = get_the_post_thumbnail_url($pid, 'costom-gallery');
             if (!$thumb && $gallery) $thumb = reset($gallery)['full_url'] ?? '';
-            if (!$thumb) $thumb = get_template_directory_uri() . '/files/topimg2.png';
+            if (!$thumb) $thumb = asiaterm_brand_image('portfolio_fallback', 'files/topimg2.png');
 
             $items[] = [
                 'id'      => $pid,

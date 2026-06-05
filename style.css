@@ -1634,10 +1634,70 @@ html, body {
     background: var(--color-white);
 }
 
-.company-img {
+.company-img,
+.company-img-wrap img {
     border-radius: var(--radius-md);
     width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
     object-fit: cover;
+    display: block;
+}
+
+/* About gallery / UTP gallery (carousel на главной) */
+.swiper-about-gallery,
+.swiper-utp-gallery {
+    width: 100%;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    position: relative;
+}
+
+.about-gallery-slide {
+    width: 100%;
+}
+
+.about-gallery-slide picture,
+.about-gallery-slide .about-gallery-img,
+.about-gallery-slide img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+.about-gallery-pagination {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 5;
+}
+
+.about-gallery-pagination .swiper-pagination-bullet {
+    width: 0.625rem;
+    height: 0.625rem;
+    background: rgba(255, 255, 255, 0.6);
+    opacity: 0.9;
+    transition: all var(--transition);
+}
+
+.about-gallery-pagination .swiper-pagination-bullet-active {
+    background: var(--color-primary);
+    width: 1.5rem;
+    border-radius: 0.5rem;
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .about-gallery-slide picture,
+    .about-gallery-slide .about-gallery-img,
+    .about-gallery-slide img {
+        aspect-ratio: 1 / 1;
+    }
 }
 
 .company-subheading {

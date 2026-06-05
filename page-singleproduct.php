@@ -218,8 +218,13 @@ include(locate_template('template-parts/phead.php'));
                             if (!$port['gallery']) continue;
                         ?>
                         <?php echo $port['id']; ?>: [
-                            <?php foreach ($port['gallery'] as $img) : ?>
-                            '<?php echo esc_url(asiaterm_webp_url_swap($img['full_url'])); ?>',
+                            <?php foreach ($port['gallery'] as $img) :
+                                $att_id    = !empty($img['ID']) ? (int) $img['ID'] : 0;
+                                $slide_url = $att_id
+                                    ? wp_get_attachment_image_url($att_id, 'costom-gallery')
+                                    : ($img['url'] ?? $img['full_url'] ?? '');
+                            ?>
+                            '<?php echo esc_url($slide_url); ?>',
                             <?php endforeach; ?>
                         ],
                         <?php endforeach; ?>

@@ -9,6 +9,11 @@ add_image_size( 'catalog-thumb', 300, 400, true  );
 add_image_size( 'slider-desc', 1920, 900, true  );
 add_image_size( 'slider-mob', 720, 720, true  );
 add_image_size( 'costom-gallery', 1290, 580, true  );
+// About-блок на главной (hero + карусель)
+add_image_size( 'about-hero', 1200, 800, true );
+add_image_size( 'about-hero-mob', 768, 600, true );
+add_image_size( 'about-gallery', 800, 600, true );
+add_image_size( 'about-gallery-mob', 600, 600, true );
 
 function arphabet_widgets_init() {
 	register_sidebar( array(
@@ -125,7 +130,7 @@ function enqueue_theme_scripts() {
     }
     $front_templates = ['page-front.php', 'page-catalog.php', 'page-category.php', 'page-partners.php', 'page-about.php', 'page-portfolio.php'];
     if (is_page_template($front_templates) || is_front_page() || is_singular('portfolio')) {
-        wp_enqueue_script('theme-front', get_template_directory_uri() . '/js/theme-front.js', ['jquery', 'swiper'], '1.2.0', true);
+        wp_enqueue_script('theme-front', get_template_directory_uri() . '/js/theme-front.js', ['jquery', 'swiper'], '1.3.1', true);
     }
 }
 add_action('wp_enqueue_scripts', 'enqueue_theme_scripts');

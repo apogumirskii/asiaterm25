@@ -69,7 +69,7 @@ if ($portfolio_query->have_posts()) :
         $pid = get_the_ID();
         $gallery = rwmb_meta('portfolio_gallery', ['object_type' => 'post'], $pid);
         $thumb = get_the_post_thumbnail_url($pid, 'costom-gallery')
-                 ?: ($gallery ? reset($gallery)['full_url'] : get_template_directory_uri() . '/files/topimg2.png');
+                 ?: ($gallery ? reset($gallery)['full_url'] : asiaterm_brand_image('portfolio_fallback', 'files/topimg2.png'));
         $portfolio_items[] = [
             'id'      => $pid,
             'title'   => get_the_title(),
@@ -135,8 +135,13 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!$port['gallery']) continue;
         ?>
         <?php echo $port['id']; ?>: [
-            <?php foreach ($port['gallery'] as $img) : ?>
-            '<?php echo esc_url(asiaterm_webp_url_swap($img['full_url'])); ?>',
+            <?php foreach ($port['gallery'] as $img) :
+                $att_id    = !empty($img['ID']) ? (int) $img['ID'] : 0;
+                $slide_url = $att_id
+                    ? wp_get_attachment_image_url($att_id, 'costom-gallery')
+                    : ($img['url'] ?? $img['full_url'] ?? '');
+            ?>
+            '<?php echo esc_url($slide_url); ?>',
             <?php endforeach; ?>
         ],
         <?php endforeach; ?>

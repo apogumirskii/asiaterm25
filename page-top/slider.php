@@ -42,7 +42,7 @@ $promo_url = asiaterm_url('portfolio');
                         <?php if ($file_mob) : ?>
                             <source media="(max-width: 768px)" srcset="<?php echo esc_url($file_mob); ?>">
                         <?php endif; ?>
-                        <img src="<?php echo esc_url($file_url ?: get_template_directory_uri() . '/files/slide1.jpg'); ?>" alt="<?php echo esc_attr($head); ?>">
+                        <img src="<?php echo esc_url($file_url ?: asiaterm_brand_image('slider_fallback', 'files/slide1.jpg')); ?>" alt="<?php echo esc_attr($head); ?>">
                     </picture>
                 <?php endif; ?>
                 <span class="hero-slide-tint"></span>
