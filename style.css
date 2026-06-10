@@ -188,6 +188,20 @@ html, body {
     border-radius: 0 0 var(--radius-xl) var(--radius-xl);
 }
 
+/* Логотип: не сжимается flex-grow поиском, без искажения аспекта */
+.header-logo {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.header-logo img {
+    height: 60px;
+    width: auto;
+    display: block;
+    max-width: none;
+}
+
 @media (max-width: 991px) {
     html, body {
         overflow-x: hidden;
