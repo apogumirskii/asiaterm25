@@ -124,9 +124,9 @@ $services_list = $services ?: [
                 $utp_url = asiaterm_brand_image('utp', 'files/topimg2.png');
                 echo asiaterm_picture_tag(
                     $utp_id ?: $utp_url,
-                    'about-hero',
-                    'about-hero-mob',
-                    ['alt' => 'Asiaterm', 'class' => 'about-img']
+                    'about-gallery',
+                    'about-gallery-mob',
+                    ['alt' => 'Asiaterm', 'class' => 'company-img-wrap']
                 );
                 ?>
             </div>

@@ -81,7 +81,7 @@
                         (int) $img['ID'],
                         'about-gallery',
                         'about-gallery-mob',
-                        ['alt' => $img['alt'] ?? 'Asiaterm', 'class' => 'about-img']
+                        ['alt' => $img['alt'] ?? 'Asiaterm', 'class' => 'company-img-wrap']
                     ); ?>
                 <?php else : ?>
                     <?php
@@ -91,7 +91,7 @@
                         $utp_id ?: $utp_url,
                         'about-gallery',
                         'about-gallery-mob',
-                        ['alt' => 'Asiaterm', 'class' => 'about-img']
+                        ['alt' => 'Asiaterm', 'class' => 'company-img-wrap']
                     );
                     ?>
                 <?php endif; ?>
