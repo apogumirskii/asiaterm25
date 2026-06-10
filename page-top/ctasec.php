@@ -14,7 +14,7 @@ $cat_pages = asiaterm_catalog_children();
             <!-- Меню -->
             <div class="col-lg-3 col-md-6">
                 <a href="<?php echo esc_url(home_url('/')); ?>" class="d-inline-block mb-3">
-                    <img src="<?php echo get_template_directory_uri(); ?>/files/asiatermkg-logo.svg" alt="<?php bloginfo('name'); ?>" height="50">
+                    <img src="<?php echo esc_url(asiaterm_logo_url()); ?>" alt="<?php bloginfo('name'); ?>" height="50">
                 </a>
                 <?php
                 wp_nav_menu([

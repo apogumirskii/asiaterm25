@@ -90,6 +90,21 @@ function asiaterm_brand_image($key, $default_file = '') {
 }
 
 /**
+ * URL логотипа темы с cache-bust по filemtime.
+ * При любом изменении файла logo.svg версия в URL меняется → браузеры
+ * подтягивают свежий файл (имя файла остаётся прежним).
+ */
+function asiaterm_logo_url() {
+    $rel  = '/files/asiatermkg-logo.svg';
+    $uri  = get_template_directory_uri() . $rel;
+    $path = get_template_directory() . $rel;
+    if (file_exists($path)) {
+        $uri = add_query_arg('ver', filemtime($path), $uri);
+    }
+    return $uri;
+}
+
+/**
  * Получить attachment ID бренд-изображения из Customizer (если загружено из медиатеки).
  * Нужно для wp_get_attachment_image_src(): возвращает 0 если в Customizer прямой URL,
  * не из медиабиблиотеки, либо не задано.
