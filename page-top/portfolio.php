@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <?php foreach ($port['gallery'] as $img) :
                 $att_id    = !empty($img['ID']) ? (int) $img['ID'] : 0;
                 $slide_url = $att_id
-                    ? wp_get_attachment_image_url($att_id, 'costom-gallery')
+                    ? wp_get_attachment_image_url($att_id, 'portfolio-lightbox')
                     : ($img['url'] ?? $img['full_url'] ?? '');
             ?>
             '<?php echo esc_url($slide_url); ?>',

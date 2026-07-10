@@ -14,6 +14,8 @@ add_image_size( 'about-hero', 1200, 800, true );
 add_image_size( 'about-hero-mob', 768, 600, true );
 add_image_size( 'about-gallery', 800, 600, true );
 add_image_size( 'about-gallery-mob', 600, 600, true );
+// Полноэкранный просмотр галереи портфолио — без обрезки (soft), аспект сохранён
+add_image_size( 'portfolio-lightbox', 1920, 1920, false );
 
 function arphabet_widgets_init() {
 	register_sidebar( array(
